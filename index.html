@@ -20,15 +20,25 @@
         #resource-panel { display: flex; gap: 10px; flex-wrap: wrap; pointer-events: auto; }
         .hud-box { background: rgba(0,0,0,0.8); padding: 10px 15px; border-radius: 8px; font-size: 18px; font-weight: bold; border: 1px solid #16a34a; display: flex; align-items: center; gap: 8px; }
         #audio-controls { display: flex; gap: 10px; pointer-events: auto; }
-        .btn-audio { background: rgba(0,0,0,0.8); border: 1px solid #1a3b22; color: #4ade80; padding: 8px 12px; border-radius: 5px; font-size: 14px; cursor: pointer; }
+        .btn-audio { background: rgba(0,0,0,0.8); border: 1px solid #1a3b22; color: #4ade80; padding: 8px 12px; border-radius: 5px; font-size: 14px; cursor: pointer; transition: 0.2s;}
+        .btn-audio:hover { background: #1a3b22; }
 
         #bottom-bar { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; pointer-events: auto; }
-        .btn-action { padding: 12px 20px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; border: none; color: white; width: 100%; max-width: 400px; transition: 0.2s; }
+        .btn-action { padding: 12px 15px; font-size: 14px; font-weight: bold; border-radius: 8px; cursor: pointer; border: none; color: white; width: 100%; transition: 0.2s; }
+        .btn-action:disabled { background: #1a3b22 !important; color: #6b7280 !important; cursor: not-allowed; border: 1px solid #0f2115 !important;}
+        
+        #btn-toggle-build { background: #2563eb; border: 1px solid #1d4ed8; font-size: 16px; padding: 15px; max-width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        #btn-toggle-build:hover { background: #1d4ed8; }
+
+        /* Menu de Construção Agrupado */
+        #build-menu { display: none; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; background: rgba(6, 18, 9, 0.95); padding: 15px; border-radius: 12px; border: 1px solid #16a34a; max-width: 600px; width: 100%; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); margin-bottom: 5px;}
+        
         #btn-add-lumber { background: #16a34a; border: 1px solid #15803d; }
         #btn-add-hunter { background: #eab308; color: #451a03; border: 1px solid #a16207; }
         #btn-add-miner { background: #64748b; color: white; border: 1px solid #475569; }
-        .btn-action:disabled { background: #1a3b22 !important; color: #6b7280 !important; cursor: not-allowed; border: 1px solid #0f2115 !important;}
-        #tutorial { font-size: 14px; color: #4ade80; background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px; pointer-events: none; margin-bottom: 5px;}
+        #btn-add-tower { background: #475569; border: 1px solid #334155; }
+
+        #tutorial { font-size: 14px; color: #4ade80; background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px; pointer-events: none; margin-bottom: 5px; font-weight: bold;}
         .text-amber { color: #fbbf24; } .text-red { color: #ef4444; } .text-gray { color: #cbd5e1; }
         
         /* SISTEMA ROGUELIKE (CARTAS) */
@@ -79,14 +89,34 @@
         <div id="meta-stats-list"></div>
 
         <div id="bottom-bar">
-            <div id="tutorial">👆 Toque nas casas para fazer upgrades (Custa 🪵)</div>
-            <button id="btn-add-lumber" class="btn-action" onclick="buyCamp('wood')">➕ Cabana Lenhador (15 🍖)</button>
-            <button id="btn-add-hunter" class="btn-action" onclick="buyCamp('food')">➕ Tenda Caçador (15 🪵)</button>
-            <button id="btn-add-miner" class="btn-action" onclick="buyCamp('stone')">➕ Tenda Minerador (20🪵 20🍖)</button>
+            <div id="tutorial">👆 Toque nas Casas p/ Upgrades | 🪨 Minas dão pedras</div>
+            
+            <!-- Menu Agrupado -->
+            <div id="build-menu">
+                <button id="btn-add-lumber" class="btn-action" onclick="buyCamp('wood')">➕ Lenhador (15🍖)</button>
+                <button id="btn-add-hunter" class="btn-action" onclick="buyCamp('food')">➕ Caçador (15🪵)</button>
+                <button id="btn-add-miner" class="btn-action" onclick="buyCamp('stone')">➕ Minerador (20🪵 20🍖)</button>
+                <button id="btn-add-tower" class="btn-action" onclick="buyCamp('tower')">🗼 Torre de Guarda (30🪨)</button>
+            </div>
+            
+            <button id="btn-toggle-build" class="btn-action" onclick="toggleBuildMenu()">🔨 Abrir Construções</button>
         </div>
     </div>
 
     <script>
+        function toggleBuildMenu() {
+            let menu = document.getElementById('build-menu');
+            let btn = document.getElementById('btn-toggle-build');
+            if(menu.style.display === 'grid') {
+                menu.style.display = 'none';
+                btn.innerText = '🔨 Abrir Construções';
+            } else {
+                menu.style.display = 'grid';
+                btn.innerText = '❌ Fechar Menu';
+            }
+            sfx('pickup');
+        }
+
         /* --- CARTAS ROGUELIKE (30 TIPOS) --- */
         const META_CARDS = [
             { id: "spd_w", i: "🥾", n: "Botas Leves", d: "Lenhadores andam +10% mais rápido." },
@@ -97,11 +127,11 @@
             { id: "cry_s", i: "🛒", n: "Carrinho de Mão", d: "Mineradores carregam +1 pedra." },
             { id: "cap_all", i: "📦", n: "Arquitetura", d: "Todas as tendas guardam +5 recursos base." },
             { id: "upg_disc", i: "📉", n: "Engenharia", d: "Upgrades custam 5% menos madeira." },
-            { id: "buy_disc", i: "🤝", n: "Negociadores", d: "Construir novas tendas custa 5% a menos." },
+            { id: "buy_disc", i: "🤝", n: "Negociadores", d: "Construir novas tendas/torres custa 5% a menos." },
             { id: "act_w", i: "🪓", n: "Machado Afiado", d: "Árvores caem 15% mais rápido." },
             { id: "act_s", i: "🧨", n: "Pólvora", d: "Mineração 15% mais rápida." },
             { id: "act_f", i: "🦅", n: "Olhos de Águia", d: "Mira do arco 15% mais rápida." },
-            { id: "atk_w", i: "🏹", n: "Arco Longo", d: "Caçadores atiram de 10% mais longe." },
+            { id: "atk_w", i: "🏹", n: "Arco Longo", d: "Arqueiros e Torres atiram 10% mais longe." },
             { id: "arr_spd", i: "💨", n: "Flechas Aerodinâmicas", d: "Flechas voam 20% mais rápido." },
             { id: "def_wlf", i: "🛡️", n: "Armadura de Couro", d: "+5% de chance de sobreviver a Lobos." },
             { id: "def_br", i: "🏰", n: "Lanças de Defesa", d: "+2% de chance de sobreviver a Ursos." },
@@ -122,7 +152,6 @@
         ];
 
         let metaStats = {};
-
         function loadMeta() { const m = localStorage.getItem('bosqueMeta'); if(m) metaStats = JSON.parse(m); else metaStats = {}; }
         function saveMeta() { localStorage.setItem('bosqueMeta', JSON.stringify(metaStats)); }
         function getMeta(id) { return metaStats[id] || 0; }
@@ -231,6 +260,7 @@
             let disc = Math.pow(0.95, getMeta('buy_disc'));
             if(type==='wood') return { w:0, f: Math.max(1, Math.floor(15*disc)), s:0 };
             if(type==='food') return { w: Math.max(1, Math.floor(15*disc)), f:0, s:0 };
+            if(type==='tower') return { w:0, f:0, s: Math.max(1, Math.floor(30*disc)) };
             return { w: Math.max(1, Math.floor(20*disc)), f: Math.max(1, Math.floor(20*disc)), s:0 };
         }
 
@@ -244,10 +274,14 @@
             if (saved) {
                 const data = JSON.parse(saved);
                 camps = data.camps.map(c => {
-                    let bc = c.type === 'wood' ? 10 : (c.type === 'food' ? 15 : 20);
+                    let bc = c.type === 'wood' ? 10 : (c.type === 'food' ? 15 : (c.type === 'stone' ? 20 : 0));
                     let spd = c.type === 'wood' ? 2.5 * (1 + getMeta('spd_w')*0.1) : (c.type === 'food' ? 2.8 * (1 + getMeta('spd_f')*0.1) : 2.2 * (1 + getMeta('spd_s')*0.1));
                     let maxC = (c.type === 'wood' ? 5 : 3) + getMeta(c.type === 'wood' ? 'cry_w' : (c.type === 'food' ? 'cry_f' : 'cry_s'));
                     
+                    if(c.type === 'tower') {
+                        return { ...c, upgCostW: 0, upgCostF: 0, upgCostS: 0, icon: "🗼", worker: { icon: "💂", x: c.x, y: c.y - 10, speed: 0, carry: 0, carryFood: 0, maxCarry: 0, state: 'guarding', targetObj: null, timer: 0, bowAngle: 0, showAct: false, isDead: false } };
+                    }
+
                     return {
                         ...c, upgCostW: c.upgCostW > 0 ? c.upgCostW : Math.floor(bc * Math.pow(1.5, (c.level || 1) - 1)), upgCostF: 0, upgCostS: 0,
                         icon: c.type === 'wood' ? "🛖" : (c.type === 'food' ? "🏕️" : "⛺"),
@@ -265,18 +299,11 @@
         function hardReset() { localStorage.removeItem('bosqueSave'); localStorage.removeItem('bosqueMeta'); location.reload(); }
 
         function triggerRoguelikeDeath() {
-            isGameOver = true;
-            document.getElementById('card-selection-overlay').style.display = 'flex';
-            localStorage.removeItem('bosqueSave'); 
-
-            let shuffled = META_CARDS.sort(() => 0.5 - Math.random());
-            let chosen = shuffled.slice(0, 3);
-            let wrapper = document.getElementById('cards-wrapper');
-            wrapper.innerHTML = "";
+            isGameOver = true; document.getElementById('card-selection-overlay').style.display = 'flex'; localStorage.removeItem('bosqueSave'); 
+            let shuffled = META_CARDS.sort(() => 0.5 - Math.random()); let chosen = shuffled.slice(0, 3);
+            let wrapper = document.getElementById('cards-wrapper'); wrapper.innerHTML = "";
             chosen.forEach(c => {
-                let d = document.createElement('div');
-                d.className = "rogue-card";
-                d.innerHTML = `<div class="card-icon">${c.i}</div><div class="card-title">${c.n}</div><div class="card-desc">${c.d}</div>`;
+                let d = document.createElement('div'); d.className = "rogue-card"; d.innerHTML = `<div class="card-icon">${c.i}</div><div class="card-title">${c.n}</div><div class="card-desc">${c.d}</div>`;
                 d.onclick = () => { sfx('card'); metaStats[c.id] = (metaStats[c.id] || 0) + 1; saveMeta(); setTimeout(() => location.reload(), 500); };
                 wrapper.appendChild(d);
             });
@@ -294,6 +321,15 @@
 
         function createCamp(type) {
             let p = getNextGridPos();
+            
+            if(type === 'tower') {
+                camps.push({ 
+                    type: 'tower', x: p.x, y: p.y, stored: 0, capacity: 0, upgCostW: 0, level: 1, icon: "🗼", 
+                    worker: { icon: "💂", x: p.x, y: p.y - 15, speed: 0, carry: 0, carryFood: 0, maxCarry: 0, state: 'guarding', targetObj: null, timer: 0, bowAngle: 0, showAct: false, isDead: false } 
+                });
+                return;
+            }
+
             let baseCap = (type==='wood'?15:10) + (getMeta('cap_all') * 5);
             let spd = type === 'wood' ? 2.5 * (1 + getMeta('spd_w')*0.1) : (type === 'food' ? 2.8 * (1 + getMeta('spd_f')*0.1) : 2.2 * (1 + getMeta('spd_s')*0.1));
             let maxC = (type === 'wood' ? 5 : 3) + getMeta(type === 'wood' ? 'cry_w' : (type === 'food' ? 'cry_f' : 'cry_s'));
@@ -332,6 +368,7 @@
             if (Math.hypot(e.clientX - dragStartX, e.clientY - dragStartY) > 5) return; 
             let wP = screenToWorld(e.clientX, e.clientY);
             camps.forEach(c => {
+                if(c.type === 'tower') return; // Torres nao tem upgrade por enquanto
                 if((c.x - wP.x)*(c.x - wP.x) + (c.y - wP.y)*(c.y - wP.y) < 1600) {
                     let discCost = Math.max(1, Math.floor(c.upgCostW * Math.pow(0.95, getMeta('upg_disc'))));
                     if (spend(discCost, 0, 0)) { 
@@ -347,67 +384,41 @@
             if (globalFood !== lastUI.f) { document.getElementById('global-food').innerText = globalFood; lastUI.f = globalFood; }
             if (globalStone !== lastUI.s) { document.getElementById('global-stone').innerText = globalStone; lastUI.s = globalStone; }
             
-            let cw = getBaseCost('wood'), cf = getBaseCost('food'), cs = getBaseCost('stone');
-            document.getElementById('btn-add-lumber').innerText = `➕ Cabana Lenhador (${cw.f} 🍖)`;
-            document.getElementById('btn-add-hunter').innerText = `➕ Tenda Caçador (${cf.w} 🪵)`;
-            document.getElementById('btn-add-miner').innerText = `➕ Tenda Minerador (${cs.w}🪵 ${cs.f}🍖)`;
+            let cw = getBaseCost('wood'), cf = getBaseCost('food'), cs = getBaseCost('stone'), ct = getBaseCost('tower');
+            document.getElementById('btn-add-lumber').innerText = `➕ Lenhador (${cw.f}🍖)`;
+            document.getElementById('btn-add-hunter').innerText = `➕ Caçador (${cf.w}🪵)`;
+            document.getElementById('btn-add-miner').innerText = `➕ Minerador (${cs.w}🪵 ${cs.f}🍖)`;
+            document.getElementById('btn-add-tower').innerText = `🗼 Torre de Guarda (${ct.s}🪨)`;
 
             document.getElementById('btn-add-lumber').disabled = globalFood < cw.f;
             document.getElementById('btn-add-hunter').disabled = globalWood < cf.w;
             document.getElementById('btn-add-miner').disabled = globalWood < cs.w || globalFood < cs.f;
+            document.getElementById('btn-add-tower').disabled = globalStone < ct.s;
         }
 
         /* --- FÍSICA DE SEPARAÇÃO (Soft Repulsion - Sem grudar) --- */
         function applyRepulsion(a, b, radius, force) {
-            let dx = a.x - b.x;
-            let dy = a.y - b.y;
-            let distSq = dx*dx + dy*dy;
+            let dx = a.x - b.x, dy = a.y - b.y, distSq = dx*dx + dy*dy;
             if(distSq === 0) { dx = Math.random()-0.5; dy = Math.random()-0.5; distSq = dx*dx + dy*dy; }
-            
             if(distSq < radius * radius) {
-                let dist = Math.sqrt(distSq);
-                let overlap = radius - dist;
-                let pushX = (dx / dist) * (overlap * force);
-                let pushY = (dy / dist) * (overlap * force);
-                a.x += pushX * 0.5; a.y += pushY * 0.5;
-                b.x -= pushX * 0.5; b.y -= pushY * 0.5;
+                let dist = Math.sqrt(distSq), overlap = radius - dist;
+                let pushX = (dx / dist) * (overlap * force), pushY = (dy / dist) * (overlap * force);
+                a.x += pushX * 0.5; a.y += pushY * 0.5; b.x -= pushX * 0.5; b.y -= pushY * 0.5;
             }
         }
-
         function resolveCollisions() {
             const FORCE = 0.15;
-            // Trabalhadores
             for(let i=0; i<camps.length; i++) {
+                if(camps[i].type === 'tower') continue;
                 let w1 = camps[i].worker; if(w1.isDead) continue;
                 for(let j=i+1; j<camps.length; j++) {
-                    let w2 = camps[j].worker; if(w2.isDead) continue;
-                    applyRepulsion(w1, w2, 22, FORCE);
+                    if(camps[j].type === 'tower') continue;
+                    let w2 = camps[j].worker; if(w2.isDead) continue; applyRepulsion(w1, w2, 22, FORCE);
                 }
             }
-            // Lobos
-            for(let i=0; i<wolves.length; i++) {
-                let a = wolves[i]; if(!a.active) continue;
-                for(let j=i+1; j<wolves.length; j++) {
-                    let b = wolves[j]; if(!b.active) continue;
-                    applyRepulsion(a, b, 22, FORCE);
-                }
-            }
-            // Ursos
-            for(let i=0; i<bears.length; i++) {
-                let a = bears[i]; if(!a.active) continue;
-                for(let j=i+1; j<bears.length; j++) {
-                    let b = bears[j]; if(!b.active) continue;
-                    applyRepulsion(a, b, 35, FORCE);
-                }
-            }
-            // Lebres
-            for(let i=0; i<hares.length; i++) {
-                let a = hares[i]; if(!a.active) continue;
-                for(let j=i+1; j<hares.length; j++) {
-                    let b = hares[j]; if(!b.active) continue;
-                    applyRepulsion(a, b, 15, FORCE);
-                }
-            }
+            for(let i=0; i<wolves.length; i++) { let a = wolves[i]; if(!a.active) continue; for(let j=i+1; j<wolves.length; j++) { let b = wolves[j]; if(!b.active) continue; applyRepulsion(a, b, 22, FORCE); } }
+            for(let i=0; i<bears.length; i++) { let a = bears[i]; if(!a.active) continue; for(let j=i+1; j<bears.length; j++) { let b = bears[j]; if(!b.active) continue; applyRepulsion(a, b, 35, FORCE); } }
+            for(let i=0; i<hares.length; i++) { let a = hares[i]; if(!a.active) continue; for(let j=i+1; j<hares.length; j++) { let b = hares[j]; if(!b.active) continue; applyRepulsion(a, b, 15, FORCE); } }
         }
 
         /* --- OTIMIZAÇÃO DE BUSCA SEM ARRAYS LIXO (Zero GC) --- */
@@ -434,6 +445,7 @@
         function getClosestWorker(x, y) {
             let closest = null, minD = Infinity;
             for(let i=0; i<camps.length; i++) {
+                if(camps[i].type === 'tower') continue; // Inimigos ignoram a torre
                 let w = camps[i].worker; if(w.isDead) continue;
                 let dSq = (w.x - x)*(w.x - x) + (w.y - y)*(w.y - y);
                 if(dSq < minD) { minD = dSq; closest = w; }
@@ -458,10 +470,13 @@
 
             let wolfSpwnRate = 0.01 * Math.pow(0.9, getMeta('spn_wlf'));
 
+            // O limite e chance de spawn de lobos são baseados unicamente na quantidade de caçadores
             if (!bearAlive && hunterCount > 0 && actW < hunterCount && Math.random() < wolfSpwnRate) {
-                let hC = camps.filter(c=>c.type==='food' && !c.worker.isDead);
-                let rH = hC[Math.floor(Math.random()*hC.length)]; let a = Math.random()*Math.PI*2;
-                wolves.push({ x: rH.x + Math.cos(a)*800, y: rH.y + Math.sin(a)*800, active: true, speed: 2, isWolf: true });
+                let hC = camps.filter(c=>(c.type==='food' && !c.worker.isDead));
+                if(hC.length > 0) {
+                    let rH = hC[Math.floor(Math.random()*hC.length)]; let a = Math.random()*Math.PI*2;
+                    wolves.push({ x: rH.x + Math.cos(a)*800, y: rH.y + Math.sin(a)*800, active: true, speed: 2, isWolf: true });
+                }
             }
 
             for(let i=0; i<wolves.length; i++) {
@@ -505,6 +520,28 @@
 
         function processWorker(camp) {
             let w = camp.worker; if (w.isDead) return;
+            
+            // LÓGICA EXCLUSIVA DA TORRE DE GUARDA
+            if (camp.type === 'tower') {
+                let tEnemy = getClosestEnemy(w.x, w.y);
+                if (tEnemy) {
+                    let dx = tEnemy.x - w.x, dy = tEnemy.y - w.y, d = Math.sqrt(dx*dx + dy*dy);
+                    let atkRange = 300 * (1 + getMeta('atk_w')*0.1); // Alcance super longo da torre
+                    if (d <= atkRange) {
+                        w.bowAngle = Math.atan2(dy, dx); w.timer++; w.state = 'aiming';
+                        let aimMax = 25 * Math.pow(0.85, getMeta('act_f')); // Atira um pouco mais rápido que caçador
+                        if (w.timer >= aimMax) {
+                            sfx('shoot');
+                            let aSpd = 15 * (1 + getMeta('arr_spd') * 0.2);
+                            arrows.push({ active:true, x:w.x, y:w.y, angle:w.bowAngle, speed:aSpd, target:tEnemy, owner: w });
+                            w.timer = 0; w.state = 'guarding';
+                        }
+                    } else { w.state = 'guarding'; w.timer = 0; }
+                } else { w.state = 'guarding'; w.timer = 0; }
+                return; // Ignora o resto da logica de movimento para torres
+            }
+
+            // Trabalhadores normais
             let totC = w.carry + w.carryFood;
             let tEnemy = getClosestEnemy(w.x, w.y);
             let hasHunt = camp.type === 'food' && tEnemy;
@@ -627,12 +664,15 @@
             const isVis = (ox, oy) => (ox > vL && ox < vR && oy > vT && oy < vB);
 
             let aliveCamps = 0, aliveHunters = 0;
-            for(let i=0; i<camps.length; i++) { if(!camps[i].worker.isDead) { aliveCamps++; if(camps[i].type==='food') aliveHunters++; } }
+            for(let i=0; i<camps.length; i++) { 
+                if(camps[i].type === 'tower') continue;
+                if(!camps[i].worker.isDead) { aliveCamps++; if(camps[i].type==='food') aliveHunters++; } 
+            }
 
             maintainWorld(aliveCamps); processEnemies(aliveHunters);
             for(let i=0; i<camps.length; i++) processWorker(camps[i]);
 
-            resolveCollisions(); // Aplica a física de separação aqui
+            resolveCollisions(); 
 
             if (camps.length > 0 && aliveCamps === 0) { triggerRoguelikeDeath(); return; }
 
@@ -646,7 +686,7 @@
                         if (a.target.isWolf) { if (Math.random() <= 0.8) { a.target.active = false; sfx('wolf_die'); drops.push({ x: a.target.x, y: a.target.y, active: true, isDrop: true }); } } 
                         else if (a.target.isBear) { if (Math.random() <= 0.35) { a.target.active = false; sfx('bear_roar'); drops.push({ x: a.target.x, y: a.target.y, active: true, isDrop: true }, { x: a.target.x+10, y: a.target.y+10, active: true, isDrop: true }); } } 
                         else { a.target.active = false; a.target.timer = 150; drops.push({ x: a.target.x, y: a.target.y, active: true, isDrop: true }); }
-                        for(let c=0; c<camps.length; c++) { if(camps[c].worker.targetObj === a.target && camps[c].worker.state === 'waiting_arrow') camps[c].worker.state = 'idle'; }
+                        for(let c=0; c<camps.length; c++) { if(camps[c].worker.targetObj === a.target && (camps[c].worker.state === 'waiting_arrow' || camps[c].type === 'tower')) camps[c].worker.state = camps[c].type === 'tower' ? 'guarding' : 'idle'; }
                     }
                     if((a.x-camera.x)*(a.x-camera.x) + (a.y-camera.y)*(a.y-camera.y) > 4000000) a.active = false;
                 } else arrows.splice(i, 1);
@@ -664,7 +704,6 @@
 
             ctx.save(); ctx.translate(canvas.width/2, canvas.height/2); ctx.scale(zl, zl); ctx.translate(-camera.x, -camera.y);
 
-            // RENDERIZAÇÃO
             for(let i=0; i<drops.length; i++) if (isVis(drops[i].x, drops[i].y)) drawEmoji("🍖", 20, drops[i].x, drops[i].y);
             for(let i=0; i<hares.length; i++) if (hares[i].active && isVis(hares[i].x, hares[i].y)) drawEmoji("🐇", 20, hares[i].x, hares[i].y);
 
@@ -681,7 +720,7 @@
                 } 
             }
 
-            for(let i=0; i<camps.length; i++) if (isVis(camps[i].x, camps[i].y)) drawEmoji(camps[i].icon, 40, camps[i].x, camps[i].y);
+            for(let i=0; i<camps.length; i++) if (isVis(camps[i].x, camps[i].y)) drawEmoji(camps[i].icon, camps[i].type==='tower'?50:40, camps[i].x, camps[i].y);
             for(let i=0; i<bears.length; i++) if(bears[i].active && isVis(bears[i].x, bears[i].y)) drawEmoji("🐻", 40, bears[i].x, bears[i].y);
             for(let i=0; i<wolves.length; i++) if(wolves[i].active && isVis(wolves[i].x, wolves[i].y)) drawEmoji("🐺", 25, wolves[i].x, wolves[i].y);
 
@@ -698,7 +737,7 @@
                     else {
                         drawEmoji(w.icon, 25, w.x, w.y);
                         if(w.state === 'idle_full') drawEmoji("💤", 15, w.x + 12, w.y - 12);
-                        else if(w.carry + w.carryFood >= w.maxCarry) drawEmoji("📦", 15, w.x + 12, w.y - 12);
+                        else if(w.carry + w.carryFood >= w.maxCarry && camps[i].type !== 'tower') drawEmoji("📦", 15, w.x + 12, w.y - 12);
                         if(w.showAct) drawEmoji(camps[i].type==='stone' ? "⛏️" : "🪓", 20, w.x+15, w.y-10);
                         if(w.state==='aiming' || w.state==='hunting') drawEmojiRotated("🏹", 18, w.x+15, w.y, w.bowAngle + Math.PI/4);
                     }
@@ -708,6 +747,7 @@
             ctx.font = "bold 15px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
             for(let i=0; i<camps.length; i++) {
                 let c = camps[i];
+                if (c.type === 'tower') continue; // Torres nao tem label de upgrade
                 if (isVis(c.x, c.y)) {
                     let discCost = Math.max(1, Math.floor(c.upgCostW * Math.pow(0.95, getMeta('upg_disc'))));
                     let tC = `${c.stored}/${c.capacity}`; let cW = tC.length * 8.5 + 8;
