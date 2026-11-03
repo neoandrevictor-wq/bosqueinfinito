@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A Vila - Bosque Infinito</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; user-select: none; touch-action: none; }
+        body { background-color: #061209; overflow: hidden; color: white; width: 100vw; height: 100vh; }
+        #gameCanvas { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 5; background-color: #08170c; }
+        
+        .overlay-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 18, 9, 0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; }
+        .btn-start { padding: 15px 40px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; border: none; background: #16a34a; color: white; transition: 0.2s; }
+        .btn-start:hover { background: #15803d; transform: scale(1.05); }
+        .btn-reset { margin-top: 20px; padding: 10px 20px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; }
+
+        /* HUD Responsiva */
+        #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 15px; }
+        #top-bar { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; width: 100%; }
+        #resource-panel { display: flex; gap: 10px; flex-wrap: wrap; pointer-events: auto; }
+        .hud-box { background: rgba(0,0,0,0.8); padding: 10px 15px; border-radius: 8px; font-size: 18px; font-weight: bold; border: 1px solid #16a34a; display: flex; align-items: center; gap: 8px; }
+        #audio-controls { display: flex; gap: 10px; pointer-events: auto; }
+        .btn-audio { background: rgba(0,0,0,0.8); border: 1px solid #1a3b22; color: #4ade80; padding: 8px 12px; border-radius: 5px; font-size: 14px; cursor: pointer; }
+
+        #bottom-bar { display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; pointer-events: auto; }
+        .btn-action { padding: 12px 20px; font-size: 15px; font-weight: bold; border-radius: 8px; cursor: pointer; border: none; color: white; width: 100%; max-width: 400px; transition: 0.2s; }
+        #btn-add-lumber { background: #16a34a; border: 1px solid #15803d; }
+        #btn-add-hunter { background: #eab308; color: #451a03; border: 1px solid #a16207; }
+        #btn-add-miner { background: #64748b; color: white; border: 1px solid #475569; }
+        .btn-action:disabled { background: #1a3b22 !important; color: #6b7280 !important; cursor: not-allowed; border: 1px solid #0f2115 !important;}
+        #tutorial { font-size: 14px; color: #4ade80; background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px; pointer-events: none; margin-bottom: 5px;}
+        .text-amber { color: #fbbf24; } .text-red { color: #ef4444; } .text-gray { color: #cbd5e1; }
+        
+        /* SISTEMA ROGUELIKE (CARTAS) */
+        .cards-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px; pointer-events: auto; max-width: 900px;}
+        .rogue-card { background: linear-gradient(145deg, #1f2937, #111827); border: 2px solid #fbbf24; border-radius: 12px; padding: 20px; width: 220px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; text-align: center;}
+        .rogue-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4); border-color: #fde68a; }
+        .card-icon { font-size: 50px; margin-bottom: 10px; }
+        .card-title { font-size: 18px; font-weight: bold; color: #fbbf24; margin-bottom: 10px; }
+        .card-desc { font-size: 14px; color: #d1d5db; }
+        
+        #meta-stats-list { background: rgba(0,0,0,0.9); padding: 20px; border-radius: 10px; border: 1px solid #4ade80; max-height: 70vh; overflow-y: auto; text-align: left; width: 300px; display: none; position: absolute; top: 60px; right: 15px; z-index: 50; pointer-events: auto;}
+        .stat-item { font-size: 14px; margin-bottom: 8px; border-bottom: 1px solid #1f2937; padding-bottom: 4px; }
+        
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="start-overlay" class="overlay-screen">
+        <h1 style="color: #4ade80; margin-bottom: 10px; font-size: 40px;">A Vila Infinita</h1>
+        <p style="color: #9ca3af; margin-bottom: 30px;">Arraste para mover • Scroll/Pinça para Zoom</p>
+        <button class="btn-start" onclick="startGame()">Jogar</button>
+        <button class="btn-reset" onclick="hardReset()">Resetar Tudo (Cartas Inclusas)</button>
+    </div>
+
+    <div id="card-selection-overlay" class="overlay-screen" style="display: none;">
+        <h1 style="color: #ef4444; margin-bottom: 5px; font-size: 40px;">O Vilarejo Caiu...</h1>
+        <p style="color: #9ca3af; font-size: 18px; margin-bottom: 10px;">Mas o conhecimento sobrevive. Escolha uma herança permanente:</p>
+        <div id="cards-wrapper" class="cards-container"></div>
+    </div>
+
+    <div id="ui-layer">
+        <div id="top-bar">
+            <div id="resource-panel">
+                <div class="hud-box">🛖 <span id="global-wood" class="text-amber">0</span> 🪵</div>
+                <div class="hud-box">🏕️ <span id="global-food" class="text-red">0</span> 🍖</div>
+                <div class="hud-box">⛺ <span id="global-stone" class="text-gray">0</span> 🪨</div>
+            </div>
+            <div id="audio-controls">
+                <button class="btn-audio" onclick="toggleMetaStats()">🃏 Bônus</button>
+                <button id="btn-music" class="btn-audio" onclick="toggleMusic()">🎵 ON</button>
+                <button id="btn-sfx" class="btn-audio" onclick="toggleSfx()">🔊 ON</button>
+            </div>
+        </div>
+        
+        <div id="meta-stats-list"></div>
+
+        <div id="bottom-bar">
+            <div id="tutorial">👆 Toque nas casas para fazer upgrades (Custa 🪵)</div>
+            <button id="btn-add-lumber" class="btn-action" onclick="buyCamp('wood')">➕ Cabana Lenhador (15 🍖)</button>
+            <button id="btn-add-hunter" class="btn-action" onclick="buyCamp('food')">➕ Tenda Caçador (15 🪵)</button>
+            <button id="btn-add-miner" class="btn-action" onclick="buyCamp('stone')">➕ Tenda Minerador (20🪵 20🍖)</button>
+        </div>
+    </div>
+
+    <script>
+        /* --- CARTAS ROGUELIKE (30 TIPOS) --- */
+        const META_CARDS = [
+            { id: "spd_w", i: "🥾", n: "Botas Leves", d: "Lenhadores andam +10% mais rápido." },
+            { id: "spd_f", i: "🍃", n: "Passos de Vento", d: "Caçadores andam +10% mais rápido." },
+            { id: "spd_s", i: "⛏️", n: "Passo Firme", d: "Mineradores andam +10% mais rápido." },
+            { id: "cry_w", i: "🎒", n: "Mochila Maior", d: "Lenhadores carregam +1 madeira." },
+            { id: "cry_f", i: "🧺", n: "Cesto de Caça", d: "Caçadores carregam +1 carne." },
+            { id: "cry_s", i: "🛒", n: "Carrinho de Mão", d: "Mineradores carregam +1 pedra." },
+            { id: "cap_all", i: "📦", n: "Arquitetura", d: "Todas as tendas guardam +5 recursos base." },
+            { id: "upg_disc", i: "📉", n: "Engenharia", d: "Upgrades custam 5% menos madeira." },
+            { id: "buy_disc", i: "🤝", n: "Negociadores", d: "Construir novas tendas custa 5% a menos." },
+            { id: "act_w", i: "🪓", n: "Machado Afiado", d: "Árvores caem 15% mais rápido." },
+            { id: "act_s", i: "🧨", n: "Pólvora", d: "Mineração 15% mais rápida." },
+            { id: "act_f", i: "🦅", n: "Olhos de Águia", d: "Mira do arco 15% mais rápida." },
+            { id: "atk_w", i: "🏹", n: "Arco Longo", d: "Caçadores atiram de 10% mais longe." },
+            { id: "arr_spd", i: "💨", n: "Flechas Aerodinâmicas", d: "Flechas voam 20% mais rápido." },
+            { id: "def_wlf", i: "🛡️", n: "Armadura de Couro", d: "+5% de chance de sobreviver a Lobos." },
+            { id: "def_br", i: "🏰", n: "Lanças de Defesa", d: "+2% de chance de sobreviver a Ursos." },
+            { id: "str_w", i: "🪵", n: "Estoque Inicial (Mad)", d: "Comece todos os jogos com +50 Madeira." },
+            { id: "str_f", i: "🍖", n: "Estoque Inicial (Com)", d: "Comece todos os jogos com +50 Comida." },
+            { id: "str_s", i: "🪨", n: "Estoque Inicial (Ped)", d: "Comece todos os jogos com +25 Pedra." },
+            { id: "yld_w", i: "🌲", n: "Árvores Gigantes", d: "Árvores requerem -1 golpe para cair." },
+            { id: "yld_s", i: "💎", n: "Veio Rico", d: "Pegue pedra a cada 4 acertos (era 5)." },
+            { id: "drp_wlf", i: "🐺", n: "Lobo Gordo", d: "+10% de chance do lobo dropar carne." },
+            { id: "drp_br", i: "🐻", n: "Urso Colossal", d: "+15% de chance do urso dropar 2 carnes." },
+            { id: "spn_hr", i: "🐇", n: "Temporada Acasalamento", d: "Lebres nascem 10% mais rápido." },
+            { id: "spn_wlf", i: "🌿", n: "Ervas Ocultas", d: "Lobos aparecem 10% menos vezes." },
+            { id: "spd_br", i: "🍯", n: "Mel Pegajoso", d: "Ursos andam 5% mais devagar." },
+            { id: "dbl_w", i: "🍀", n: "Sorte do Lenhador", d: "5% de chance de dobrar madeira depositada." },
+            { id: "dbl_f", i: "🍖", n: "Sorte do Caçador", d: "5% de chance de dobrar carne depositada." },
+            { id: "dbl_s", i: "✨", n: "Sorte do Minerador", d: "5% de chance de dobrar pedra depositada." },
+            { id: "free_c", i: "⛺", n: "Pioneiros", d: "Comece o jogo já com 1 Caçador grátis." }
+        ];
+
+        let metaStats = {};
+
+        function loadMeta() { const m = localStorage.getItem('bosqueMeta'); if(m) metaStats = JSON.parse(m); else metaStats = {}; }
+        function saveMeta() { localStorage.setItem('bosqueMeta', JSON.stringify(metaStats)); }
+        function getMeta(id) { return metaStats[id] || 0; }
+
+        function toggleMetaStats() {
+            let p = document.getElementById('meta-stats-list');
+            if (p.style.display === 'block') { p.style.display = 'none'; return; }
+            p.style.display = 'block'; p.innerHTML = '<h3 style="color:#4ade80; margin-bottom:10px;">Suas Cartas</h3>';
+            let keys = Object.keys(metaStats);
+            if(keys.length === 0) p.innerHTML += "<p>Nenhuma carta ganha ainda.</p>";
+            keys.forEach(k => { let card = META_CARDS.find(c => c.id === k); if(card) p.innerHTML += `<div class="stat-item">${card.i} <b>${card.n} (x${metaStats[k]})</b></div>`; });
+        }
+
+        /* --- ENGINE GRÁFICA OTIMIZADA (GPU Cache) --- */
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const spriteCache = {};
+
+        function getSprite(char, size) {
+            let key = char + "_" + size;
+            if (!spriteCache[key]) {
+                let c = document.createElement('canvas');
+                let pad = size * 2; c.width = pad; c.height = pad;
+                let cCtx = c.getContext('2d');
+                cCtx.font = size + "px Arial"; cCtx.textAlign = "center"; cCtx.textBaseline = "middle";
+                cCtx.fillText(char, c.width/2, c.height/2 + size*0.05);
+                spriteCache[key] = { img: c, cx: c.width/2, cy: c.height/2 };
+            }
+            return spriteCache[key];
+        }
+        function drawEmoji(char, size, x, y) { let s = getSprite(char, size); ctx.drawImage(s.img, x - s.cx, y - s.cy); }
+        function drawEmojiRotated(char, size, x, y, angle) { let s = getSprite(char, size); ctx.save(); ctx.translate(x, y); ctx.rotate(angle); ctx.drawImage(s.img, -s.cx, -s.cy); ctx.restore(); }
+
+        let camera = { x: 0, y: 0, zoom: 1 };
+        let isDragging = false, dragStartX = 0, dragStartY = 0, camStartX = 0, camStartY = 0, isPinching = false, initialPinchDist = 0, initialZoom = 1;
+
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas); resizeCanvas();
+
+        canvas.addEventListener('mousedown', e => { isDragging = true; dragStartX = e.clientX; dragStartY = e.clientY; camStartX = camera.x; camStartY = camera.y; });
+        window.addEventListener('mousemove', e => { if (isDragging) { camera.x = camStartX - (e.clientX - dragStartX) / camera.zoom; camera.y = camStartY - (e.clientY - dragStartY) / camera.zoom; } });
+        window.addEventListener('mouseup', () => isDragging = false);
+        canvas.addEventListener('wheel', e => { camera.zoom *= e.deltaY > 0 ? 0.9 : 1.1; camera.zoom = Math.max(0.3, Math.min(camera.zoom, 3)); });
+        canvas.addEventListener('touchstart', e => {
+            if (e.touches.length === 1) { isDragging = true; dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY; camStartX = camera.x; camStartY = camera.y; } 
+            else if (e.touches.length === 2) { isPinching = true; isDragging = false; initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); initialZoom = camera.zoom; }
+        });
+        window.addEventListener('touchmove', e => {
+            if (isDragging && e.touches.length === 1) { camera.x = camStartX - (e.touches[0].clientX - dragStartX) / camera.zoom; camera.y = camStartY - (e.touches[0].clientY - dragStartY) / camera.zoom; } 
+            else if (isPinching && e.touches.length === 2) { let dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); camera.zoom = initialZoom * (dist / initialPinchDist); camera.zoom = Math.max(0.3, Math.min(camera.zoom, 3)); }
+        });
+        window.addEventListener('touchend', () => { isDragging = false; isPinching = false; });
+        function screenToWorld(sx, sy) { return { x: (sx - canvas.width / 2) / camera.zoom + camera.x, y: (sy - canvas.height / 2) / camera.zoom + camera.y }; }
+
+        /* --- SISTEMA DE ÁUDIO --- */
+        let audioCtx, musicGain, sfxGain, masterCompressor;
+        let isMusicOn = true, isSfxOn = true, lastSoundTime = {}; 
+
+        function initAudio() {
+            if (audioCtx) return;
+            const AudioContext = window.AudioContext || window.webkitAudioContext; audioCtx = new AudioContext();
+            masterCompressor = audioCtx.createDynamicsCompressor(); masterCompressor.threshold.setValueAtTime(-15, audioCtx.currentTime); masterCompressor.connect(audioCtx.destination);
+            musicGain = audioCtx.createGain(); musicGain.gain.value = 0.1; musicGain.connect(masterCompressor);
+            sfxGain = audioCtx.createGain(); sfxGain.gain.value = 0.3; sfxGain.connect(masterCompressor);
+            let step = 0; const chords = [ [164.81, 196.00, 246.94], [130.81, 164.81, 196.00], [196.00, 246.94, 293.66], [146.83, 185.00, 220.00] ];
+            setInterval(() => { if (!isMusicOn || !audioCtx) return; let c = chords[Math.floor(step / 4) % chords.length]; playTone(c[step % 3] * 2, 'sine', 0.6, 0.2, musicGain); if (step % 4 === 0) playTone(c[0], 'triangle', 1.0, 0.3, musicGain); step++; }, 450);
+        }
+
+        function playTone(freq, type, dur, vol, dest, slideD=false, slideU=false) {
+            if (!audioCtx) return; const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
+            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            if(slideD) osc.frequency.exponentialRampToValueAtTime(freq*0.1, audioCtx.currentTime+dur);
+            if(slideU) osc.frequency.exponentialRampToValueAtTime(freq*2, audioCtx.currentTime+dur);
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime+dur);
+            osc.connect(gain); gain.connect(dest); osc.start(); osc.stop(audioCtx.currentTime+dur);
+        }
+
+        function sfx(name) {
+            if(!isSfxOn) return; let now = performance.now(); if (lastSoundTime[name] && now - lastSoundTime[name] < 40) return; lastSoundTime[name] = now;
+            if(name==='chop') playTone(200, 'square', 0.1, 0.4, sfxGain, true);
+            if(name==='mine') { playTone(300, 'square', 0.1, 0.3, sfxGain, true); playTone(800, 'triangle', 0.05, 0.2, sfxGain); }
+            if(name==='fall') playTone(100, 'sawtooth', 0.3, 0.5, sfxGain, true);
+            if(name==='shoot') playTone(800, 'triangle', 0.15, 0.3, sfxGain, false, true);
+            if(name==='pickup') playTone(900, 'sine', 0.1, 0.2, sfxGain);
+            if(name==='depositW') playTone(600, 'sine', 0.2, 0.2, sfxGain);
+            if(name==='depositF') playTone(700, 'sine', 0.2, 0.2, sfxGain);
+            if(name==='depositS') playTone(500, 'square', 0.2, 0.2, sfxGain);
+            if(name==='upg') playTone(400, 'square', 0.1, 0.3, sfxGain);
+            if(name==='error') playTone(150, 'sawtooth', 0.2, 0.4, sfxGain, true);
+            if(name==='wolf_die') playTone(120, 'sawtooth', 0.4, 0.4, sfxGain, true);
+            if(name==='bear_roar') playTone(80, 'sawtooth', 0.5, 0.6, sfxGain, true);
+            if(name==='human_die') playTone(100, 'square', 0.5, 0.5, sfxGain, true);
+            if(name==='card') playTone(600, 'sine', 0.5, 0.4, sfxGain);
+        }
+
+        function toggleMusic() { isMusicOn = !isMusicOn; document.getElementById('btn-music').innerText = isMusicOn ? '🎵 ON' : '🎵 OFF'; document.getElementById('btn-music').style.color = isMusicOn ? '#4ade80' : '#6b7280'; if (audioCtx && musicGain) musicGain.gain.value = isMusicOn ? 0.1 : 0; }
+        function toggleSfx() { isSfxOn = !isSfxOn; document.getElementById('btn-sfx').innerText = isSfxOn ? '🔊 ON' : '🔊 OFF'; document.getElementById('btn-sfx').style.color = isSfxOn ? '#4ade80' : '#6b7280'; }
+
+        /* --- DADOS E LÓGICA DO JOGO --- */
+        let globalWood = 0, globalFood = 0, globalStone = 0, lastUI = {w: -1, f: -1, s: -1};
+        let camps = [], arrows = [], trees = [], hares = [], drops = [], wolves = [], bears = [], mountains = [];
+        const GRID_SIZE = 120;
+        let isGameOver = false;
+
+        function getBaseCost(type) {
+            let disc = Math.pow(0.95, getMeta('buy_disc'));
+            if(type==='wood') return { w:0, f: Math.max(1, Math.floor(15*disc)), s:0 };
+            if(type==='food') return { w: Math.max(1, Math.floor(15*disc)), f:0, s:0 };
+            return { w: Math.max(1, Math.floor(20*disc)), f: Math.max(1, Math.floor(20*disc)), s:0 };
+        }
+
+        function saveGame() {
+            if(isGameOver) return; 
+            localStorage.setItem('bosqueSave', JSON.stringify({ wood: globalWood, food: globalFood, stone: globalStone, camps: camps.map(c => ({ type: c.type, x: c.x, y: c.y, stored: c.stored, capacity: c.capacity, upgCostW: c.upgCostW, level: c.level, workerIsDead: c.worker.isDead })) }));
+        }
+
+        function loadGame() {
+            const saved = localStorage.getItem('bosqueSave');
+            if (saved) {
+                const data = JSON.parse(saved);
+                camps = data.camps.map(c => {
+                    let bc = c.type === 'wood' ? 10 : (c.type === 'food' ? 15 : 20);
+                    let spd = c.type === 'wood' ? 2.5 * (1 + getMeta('spd_w')*0.1) : (c.type === 'food' ? 2.8 * (1 + getMeta('spd_f')*0.1) : 2.2 * (1 + getMeta('spd_s')*0.1));
+                    let maxC = (c.type === 'wood' ? 5 : 3) + getMeta(c.type === 'wood' ? 'cry_w' : (c.type === 'food' ? 'cry_f' : 'cry_s'));
+                    
+                    return {
+                        ...c, upgCostW: c.upgCostW > 0 ? c.upgCostW : Math.floor(bc * Math.pow(1.5, (c.level || 1) - 1)), upgCostF: 0, upgCostS: 0,
+                        icon: c.type === 'wood' ? "🛖" : (c.type === 'food' ? "🏕️" : "⛺"),
+                        worker: { icon: c.type === 'wood' ? "🧔‍♂️" : (c.type === 'food' ? "🧝‍♂️" : "👷‍♂️"), x: c.x + 22, y: c.y + 15, speed: spd, carry: 0, carryFood: 0, maxCarry: maxC, state: 'idle', targetObj: null, timer: 0, bowAngle: 0, showAct: false, isDead: c.workerIsDead || false }
+                    };
+                });
+                globalWood = camps.filter(c=>c.type==='wood').reduce((a,b)=>a+b.stored,0);
+                globalFood = camps.filter(c=>c.type==='food').reduce((a,b)=>a+b.stored,0);
+                globalStone = camps.filter(c=>c.type==='stone').reduce((a,b)=>a+b.stored,0);
+                return true;
+            }
+            return false;
+        }
+
+        function hardReset() { localStorage.removeItem('bosqueSave'); localStorage.removeItem('bosqueMeta'); location.reload(); }
+
+        function triggerRoguelikeDeath() {
+            isGameOver = true;
+            document.getElementById('card-selection-overlay').style.display = 'flex';
+            localStorage.removeItem('bosqueSave'); 
+
+            let shuffled = META_CARDS.sort(() => 0.5 - Math.random());
+            let chosen = shuffled.slice(0, 3);
+            let wrapper = document.getElementById('cards-wrapper');
+            wrapper.innerHTML = "";
+            chosen.forEach(c => {
+                let d = document.createElement('div');
+                d.className = "rogue-card";
+                d.innerHTML = `<div class="card-icon">${c.i}</div><div class="card-title">${c.n}</div><div class="card-desc">${c.d}</div>`;
+                d.onclick = () => { sfx('card'); metaStats[c.id] = (metaStats[c.id] || 0) + 1; saveMeta(); setTimeout(() => location.reload(), 500); };
+                wrapper.appendChild(d);
+            });
+        }
+
+        function getNextGridPos() {
+            let occ = new Set(camps.map(c => `${Math.round(c.x/GRID_SIZE)},${Math.round(c.y/GRID_SIZE)}`));
+            let x = 0, y = 0, dx = 0, dy = -1;
+            for (let i = 0; i < 10000; i++) {
+                if (!occ.has(`${x},${y}`)) return { x: x * GRID_SIZE, y: y * GRID_SIZE };
+                if (x === y || (x < 0 && x === -y) || (x > 0 && x === 1 - y)) { let t = dx; dx = -dy; dy = t; }
+                x += dx; y += dy;
+            } return { x: 0, y: 0 };
+        }
+
+        function createCamp(type) {
+            let p = getNextGridPos();
+            let baseCap = (type==='wood'?15:10) + (getMeta('cap_all') * 5);
+            let spd = type === 'wood' ? 2.5 * (1 + getMeta('spd_w')*0.1) : (type === 'food' ? 2.8 * (1 + getMeta('spd_f')*0.1) : 2.2 * (1 + getMeta('spd_s')*0.1));
+            let maxC = (type === 'wood' ? 5 : 3) + getMeta(type === 'wood' ? 'cry_w' : (type === 'food' ? 'cry_f' : 'cry_s'));
+            let uCost = type === 'wood' ? 10 : (type === 'food' ? 15 : 20);
+
+            camps.push({ 
+                type: type, x: p.x, y: p.y, stored: 0, capacity: baseCap, upgCostW: uCost, level: 1, 
+                icon: type==='wood'?"🛖":(type==='food'?"🏕️":"⛺"), 
+                worker: { icon: type==='wood'?"🧔‍♂️":(type==='food'?"🧝‍♂️":"👷‍♂️"), x: p.x+22, y: p.y+15, speed: spd, carry: 0, carryFood: 0, maxCarry: maxC, state: 'idle', targetObj: null, timer: 0, bowAngle: 0, showAct: false, isDead: false } 
+            });
+        }
+
+        function spend(w, f, s = 0) {
+            if (globalWood < w || globalFood < f || globalStone < s) return false;
+            globalWood -= w; globalFood -= f; globalStone -= s;
+            let wLeft = w, fLeft = f, sLeft = s;
+            camps.forEach(c => {
+                if(c.type==='wood' && wLeft>0) { let t = Math.min(c.stored, wLeft); c.stored -= t; wLeft -= t; }
+                if(c.type==='food' && fLeft>0) { let t = Math.min(c.stored, fLeft); c.stored -= t; fLeft -= t; }
+                if(c.type==='stone' && sLeft>0) { let t = Math.min(c.stored, sLeft); c.stored -= t; sLeft -= t; }
+            });
+            return true;
+        }
+
+        window.buyCamp = function(type) {
+            let cost = getBaseCost(type);
+            if (spend(cost.w, cost.f, cost.s)) { 
+                let eC = camps.find(c => c.type === type && c.worker.isDead);
+                if (eC) { eC.worker.isDead = false; eC.worker.state = 'idle'; eC.worker.carry = 0; eC.worker.carryFood = 0; eC.worker.x = eC.x + 22; eC.worker.y = eC.y + 15; } 
+                else createCamp(type);
+                sfx('upg'); updateUI(); saveGame();
+            }
+        };
+
+        canvas.addEventListener('click', (e) => {
+            if (Math.hypot(e.clientX - dragStartX, e.clientY - dragStartY) > 5) return; 
+            let wP = screenToWorld(e.clientX, e.clientY);
+            camps.forEach(c => {
+                if((c.x - wP.x)*(c.x - wP.x) + (c.y - wP.y)*(c.y - wP.y) < 1600) {
+                    let discCost = Math.max(1, Math.floor(c.upgCostW * Math.pow(0.95, getMeta('upg_disc'))));
+                    if (spend(discCost, 0, 0)) { 
+                        c.level++; c.capacity += 10; c.upgCostW = Math.floor(c.upgCostW * 1.5); 
+                        sfx('upg'); updateUI(); saveGame(); 
+                    } else sfx('error');
+                }
+            });
+        });
+
+        function updateUI() {
+            if (globalWood !== lastUI.w) { document.getElementById('global-wood').innerText = globalWood; lastUI.w = globalWood; }
+            if (globalFood !== lastUI.f) { document.getElementById('global-food').innerText = globalFood; lastUI.f = globalFood; }
+            if (globalStone !== lastUI.s) { document.getElementById('global-stone').innerText = globalStone; lastUI.s = globalStone; }
+            
+            let cw = getBaseCost('wood'), cf = getBaseCost('food'), cs = getBaseCost('stone');
+            document.getElementById('btn-add-lumber').innerText = `➕ Cabana Lenhador (${cw.f} 🍖)`;
+            document.getElementById('btn-add-hunter').innerText = `➕ Tenda Caçador (${cf.w} 🪵)`;
+            document.getElementById('btn-add-miner').innerText = `➕ Tenda Minerador (${cs.w}🪵 ${cs.f}🍖)`;
+
+            document.getElementById('btn-add-lumber').disabled = globalFood < cw.f;
+            document.getElementById('btn-add-hunter').disabled = globalWood < cf.w;
+            document.getElementById('btn-add-miner').disabled = globalWood < cs.w || globalFood < cs.f;
+        }
+
+        /* --- FÍSICA DE SEPARAÇÃO (Soft Repulsion - Sem grudar) --- */
+        function applyRepulsion(a, b, radius, force) {
+            let dx = a.x - b.x;
+            let dy = a.y - b.y;
+            let distSq = dx*dx + dy*dy;
+            if(distSq === 0) { dx = Math.random()-0.5; dy = Math.random()-0.5; distSq = dx*dx + dy*dy; }
+            
+            if(distSq < radius * radius) {
+                let dist = Math.sqrt(distSq);
+                let overlap = radius - dist;
+                let pushX = (dx / dist) * (overlap * force);
+                let pushY = (dy / dist) * (overlap * force);
+                a.x += pushX * 0.5; a.y += pushY * 0.5;
+                b.x -= pushX * 0.5; b.y -= pushY * 0.5;
+            }
+        }
+
+        function resolveCollisions() {
+            const FORCE = 0.15;
+            // Trabalhadores
+            for(let i=0; i<camps.length; i++) {
+                let w1 = camps[i].worker; if(w1.isDead) continue;
+                for(let j=i+1; j<camps.length; j++) {
+                    let w2 = camps[j].worker; if(w2.isDead) continue;
+                    applyRepulsion(w1, w2, 22, FORCE);
+                }
+            }
+            // Lobos
+            for(let i=0; i<wolves.length; i++) {
+                let a = wolves[i]; if(!a.active) continue;
+                for(let j=i+1; j<wolves.length; j++) {
+                    let b = wolves[j]; if(!b.active) continue;
+                    applyRepulsion(a, b, 22, FORCE);
+                }
+            }
+            // Ursos
+            for(let i=0; i<bears.length; i++) {
+                let a = bears[i]; if(!a.active) continue;
+                for(let j=i+1; j<bears.length; j++) {
+                    let b = bears[j]; if(!b.active) continue;
+                    applyRepulsion(a, b, 35, FORCE);
+                }
+            }
+            // Lebres
+            for(let i=0; i<hares.length; i++) {
+                let a = hares[i]; if(!a.active) continue;
+                for(let j=i+1; j<hares.length; j++) {
+                    let b = hares[j]; if(!b.active) continue;
+                    applyRepulsion(a, b, 15, FORCE);
+                }
+            }
+        }
+
+        /* --- OTIMIZAÇÃO DE BUSCA SEM ARRAYS LIXO (Zero GC) --- */
+        function getClosestActive(x, y, arr) {
+            let closest = null, minD = Infinity;
+            for(let i=0; i<arr.length; i++) {
+                if(!arr[i].active) continue; let dSq = (arr[i].x - x)*(arr[i].x - x) + (arr[i].y - y)*(arr[i].y - y);
+                if(dSq < minD) { minD = dSq; closest = arr[i]; }
+            } return closest;
+        }
+
+        function getClosestEnemy(x, y) {
+            let closest = null, minD = Infinity;
+            for(let i=0; i<wolves.length; i++) {
+                if(!wolves[i].active) continue; let dSq = (wolves[i].x - x)*(wolves[i].x - x) + (wolves[i].y - y)*(wolves[i].y - y);
+                if(dSq < minD) { minD = dSq; closest = wolves[i]; }
+            }
+            for(let i=0; i<bears.length; i++) {
+                if(!bears[i].active) continue; let dSq = (bears[i].x - x)*(bears[i].x - x) + (bears[i].y - y)*(bears[i].y - y);
+                if(dSq < minD) { minD = dSq; closest = bears[i]; }
+            } return closest;
+        }
+
+        function getClosestWorker(x, y) {
+            let closest = null, minD = Infinity;
+            for(let i=0; i<camps.length; i++) {
+                let w = camps[i].worker; if(w.isDead) continue;
+                let dSq = (w.x - x)*(w.x - x) + (w.y - y)*(w.y - y);
+                if(dSq < minD) { minD = dSq; closest = w; }
+            } return closest;
+        }
+
+        /* --- LOGICA DE JOGO OTIMIZADA --- */
+        function maintainWorld(aliveCount) {
+            let maxT = Math.min(aliveCount * 5, 200), maxH = Math.min(aliveCount * 3, 100);
+            let treeHits = Math.max(1, 3 - getMeta('yld_w'));
+
+            if (aliveCount > 0) {
+                if (trees.length < maxT) { let c=camps[Math.floor(Math.random()*camps.length)]; trees.push({ x: c.x+(Math.random()-0.5)*500, y: c.y+(Math.random()-0.5)*500, active: true, timer: 0, hits: treeHits, maxH: treeHits }); }
+                if (hares.length < maxH) { let c=camps[Math.floor(Math.random()*camps.length)]; hares.push({ x: c.x+(Math.random()-0.5)*600, y: c.y+(Math.random()-0.5)*600, active: true, timer: 0 }); }
+                if (mountains.length < 1) { let c=camps[Math.floor(Math.random()*camps.length)]; let mx = c.x+(Math.random()>0.5?1:-1)*(600+Math.random()*400), my = c.y+(Math.random()>0.5?1:-1)*(600+Math.random()*400); mountains.push({ x: mx, y: my, active: true, timer: 0, hits: 50 }); bears.push({ x: mx+50, y: my+50, active: true, speed: 1.5 * Math.pow(0.95, getMeta('spd_br')), isBear: true, spawnX: mx, spawnY: my }); }
+            }
+        }
+
+        function processEnemies(hunterCount) {
+            let actW = 0; for(let i=0; i<wolves.length; i++) if(wolves[i].active) actW++;
+            let bearAlive = false; for(let i=0; i<bears.length; i++) if(bears[i].active){ bearAlive=true; break;}
+
+            let wolfSpwnRate = 0.01 * Math.pow(0.9, getMeta('spn_wlf'));
+
+            if (!bearAlive && hunterCount > 0 && actW < hunterCount && Math.random() < wolfSpwnRate) {
+                let hC = camps.filter(c=>c.type==='food' && !c.worker.isDead);
+                let rH = hC[Math.floor(Math.random()*hC.length)]; let a = Math.random()*Math.PI*2;
+                wolves.push({ x: rH.x + Math.cos(a)*800, y: rH.y + Math.sin(a)*800, active: true, speed: 2, isWolf: true });
+            }
+
+            for(let i=0; i<wolves.length; i++) {
+                let w = wolves[i]; if(!w.active) continue;
+                let tgt = getClosestWorker(w.x, w.y);
+                if (tgt) {
+                    let dx = tgt.x - w.x, dy = tgt.y - w.y, d = Math.sqrt(dx*dx + dy*dy);
+                    if (d > 15) { w.x += (dx/d)*w.speed; w.y += (dy/d)*w.speed; } 
+                    else {
+                        let c = camps.find(cp=>cp.worker===tgt);
+                        let wc = (c.type==='wood'?0.65:(c.type==='food'?0.75:0.60)) + (getMeta('def_wlf') * 0.05);
+                        if(Math.random()<=wc) { tgt.isDead=true; sfx('human_die'); } else { 
+                            w.active=false; sfx('wolf_die'); 
+                            if(Math.random() <= 0.8 + (getMeta('drp_wlf') * 0.1)) drops.push({ x: w.x, y: w.y, active: true, isDrop: true }); 
+                        }
+                    }
+                }
+            }
+
+            for(let i=0; i<bears.length; i++) {
+                let b = bears[i]; if(!b.active) continue;
+                let tgt = getClosestWorker(b.x, b.y);
+                if (tgt && (tgt.x-b.x)*(tgt.x-b.x) + (tgt.y-b.y)*(tgt.y-b.y) < 62500) { 
+                    let dx = tgt.x - b.x, dy = tgt.y - b.y, d = Math.sqrt(dx*dx + dy*dy);
+                    if (d > 15) { b.x += (dx/d)*b.speed; b.y += (dy/d)*b.speed; } 
+                    else {
+                        let c = camps.find(cp=>cp.worker===tgt);
+                        let wc = (c.type==='stone'?0.03:0.05) + (getMeta('def_br') * 0.02);
+                        if(Math.random()<=wc) { 
+                            b.active=false; sfx('bear_roar'); 
+                            drops.push({x:b.x,y:b.y,active:true,isDrop:true});
+                            if(Math.random() <= 0.35 + (getMeta('drp_br') * 0.15)) drops.push({x:b.x+10,y:b.y,active:true,isDrop:true}); 
+                        } else { tgt.isDead=true; sfx('human_die'); }
+                    }
+                } else {
+                    let dx = b.spawnX - b.x, dy = b.spawnY - b.y, d = Math.sqrt(dx*dx + dy*dy);
+                    if (d > 10) { b.x += (dx/d)*(b.speed*0.5); b.y += (dy/d)*(b.speed*0.5); }
+                }
+            }
+        }
+
+        function processWorker(camp) {
+            let w = camp.worker; if (w.isDead) return;
+            let totC = w.carry + w.carryFood;
+            let tEnemy = getClosestEnemy(w.x, w.y);
+            let hasHunt = camp.type === 'food' && tEnemy;
+
+            if (w.state === 'idle_full' && hasHunt) w.state = 'idle';
+            if (!hasHunt && camp.stored >= camp.capacity && totC > 0 && w.state !== 'returning') { w.state = 'idle_full'; return; }
+            if (w.state === 'idle_full' && camp.stored < camp.capacity) w.state = 'returning';
+
+            if (w.state === 'idle') {
+                if (totC >= w.maxCarry && !hasHunt) { w.state = 'returning'; } 
+                else {
+                    let tgt = null;
+                    if (camp.type === 'wood' || camp.type === 'stone') {
+                        let cM = getClosestActive(w.x, w.y, camp.type==='wood'?trees:mountains);
+                        let cD = getClosestActive(w.x, w.y, drops);
+                        if (cD && cM) {
+                            let dM = (cM.x-w.x)*(cM.x-w.x) + (cM.y-w.y)*(cM.y-w.y);
+                            let dD = (cD.x-w.x)*(cD.x-w.x) + (cD.y-w.y)*(cD.y-w.y);
+                            tgt = dD < dM ? cD : cM;
+                        } else tgt = cD || cM;
+                    } else {
+                        tgt = tEnemy;
+                        if (!tgt && totC < w.maxCarry) { tgt = getClosestActive(w.x, w.y, drops); if(!tgt) tgt = getClosestActive(w.x, w.y, hares); }
+                    }
+                    if (tgt) { if (tgt.isDrop || camp.type==='wood' || camp.type==='stone') w.state = 'moving'; else w.state = 'hunting'; w.targetObj = tgt; } 
+                    else if (totC > 0) w.state = 'returning';
+                }
+            }
+            
+            else if (w.state === 'moving' && w.targetObj) {
+                if(!w.targetObj.active) { w.state='idle'; return; }
+                let dx = w.targetObj.x - w.x, dy = w.targetObj.y - w.y, d = Math.sqrt(dx*dx + dy*dy);
+                if (d > (w.targetObj.isDrop?5:25)) { w.x += (dx/d)*w.speed; w.y += (dy/d)*w.speed; } 
+                else { w.state = w.targetObj.isDrop ? 'looting' : 'chopping'; w.timer = 0; }
+            }
+
+            else if (w.state === 'chopping') {
+                if (!w.targetObj.active) { w.state = 'idle'; return; }
+                w.timer++;
+                let tMax = camp.type==='stone' ? Math.max(10, 40 * Math.pow(0.85, getMeta('act_s'))) : Math.max(10, 30 * Math.pow(0.85, getMeta('act_w')));
+                if (w.timer >= tMax) {
+                    w.timer = 0; w.targetObj.hits--; w.showAct = true; setTimeout(() => w.showAct = false, 150); 
+                    sfx(camp.type==='stone' ? 'mine' : 'chop');
+                    if (camp.type==='stone') {
+                        let stoneReq = Math.max(1, 5 - getMeta('yld_s'));
+                        if (w.targetObj.hits % stoneReq === 0) { w.carry++; sfx('pickup'); }
+                        if (w.carry + w.carryFood >= w.maxCarry) w.state = 'returning';
+                        if (w.targetObj.hits <= 0) { w.targetObj.active = false; w.targetObj.timer = 600; w.state = 'idle'; }
+                    } else {
+                        if (w.targetObj.hits <= 0) { w.targetObj.active = false; w.targetObj.timer = 300; w.carry++; sfx('fall'); w.state = 'idle'; }
+                    }
+                }
+            }
+
+            else if (w.state === 'hunting') {
+                if (!w.targetObj.active) { w.state = 'idle'; return; }
+                let dx = w.targetObj.x - w.x, dy = w.targetObj.y - w.y, d = Math.sqrt(dx*dx + dy*dy);
+                let atkRange = ((w.targetObj.isWolf||w.targetObj.isBear)?150:80) * (1 + getMeta('atk_w')*0.1);
+                if (d > atkRange) { w.x += (dx/d)*w.speed; w.y += (dy/d)*w.speed; } 
+                else { w.state = 'aiming'; w.timer = 0; }
+            }
+
+            else if (w.state === 'aiming') {
+                if (!w.targetObj.active) { w.state = 'idle'; return; }
+                w.bowAngle = Math.atan2(w.targetObj.y - w.y, w.targetObj.x - w.x); w.timer++;
+                let aimMax = ((w.targetObj.isWolf||w.targetObj.isBear)?20:40) * Math.pow(0.85, getMeta('act_f'));
+                if (w.timer >= aimMax) { 
+                    sfx('shoot'); 
+                    let aSpd = 12 * (1 + getMeta('arr_spd') * 0.2);
+                    arrows.push({ active:true, x:w.x, y:w.y, angle:w.bowAngle, speed:aSpd, target:w.targetObj, owner: w }); 
+                    w.state = 'waiting_arrow'; 
+                }
+            }
+
+            else if (w.state === 'looting') { w.targetObj.active = false; w.carryFood++; sfx('pickup'); w.state = 'idle'; }
+
+            else if (w.state === 'returning') {
+                let dx = (camp.x + 22) - w.x, dy = (camp.y + 15) - w.y, d = Math.sqrt(dx*dx + dy*dy);
+                if (d > w.speed) { w.x += (dx/d)*w.speed; w.y += (dy/d)*w.speed; } 
+                else {
+                    if ((camp.type==='wood'||camp.type==='stone') && w.carryFood > 0) { globalFood += w.carryFood; w.carryFood = 0; sfx('depositF'); }
+                    let pC = (camp.type==='wood'||camp.type==='stone') ? w.carry : w.carryFood;
+                    
+                    let dblChance = camp.type==='wood' ? getMeta('dbl_w')*0.05 : (camp.type==='food' ? getMeta('dbl_f')*0.05 : getMeta('dbl_s')*0.05);
+                    if (Math.random() < dblChance) pC *= 2;
+
+                    let dep = Math.min(pC, camp.capacity - camp.stored);
+                    if (dep > 0) { 
+                        camp.stored += dep; 
+                        if (camp.type==='wood') { globalWood += dep; w.carry = 0; sfx('depositW'); }
+                        else if (camp.type==='stone') { globalStone += dep; w.carry = 0; sfx('depositS'); }
+                        else { globalFood += dep; w.carryFood = 0; sfx('depositF'); }
+                    }
+                    updateUI(); w.state = camp.stored >= camp.capacity ? 'idle_full' : 'idle';
+                }
+            }
+        }
+
+        function startGame() {
+            document.getElementById('start-overlay').style.display = 'none';
+            initAudio(); loadMeta();
+            
+            if (!loadGame()) { 
+                createCamp('wood'); 
+                globalWood = getMeta('str_w') * 50;
+                globalFood = getMeta('str_f') * 50;
+                globalStone = getMeta('str_s') * 25;
+                if(getMeta('free_c') > 0) { for(let i=0; i<getMeta('free_c'); i++) createCamp('food'); }
+            }
+            setInterval(saveGame, 5000); updateUI(); gameLoop();
+        }
+
+        function gameLoop() {
+            if (isGameOver) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            const vP = 200, zl = camera.zoom;
+            const vL = camera.x - (canvas.width/2)/zl - vP, vR = camera.x + (canvas.width/2)/zl + vP;
+            const vT = camera.y - (canvas.height/2)/zl - vP, vB = camera.y + (canvas.height/2)/zl + vP;
+            const isVis = (ox, oy) => (ox > vL && ox < vR && oy > vT && oy < vB);
+
+            let aliveCamps = 0, aliveHunters = 0;
+            for(let i=0; i<camps.length; i++) { if(!camps[i].worker.isDead) { aliveCamps++; if(camps[i].type==='food') aliveHunters++; } }
+
+            maintainWorld(aliveCamps); processEnemies(aliveHunters);
+            for(let i=0; i<camps.length; i++) processWorker(camps[i]);
+
+            resolveCollisions(); // Aplica a física de separação aqui
+
+            if (camps.length > 0 && aliveCamps === 0) { triggerRoguelikeDeath(); return; }
+
+            for(let i=arrows.length-1; i>=0; i--) {
+                let a = arrows[i];
+                if(a.active) {
+                    if (a.target && a.target.active) a.angle = Math.atan2(a.target.y - a.y, a.target.x - a.x);
+                    a.x += Math.cos(a.angle) * a.speed; a.y += Math.sin(a.angle) * a.speed;
+                    if(a.target && a.target.active && (a.x-a.target.x)*(a.x-a.target.x) + (a.y-a.target.y)*(a.y-a.target.y) < ((a.target.isWolf||a.target.isBear)?625:225)) {
+                        a.active = false;
+                        if (a.target.isWolf) { if (Math.random() <= 0.8) { a.target.active = false; sfx('wolf_die'); drops.push({ x: a.target.x, y: a.target.y, active: true, isDrop: true }); } } 
+                        else if (a.target.isBear) { if (Math.random() <= 0.35) { a.target.active = false; sfx('bear_roar'); drops.push({ x: a.target.x, y: a.target.y, active: true, isDrop: true }, { x: a.target.x+10, y: a.target.y+10, active: true, isDrop: true }); } } 
+                        else { a.target.active = false; a.target.timer = 150; drops.push({ x: a.target.x, y: a.target.y, active: true, isDrop: true }); }
+                        for(let c=0; c<camps.length; c++) { if(camps[c].worker.targetObj === a.target && camps[c].worker.state === 'waiting_arrow') camps[c].worker.state = 'idle'; }
+                    }
+                    if((a.x-camera.x)*(a.x-camera.x) + (a.y-camera.y)*(a.y-camera.y) > 4000000) a.active = false;
+                } else arrows.splice(i, 1);
+            }
+
+            let hareSpawnBoost = 0.02 + (getMeta('spn_hr') * 0.005);
+            let treeMaxHits = Math.max(1, 3 - getMeta('yld_w'));
+
+            for(let i=0; i<hares.length; i++) { let h=hares[i]; if(h.active){ if(Math.random()<hareSpawnBoost){ h.x+=(Math.random()-0.5)*15; h.y+=(Math.random()-0.5)*15;} } else { h.timer--; if(h.timer<=0){ h.active=true; h.x=camera.x+(Math.random()-0.5)*800; h.y=camera.y+(Math.random()-0.5)*800; } } }
+            for(let i=0; i<trees.length; i++) { let t=trees[i]; if(!t.active){ t.timer--; if(t.timer<=0){ t.active=true; t.hits=treeMaxHits; t.maxH=treeMaxHits; t.x=camera.x+(Math.random()-0.5)*800; t.y=camera.y+(Math.random()-0.5)*800; } } }
+            for(let i=0; i<mountains.length; i++) { let m=mountains[i]; if(!m.active){ m.timer--; if(m.timer<=0){ m.active=true; m.hits=50; m.x=camera.x+(Math.random()>0.5?1:-1)*(600+Math.random()*400); m.y=camera.y+(Math.random()>0.5?1:-1)*(600+Math.random()*400); bears.length=0; bears.push({ x:m.x+50, y:m.y+50, active:true, speed:1.5 * Math.pow(0.95, getMeta('spd_br')), isBear:true, spawnX:m.x, spawnY:m.y }); } } }
+
+            for(let i=wolves.length-1; i>=0; i--) if(!wolves[i].active) wolves.splice(i, 1);
+            for(let i=drops.length-1; i>=0; i--) if(!drops[i].active) drops.splice(i, 1);
+
+            ctx.save(); ctx.translate(canvas.width/2, canvas.height/2); ctx.scale(zl, zl); ctx.translate(-camera.x, -camera.y);
+
+            // RENDERIZAÇÃO
+            for(let i=0; i<drops.length; i++) if (isVis(drops[i].x, drops[i].y)) drawEmoji("🍖", 20, drops[i].x, drops[i].y);
+            for(let i=0; i<hares.length; i++) if (hares[i].active && isVis(hares[i].x, hares[i].y)) drawEmoji("🐇", 20, hares[i].x, hares[i].y);
+
+            for(let i=0; i<trees.length; i++) { 
+                let t=trees[i]; if (isVis(t.x, t.y)) { 
+                    if(t.active) { drawEmoji("🌲", 35, t.x, t.y); if(t.hits<t.maxH){ ctx.fillStyle="#1a3b22"; ctx.fillRect(t.x-15,t.y-25,30,4); ctx.fillStyle="#fbbf24"; ctx.fillRect(t.x-15,t.y-25,30*(t.hits/t.maxH),4); } } 
+                    else drawEmoji("🪵", 25, t.x, t.y+10); 
+                } 
+            }
+            for(let i=0; i<mountains.length; i++) { 
+                let m=mountains[i]; if (isVis(m.x, m.y)) { 
+                    if(m.active) { drawEmoji("⛰️", 50, m.x, m.y); if(m.hits<50){ ctx.fillStyle="#1a3b22"; ctx.fillRect(m.x-20,m.y-35,40,5); ctx.fillStyle="#9ca3af"; ctx.fillRect(m.x-20,m.y-35,40*(m.hits/50),5); } } 
+                    else drawEmoji("🪨", 30, m.x, m.y+10); 
+                } 
+            }
+
+            for(let i=0; i<camps.length; i++) if (isVis(camps[i].x, camps[i].y)) drawEmoji(camps[i].icon, 40, camps[i].x, camps[i].y);
+            for(let i=0; i<bears.length; i++) if(bears[i].active && isVis(bears[i].x, bears[i].y)) drawEmoji("🐻", 40, bears[i].x, bears[i].y);
+            for(let i=0; i<wolves.length; i++) if(wolves[i].active && isVis(wolves[i].x, wolves[i].y)) drawEmoji("🐺", 25, wolves[i].x, wolves[i].y);
+
+            ctx.strokeStyle = "white"; ctx.lineWidth = 2;
+            for(let i=0; i<arrows.length; i++) { 
+                let a = arrows[i];
+                if(a.active && isVis(a.x, a.y)) { ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(a.x - Math.cos(a.angle)*15, a.y - Math.sin(a.angle)*15); ctx.stroke(); } 
+            }
+
+            for(let i=0; i<camps.length; i++) {
+                let w = camps[i].worker;
+                if (isVis(w.x, w.y)) {
+                    if (w.isDead) { drawEmoji("💀", 25, w.x, w.y); } 
+                    else {
+                        drawEmoji(w.icon, 25, w.x, w.y);
+                        if(w.state === 'idle_full') drawEmoji("💤", 15, w.x + 12, w.y - 12);
+                        else if(w.carry + w.carryFood >= w.maxCarry) drawEmoji("📦", 15, w.x + 12, w.y - 12);
+                        if(w.showAct) drawEmoji(camps[i].type==='stone' ? "⛏️" : "🪓", 20, w.x+15, w.y-10);
+                        if(w.state==='aiming' || w.state==='hunting') drawEmojiRotated("🏹", 18, w.x+15, w.y, w.bowAngle + Math.PI/4);
+                    }
+                }
+            }
+
+            ctx.font = "bold 15px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+            for(let i=0; i<camps.length; i++) {
+                let c = camps[i];
+                if (isVis(c.x, c.y)) {
+                    let discCost = Math.max(1, Math.floor(c.upgCostW * Math.pow(0.95, getMeta('upg_disc'))));
+                    let tC = `${c.stored}/${c.capacity}`; let cW = tC.length * 8.5 + 8;
+                    ctx.fillStyle = "rgba(0, 0, 0, 0.65)"; ctx.fillRect(c.x - cW/2, c.y + 24, cW, 20);
+                    ctx.fillStyle = c.stored >= c.capacity ? "#ef4444" : "#ffffff"; ctx.fillText(tC, c.x, c.y + 34);
+
+                    let cT = `${discCost}🪵`; let uW = cT.length * 9.5 + 8;
+                    ctx.fillStyle = "rgba(0, 0, 0, 0.65)"; ctx.fillRect(c.x - uW/2, c.y - 44, uW, 20);
+                    ctx.fillStyle = globalWood >= discCost ? "#4ade80" : "#6b7280"; ctx.fillText(cT, c.x, c.y - 34);
+                }
+            }
+            ctx.restore(); requestAnimationFrame(gameLoop);
+        }
+    </script>
+</body>
+</html>
