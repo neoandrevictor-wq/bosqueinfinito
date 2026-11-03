@@ -12,13 +12,15 @@
         .overlay-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 18, 9, 0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; text-align: center; }
         .btn-start { padding: 15px 40px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; border: none; background: #16a34a; color: white; transition: 0.2s; }
         .btn-start:hover { background: #15803d; transform: scale(1.05); }
-        .btn-reset { margin-top: 20px; padding: 10px 20px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .btn-reset { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.2s;}
+        .btn-reset:hover { opacity: 0.8; }
+        .reset-container { margin-top: 40px; display: flex; flex-direction: column; gap: 15px; }
 
         /* HUD Responsiva */
         #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; pointer-events: none; display: flex; flex-direction: column; justify-content: space-between; padding: 15px; }
         #top-bar { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; width: 100%; }
         #resource-panel { display: flex; gap: 10px; flex-wrap: wrap; pointer-events: auto; }
-        .hud-box { background: rgba(0,0,0,0.8); padding: 10px 15px; border-radius: 8px; font-size: 18px; font-weight: bold; border: 1px solid #16a34a; display: flex; align-items: center; gap: 8px; }
+        .hud-box { background: rgba(0,0,0,0.8); padding: 8px 12px; border-radius: 8px; font-size: 16px; font-weight: bold; border: 1px solid #16a34a; display: flex; align-items: center; gap: 6px; }
         #audio-controls { display: flex; gap: 10px; pointer-events: auto; }
         .btn-audio { background: rgba(0,0,0,0.8); border: 1px solid #1a3b22; color: #4ade80; padding: 8px 12px; border-radius: 5px; font-size: 14px; cursor: pointer; transition: 0.2s;}
         .btn-audio:hover { background: #1a3b22; }
@@ -31,23 +33,26 @@
         #btn-toggle-build:hover { background: #1d4ed8; }
 
         /* Menu de Construção Agrupado */
-        #build-menu { display: none; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; background: rgba(6, 18, 9, 0.95); padding: 15px; border-radius: 12px; border: 1px solid #16a34a; max-width: 600px; width: 100%; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); margin-bottom: 5px;}
+        #build-menu { display: none; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; background: rgba(6, 18, 9, 0.95); padding: 15px; border-radius: 12px; border: 1px solid #16a34a; max-width: 800px; width: 100%; box-shadow: 0 -5px 15px rgba(0,0,0,0.5); margin-bottom: 5px;}
         
         #btn-add-lumber { background: #16a34a; border: 1px solid #15803d; }
         #btn-add-hunter { background: #eab308; color: #451a03; border: 1px solid #a16207; }
         #btn-add-miner { background: #64748b; color: white; border: 1px solid #475569; }
+        #btn-add-gold { background: #d97706; color: white; border: 1px solid #b45309; }
+        #btn-add-warrior { background: #991b1b; color: white; border: 1px solid #7f1d1d; }
         #btn-add-tower { background: #475569; border: 1px solid #334155; }
+        #btn-add-wall { background: #374151; border: 1px solid #1f2937; }
 
         #tutorial { font-size: 14px; color: #4ade80; background: rgba(0,0,0,0.6); padding: 5px 15px; border-radius: 20px; pointer-events: none; margin-bottom: 5px; font-weight: bold;}
-        .text-amber { color: #fbbf24; } .text-red { color: #ef4444; } .text-gray { color: #cbd5e1; }
+        .text-amber { color: #fbbf24; } .text-red { color: #ef4444; } .text-gray { color: #cbd5e1; } .text-gold { color: #fde047; }
         
-        /* SISTEMA ROGUELIKE (CARTAS) */
-        .cards-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px; pointer-events: auto; max-width: 900px;}
-        .rogue-card { background: linear-gradient(145deg, #1f2937, #111827); border: 2px solid #fbbf24; border-radius: 12px; padding: 20px; width: 220px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; text-align: center;}
+        /* SISTEMA ROGUELIKE */
+        .cards-container { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin-top: 20px; pointer-events: auto; max-width: 900px; max-height: 70vh; overflow-y: auto; padding-bottom: 20px;}
+        .rogue-card { background: linear-gradient(145deg, #1f2937, #111827); border: 2px solid #fbbf24; border-radius: 12px; padding: 15px; width: 200px; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; text-align: center;}
         .rogue-card:hover { transform: translateY(-10px) scale(1.05); box-shadow: 0 10px 25px rgba(251, 191, 36, 0.4); border-color: #fde68a; }
-        .card-icon { font-size: 50px; margin-bottom: 10px; }
-        .card-title { font-size: 18px; font-weight: bold; color: #fbbf24; margin-bottom: 10px; }
-        .card-desc { font-size: 14px; color: #d1d5db; }
+        .card-icon { font-size: 40px; margin-bottom: 5px; }
+        .card-title { font-size: 16px; font-weight: bold; color: #fbbf24; margin-bottom: 5px; }
+        .card-desc { font-size: 12px; color: #d1d5db; }
         
         #meta-stats-list { background: rgba(0,0,0,0.9); padding: 20px; border-radius: 10px; border: 1px solid #4ade80; max-height: 70vh; overflow-y: auto; text-align: left; width: 300px; display: none; position: absolute; top: 60px; right: 15px; z-index: 50; pointer-events: auto;}
         .stat-item { font-size: 14px; margin-bottom: 8px; border-bottom: 1px solid #1f2937; padding-bottom: 4px; }
@@ -63,12 +68,16 @@
         <h1 style="color: #4ade80; margin-bottom: 10px; font-size: 40px;">A Vila Infinita</h1>
         <p style="color: #9ca3af; margin-bottom: 30px;">Arraste para mover • Scroll/Pinça para Zoom</p>
         <button class="btn-start" onclick="startGame()">Jogar</button>
-        <button class="btn-reset" onclick="hardReset()">Resetar Tudo (Cartas Inclusas)</button>
+        
+        <div class="reset-container">
+            <button class="btn-reset" style="background: #eab308; color: #451a03;" onclick="resetMap()">Desistir e Resetar Mapa (Mantém Cartas)</button>
+            <button class="btn-reset" style="background: #ef4444; color: white;" onclick="hardReset()">Resetar Tudo (Deleta Cartas)</button>
+        </div>
     </div>
 
     <div id="card-selection-overlay" class="overlay-screen" style="display: none;">
-        <h1 style="color: #ef4444; margin-bottom: 5px; font-size: 40px;">O Vilarejo Caiu...</h1>
-        <p style="color: #9ca3af; font-size: 18px; margin-bottom: 10px;">Mas o conhecimento sobrevive. Escolha uma herança permanente:</p>
+        <h1 style="color: #ef4444; margin-bottom: 5px; font-size: 40px;">A Vila Caiu...</h1>
+        <p style="color: #9ca3af; font-size: 18px; margin-bottom: 10px;">A guerra cobra seu preço. Escolha uma herança permanente:</p>
         <div id="cards-wrapper" class="cards-container"></div>
     </div>
 
@@ -78,6 +87,7 @@
                 <div class="hud-box">🛖 <span id="global-wood" class="text-amber">0</span> 🪵</div>
                 <div class="hud-box">🏕️ <span id="global-food" class="text-red">0</span> 🍖</div>
                 <div class="hud-box">⛺ <span id="global-stone" class="text-gray">0</span> 🪨</div>
+                <div class="hud-box">🎪 <span id="global-gold" class="text-gold">0</span> 🪙</div>
             </div>
             <div id="audio-controls">
                 <button class="btn-audio" onclick="toggleMetaStats()">🃏 Bônus</button>
@@ -89,14 +99,16 @@
         <div id="meta-stats-list"></div>
 
         <div id="bottom-bar">
-            <div id="tutorial">👆 Toque nas Casas p/ Upgrades | 🪨 Minas dão pedras</div>
+            <div id="tutorial">🛡️ Aliados detectam Inimigos globalmente! Quartéis defendem a base.</div>
             
-            <!-- Menu Agrupado -->
             <div id="build-menu">
-                <button id="btn-add-lumber" class="btn-action" onclick="buyCamp('wood')">➕ Lenhador (15🍖)</button>
-                <button id="btn-add-hunter" class="btn-action" onclick="buyCamp('food')">➕ Caçador (15🪵)</button>
-                <button id="btn-add-miner" class="btn-action" onclick="buyCamp('stone')">➕ Minerador (20🪵 20🍖)</button>
-                <button id="btn-add-tower" class="btn-action" onclick="buyCamp('tower')">🗼 Torre de Guarda (30🪨)</button>
+                <button id="btn-add-lumber" class="btn-action" onclick="buyCamp('wood')">➕ Lenhador</button>
+                <button id="btn-add-hunter" class="btn-action" onclick="buyCamp('food')">➕ Caçador</button>
+                <button id="btn-add-miner" class="btn-action" onclick="buyCamp('stone')">➕ Minerador</button>
+                <button id="btn-add-gold" class="btn-action" onclick="buyCamp('gold')">➕ Minerador de Ouro</button>
+                <button id="btn-add-warrior" class="btn-action" onclick="buyCamp('barracks')">⚔️ Quartel (Guerreiro)</button>
+                <button id="btn-add-tower" class="btn-action" onclick="buyCamp('tower')">🗼 Torre</button>
+                <button id="btn-add-wall" class="btn-action" onclick="buyWall()">🧱 Muro de Pedra</button>
             </div>
             
             <button id="btn-toggle-build" class="btn-action" onclick="toggleBuildMenu()">🔨 Abrir Construções</button>
@@ -105,274 +117,355 @@
 
     <script>
         function toggleBuildMenu() {
-            let menu = document.getElementById('build-menu');
-            let btn = document.getElementById('btn-toggle-build');
-            if(menu.style.display === 'grid') {
-                menu.style.display = 'none';
-                btn.innerText = '🔨 Abrir Construções';
-            } else {
-                menu.style.display = 'grid';
-                btn.innerText = '❌ Fechar Menu';
-            }
-            sfx('pickup');
+            let menu = document.getElementById('build-menu'); let btn = document.getElementById('btn-toggle-build');
+            if(menu.style.display === 'grid') { menu.style.display = 'none'; btn.innerText = '🔨 Abrir Construções'; } 
+            else { menu.style.display = 'grid'; btn.innerText = '❌ Fechar Menu'; } sfx('pickup');
         }
 
-        /* --- CARTAS ROGUELIKE (30 TIPOS) --- */
+        /* --- 60 CARTAS ROGUELIKE --- */
         const META_CARDS = [
-            { id: "spd_w", i: "🥾", n: "Botas Leves", d: "Lenhadores andam +10% mais rápido." },
-            { id: "spd_f", i: "🍃", n: "Passos de Vento", d: "Caçadores andam +10% mais rápido." },
-            { id: "spd_s", i: "⛏️", n: "Passo Firme", d: "Mineradores andam +10% mais rápido." },
-            { id: "cry_w", i: "🎒", n: "Mochila Maior", d: "Lenhadores carregam +1 madeira." },
+            { id: "spd_w", i: "🥾", n: "Botas Leves", d: "Lenhadores andam +10% rápido." },
+            { id: "spd_f", i: "🍃", n: "Passos de Vento", d: "Caçadores andam +10% rápido." },
+            { id: "spd_s", i: "⛏️", n: "Passo Firme", d: "Mineradores andam +10% rápido." },
+            { id: "cry_w", i: "🎒", n: "Mochila Maior", d: "Lenhadores carregam +1 mad." },
             { id: "cry_f", i: "🧺", n: "Cesto de Caça", d: "Caçadores carregam +1 carne." },
-            { id: "cry_s", i: "🛒", n: "Carrinho de Mão", d: "Mineradores carregam +1 pedra." },
-            { id: "cap_all", i: "📦", n: "Arquitetura", d: "Todas as tendas guardam +5 recursos base." },
-            { id: "upg_disc", i: "📉", n: "Engenharia", d: "Upgrades custam 5% menos madeira." },
-            { id: "buy_disc", i: "🤝", n: "Negociadores", d: "Construir novas tendas/torres custa 5% a menos." },
+            { id: "cry_s", i: "🛒", n: "Carrinho", d: "Mineradores carregam +1 pedra." },
+            { id: "cap_all", i: "📦", n: "Arquitetura", d: "Tendas guardam +5 recursos." },
+            { id: "upg_disc", i: "📉", n: "Engenharia", d: "Upgrades 5% mais baratos." },
+            { id: "buy_disc", i: "🤝", n: "Negociadores", d: "Construções 5% mais baratas." },
             { id: "act_w", i: "🪓", n: "Machado Afiado", d: "Árvores caem 15% mais rápido." },
             { id: "act_s", i: "🧨", n: "Pólvora", d: "Mineração 15% mais rápida." },
             { id: "act_f", i: "🦅", n: "Olhos de Águia", d: "Mira do arco 15% mais rápida." },
-            { id: "atk_w", i: "🏹", n: "Arco Longo", d: "Arqueiros e Torres atiram 10% mais longe." },
-            { id: "arr_spd", i: "💨", n: "Flechas Aerodinâmicas", d: "Flechas voam 20% mais rápido." },
-            { id: "def_wlf", i: "🛡️", n: "Armadura de Couro", d: "+5% de chance de sobreviver a Lobos." },
-            { id: "def_br", i: "🏰", n: "Lanças de Defesa", d: "+2% de chance de sobreviver a Ursos." },
-            { id: "str_w", i: "🪵", n: "Estoque Inicial (Mad)", d: "Comece todos os jogos com +50 Madeira." },
-            { id: "str_f", i: "🍖", n: "Estoque Inicial (Com)", d: "Comece todos os jogos com +50 Comida." },
-            { id: "str_s", i: "🪨", n: "Estoque Inicial (Ped)", d: "Comece todos os jogos com +25 Pedra." },
-            { id: "yld_w", i: "🌲", n: "Árvores Gigantes", d: "Árvores requerem -1 golpe para cair." },
+            { id: "atk_w", i: "🏹", n: "Arco Longo", d: "Arqueiros/Torres atiram 10% longe." },
+            { id: "arr_spd", i: "💨", n: "Flechas Aero", d: "Flechas voam 20% mais rápido." },
+            { id: "def_wlf", i: "🛡️", n: "Armadura Leve", d: "+5% chance de sobreviver Lobos." },
+            { id: "def_br", i: "🏰", n: "Lanças Defesa", d: "+2% chance de sobreviver Ursos." },
+            { id: "str_w", i: "🪵", n: "Estoque (Mad)", d: "Comece com +50 Madeira." },
+            { id: "str_f", i: "🍖", n: "Estoque (Com)", d: "Comece com +50 Comida." },
+            { id: "str_s", i: "🪨", n: "Estoque (Ped)", d: "Comece com +25 Pedra." },
+            { id: "yld_w", i: "🌲", n: "Árvores Gigantes", d: "Árvores caem com -1 golpe." },
             { id: "yld_s", i: "💎", n: "Veio Rico", d: "Pegue pedra a cada 4 acertos (era 5)." },
-            { id: "drp_wlf", i: "🐺", n: "Lobo Gordo", d: "+10% de chance do lobo dropar carne." },
-            { id: "drp_br", i: "🐻", n: "Urso Colossal", d: "+15% de chance do urso dropar 2 carnes." },
-            { id: "spn_hr", i: "🐇", n: "Temporada Acasalamento", d: "Lebres nascem 10% mais rápido." },
+            { id: "drp_wlf", i: "🐺", n: "Lobo Gordo", d: "+10% lobo dropar carne." },
+            { id: "drp_br", i: "🐻", n: "Urso Colossal", d: "+15% urso dropar 2 carnes." },
+            { id: "spn_hr", i: "🐇", n: "Lebres Férteis", d: "Lebres nascem 10% mais rápido." },
             { id: "spn_wlf", i: "🌿", n: "Ervas Ocultas", d: "Lobos aparecem 10% menos vezes." },
             { id: "spd_br", i: "🍯", n: "Mel Pegajoso", d: "Ursos andam 5% mais devagar." },
-            { id: "dbl_w", i: "🍀", n: "Sorte do Lenhador", d: "5% de chance de dobrar madeira depositada." },
-            { id: "dbl_f", i: "🍖", n: "Sorte do Caçador", d: "5% de chance de dobrar carne depositada." },
-            { id: "dbl_s", i: "✨", n: "Sorte do Minerador", d: "5% de chance de dobrar pedra depositada." },
-            { id: "free_c", i: "⛺", n: "Pioneiros", d: "Comece o jogo já com 1 Caçador grátis." }
+            { id: "dbl_w", i: "🍀", n: "Sorte Lenhador", d: "5% chance de dobrar mad. depositada." },
+            { id: "dbl_f", i: "🍖", n: "Sorte Caçador", d: "5% chance de dobrar carne depositada." },
+            { id: "dbl_s", i: "✨", n: "Sorte Minerador", d: "5% chance de dobrar pedra depositada." },
+            { id: "free_c", i: "⛺", n: "Pioneiros", d: "Comece com 1 Caçador grátis." },
+            { id: "spd_g", i: "🏃‍♂️", n: "Febre do Ouro", d: "Mineradores de Ouro andam +10% rápido." },
+            { id: "cry_g", i: "💰", n: "Bolsa Moedas", d: "Mineradores de Ouro carregam +1 ouro." },
+            { id: "act_g", i: "⛏️", n: "Picareta Ouro", d: "Mineração de ouro 15% mais rápida." },
+            { id: "dbl_g", i: "🌟", n: "Sorte Dourada", d: "5% chance de dobrar ouro depositado." },
+            { id: "str_g", i: "🪙", n: "Herança Dourada", d: "Comece com +10 Ouro." },
+            { id: "yld_g", i: "🗻", n: "Montanha Pura", d: "Pegue ouro com -1 acerto." },
+            { id: "war_spd", i: "🪖", n: "Guerreiros Ágeis", d: "Guerreiros de Clava andam +10% rápido." },
+            { id: "war_atk", i: "🏏", n: "Clavas Pesadas", d: "+5% de chance dos Guerreiros matarem." },
+            { id: "war_def", i: "🛡️", n: "Escudo Pessoal", d: "Guerreiros têm +5% chance de não morrer." },
+            { id: "war_cst", i: "📜", n: "Alistamento", d: "Quartéis custam -10% de Ouro." },
+            { id: "war_v_w", i: "🐺", n: "Caça-Lobos", d: "Guerreiros matam Lobos com 100% chance." },
+            { id: "tw_dmg", i: "🔥", n: "Flecha de Fogo", d: "Torres têm +5% chance de acerto letal." },
+            { id: "tw_spd", i: "⚙️", n: "Torres Rápidas", d: "Torres atiram 15% mais rápido." },
+            { id: "wl_hp", i: "🧱", n: "Muralha Dura", d: "Muros ganham +200 HP." },
+            { id: "cp_hp", i: "🏯", n: "Casas Fortes", d: "Todas as tendas/casas ganham +500 HP." },
+            { id: "cp_rep", i: "🛠️", n: "Auto-Reparo", d: "Casas e muros regeneram +2 HP por segundo." },
+            { id: "hnt_war", i: "🎯", n: "Caçador Milícia", d: "Caçadores têm +5% chance de matar Guerreiro Inimigo." },
+            { id: "drp_lio", i: "🦁", n: "Leão Valioso", d: "Leões têm 10% chance de dropar Ouro." },
+            { id: "emy_slw", i: "⛓️", n: "Caminho Turvo", d: "Guerreiros Inimigos andam 5% mais devagar." },
+            { id: "emy_atd", i: "🛡️", n: "Invasores Fracos", d: "Guerreiros Inimigos têm -5% chance de dano." },
+            { id: "emy_drp", i: "💎", n: "Espólios", d: "Inimigos mortos têm 15% chance de dropar Ouro." },
+            { id: "raid_dl", i: "⏳", n: "Batedores", d: "Invasões demoram +10% de tempo para acontecer." },
+            { id: "glbl_mv", i: "💨", n: "Vento à Favor", d: "TODOS os trabalhadores andam +5% rápido." },
+            { id: "glbl_cr", i: "🏋️", n: "Costas Fortes", d: "TODOS carregam +1 recurso." },
+            { id: "pas_w", i: "🌱", n: "Raízes", d: "Ganha 1 Madeira passiva a cada 10 seg." },
+            { id: "pas_f", i: "🍄", n: "Coleta Passiva", d: "Ganha 1 Comida passiva a cada 10 seg." },
+            { id: "pas_s", i: "⛰️", n: "Erosão", d: "Ganha 1 Pedra passiva a cada 20 seg." },
+            { id: "pas_g", i: "✨", n: "Pó de Ouro", d: "Ganha 1 Ouro passivo a cada 30 seg." },
+            { id: "free_w", i: "⚔️", n: "Guarda-Costas", d: "Comece o jogo com 1 Quartel grátis." },
+            { id: "hare_f", i: "🐇", n: "Caça Abundante", d: "Lebres agora valem 2 carnes ao serem caçadas." }
         ];
 
         let metaStats = {};
         function loadMeta() { const m = localStorage.getItem('bosqueMeta'); if(m) metaStats = JSON.parse(m); else metaStats = {}; }
         function saveMeta() { localStorage.setItem('bosqueMeta', JSON.stringify(metaStats)); }
         function getMeta(id) { return metaStats[id] || 0; }
-
         function toggleMetaStats() {
-            let p = document.getElementById('meta-stats-list');
-            if (p.style.display === 'block') { p.style.display = 'none'; return; }
+            let p = document.getElementById('meta-stats-list'); if (p.style.display === 'block') { p.style.display = 'none'; return; }
             p.style.display = 'block'; p.innerHTML = '<h3 style="color:#4ade80; margin-bottom:10px;">Suas Cartas</h3>';
-            let keys = Object.keys(metaStats);
-            if(keys.length === 0) p.innerHTML += "<p>Nenhuma carta ganha ainda.</p>";
+            let keys = Object.keys(metaStats); if(keys.length === 0) p.innerHTML += "<p>Nenhuma carta ganha ainda.</p>";
             keys.forEach(k => { let card = META_CARDS.find(c => c.id === k); if(card) p.innerHTML += `<div class="stat-item">${card.i} <b>${card.n} (x${metaStats[k]})</b></div>`; });
         }
 
-        /* --- ENGINE GRÁFICA OTIMIZADA (GPU Cache) --- */
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const spriteCache = {};
+        function resetMap() { if(confirm("Abandonar este mapa? Você manterá suas cartas para a próxima partida.")) { localStorage.removeItem('bosqueSave'); location.reload(); } }
+        function hardReset() { if(confirm("ATENÇÃO: Deletar TODO o progresso, INCLUINDO AS CARTAS?")) { if(confirm("ÚLTIMO AVISO: Isso é permanente.")) { localStorage.removeItem('bosqueSave'); localStorage.removeItem('bosqueMeta'); location.reload(); } } }
+        
+        function triggerRoguelikeDeath() {
+            isGameOver = true; sfx('human_die'); localStorage.removeItem('bosqueSave');
+            document.getElementById('card-selection-overlay').style.display = 'flex';
+            let shuffled = [...META_CARDS].sort(() => 0.5 - Math.random()); let choices = shuffled.slice(0, 3);
+            let wrapper = document.getElementById('cards-wrapper'); wrapper.innerHTML = '';
+            choices.forEach(card => {
+                let cardEl = document.createElement('div'); cardEl.className = 'rogue-card';
+                cardEl.innerHTML = `<div class="card-icon">${card.i}</div><div class="card-title">${card.n}</div><div class="card-desc">${card.d}</div><div style="margin-top: 15px; font-size: 14px; font-weight: bold; color: #4ade80;">Nível Atual: ${getMeta(card.id)}</div>`;
+                cardEl.onclick = () => selectCard(card.id); wrapper.appendChild(cardEl);
+            });
+        }
+        function selectCard(id) { sfx('card'); metaStats[id] = (metaStats[id] || 0) + 1; saveMeta(); setTimeout(() => { location.reload(); }, 150); }
 
+        /* --- ENGINE GRÁFICA --- */
+        const canvas = document.getElementById('gameCanvas'); const ctx = canvas.getContext('2d'); const spriteCache = {};
         function getSprite(char, size) {
             let key = char + "_" + size;
             if (!spriteCache[key]) {
-                let c = document.createElement('canvas');
-                let pad = size * 2; c.width = pad; c.height = pad;
-                let cCtx = c.getContext('2d');
-                cCtx.font = size + "px Arial"; cCtx.textAlign = "center"; cCtx.textBaseline = "middle";
-                cCtx.fillText(char, c.width/2, c.height/2 + size*0.05);
-                spriteCache[key] = { img: c, cx: c.width/2, cy: c.height/2 };
-            }
-            return spriteCache[key];
+                let c = document.createElement('canvas'); let pad = size * 2; c.width = pad; c.height = pad;
+                let cCtx = c.getContext('2d'); cCtx.font = size + "px Arial"; cCtx.textAlign = "center"; cCtx.textBaseline = "middle";
+                cCtx.fillText(char, c.width/2, c.height/2 + size*0.05); spriteCache[key] = { img: c, cx: c.width/2, cy: c.height/2 };
+            } return spriteCache[key];
         }
         function drawEmoji(char, size, x, y) { let s = getSprite(char, size); ctx.drawImage(s.img, x - s.cx, y - s.cy); }
         function drawEmojiRotated(char, size, x, y, angle) { let s = getSprite(char, size); ctx.save(); ctx.translate(x, y); ctx.rotate(angle); ctx.drawImage(s.img, -s.cx, -s.cy); ctx.restore(); }
 
         let camera = { x: 0, y: 0, zoom: 1 };
         let isDragging = false, dragStartX = 0, dragStartY = 0, camStartX = 0, camStartY = 0, isPinching = false, initialPinchDist = 0, initialZoom = 1;
-
-        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resizeCanvas); resizeCanvas();
-
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; } window.addEventListener('resize', resizeCanvas); resizeCanvas();
         canvas.addEventListener('mousedown', e => { isDragging = true; dragStartX = e.clientX; dragStartY = e.clientY; camStartX = camera.x; camStartY = camera.y; });
         window.addEventListener('mousemove', e => { if (isDragging) { camera.x = camStartX - (e.clientX - dragStartX) / camera.zoom; camera.y = camStartY - (e.clientY - dragStartY) / camera.zoom; } });
         window.addEventListener('mouseup', () => isDragging = false);
         canvas.addEventListener('wheel', e => { camera.zoom *= e.deltaY > 0 ? 0.9 : 1.1; camera.zoom = Math.max(0.3, Math.min(camera.zoom, 3)); });
-        canvas.addEventListener('touchstart', e => {
-            if (e.touches.length === 1) { isDragging = true; dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY; camStartX = camera.x; camStartY = camera.y; } 
-            else if (e.touches.length === 2) { isPinching = true; isDragging = false; initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); initialZoom = camera.zoom; }
-        });
-        window.addEventListener('touchmove', e => {
-            if (isDragging && e.touches.length === 1) { camera.x = camStartX - (e.touches[0].clientX - dragStartX) / camera.zoom; camera.y = camStartY - (e.touches[0].clientY - dragStartY) / camera.zoom; } 
-            else if (isPinching && e.touches.length === 2) { let dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); camera.zoom = initialZoom * (dist / initialPinchDist); camera.zoom = Math.max(0.3, Math.min(camera.zoom, 3)); }
-        });
+        canvas.addEventListener('touchstart', e => { if (e.touches.length === 1) { isDragging = true; dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY; camStartX = camera.x; camStartY = camera.y; } else if (e.touches.length === 2) { isPinching = true; isDragging = false; initialPinchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); initialZoom = camera.zoom; } });
+        window.addEventListener('touchmove', e => { if (isDragging && e.touches.length === 1) { camera.x = camStartX - (e.touches[0].clientX - dragStartX) / camera.zoom; camera.y = camStartY - (e.touches[0].clientY - dragStartY) / camera.zoom; } else if (isPinching && e.touches.length === 2) { let dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); camera.zoom = initialZoom * (dist / initialPinchDist); camera.zoom = Math.max(0.3, Math.min(camera.zoom, 3)); } });
         window.addEventListener('touchend', () => { isDragging = false; isPinching = false; });
         function screenToWorld(sx, sy) { return { x: (sx - canvas.width / 2) / camera.zoom + camera.x, y: (sy - canvas.height / 2) / camera.zoom + camera.y }; }
 
         /* --- SISTEMA DE ÁUDIO --- */
         let audioCtx, musicGain, sfxGain, masterCompressor;
-        let isMusicOn = true, isSfxOn = true, lastSoundTime = {}; 
-
+        let isMusicOn = localStorage.getItem('bosqueMusic') !== 'false'; let isSfxOn = localStorage.getItem('bosqueSfx') !== 'false'; let lastSoundTime = {}; 
         function initAudio() {
-            if (audioCtx) return;
+            updateAudioUI(); if (audioCtx) return;
             const AudioContext = window.AudioContext || window.webkitAudioContext; audioCtx = new AudioContext();
             masterCompressor = audioCtx.createDynamicsCompressor(); masterCompressor.threshold.setValueAtTime(-15, audioCtx.currentTime); masterCompressor.connect(audioCtx.destination);
-            musicGain = audioCtx.createGain(); musicGain.gain.value = 0.1; musicGain.connect(masterCompressor);
-            sfxGain = audioCtx.createGain(); sfxGain.gain.value = 0.3; sfxGain.connect(masterCompressor);
+            musicGain = audioCtx.createGain(); musicGain.gain.value = isMusicOn ? 0.1 : 0; musicGain.connect(masterCompressor); sfxGain = audioCtx.createGain(); sfxGain.gain.value = 0.3; sfxGain.connect(masterCompressor);
             let step = 0; const chords = [ [164.81, 196.00, 246.94], [130.81, 164.81, 196.00], [196.00, 246.94, 293.66], [146.83, 185.00, 220.00] ];
             setInterval(() => { if (!isMusicOn || !audioCtx) return; let c = chords[Math.floor(step / 4) % chords.length]; playTone(c[step % 3] * 2, 'sine', 0.6, 0.2, musicGain); if (step % 4 === 0) playTone(c[0], 'triangle', 1.0, 0.3, musicGain); step++; }, 450);
         }
-
         function playTone(freq, type, dur, vol, dest, slideD=false, slideU=false) {
-            if (!audioCtx) return; const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
-            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            if(slideD) osc.frequency.exponentialRampToValueAtTime(freq*0.1, audioCtx.currentTime+dur);
-            if(slideU) osc.frequency.exponentialRampToValueAtTime(freq*2, audioCtx.currentTime+dur);
-            gain.gain.setValueAtTime(vol, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime+dur);
-            osc.connect(gain); gain.connect(dest); osc.start(); osc.stop(audioCtx.currentTime+dur);
+            if (!audioCtx) return; const osc = audioCtx.createOscillator(), gain = audioCtx.createGain(); osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            if(slideD) osc.frequency.exponentialRampToValueAtTime(freq*0.1, audioCtx.currentTime+dur); if(slideU) osc.frequency.exponentialRampToValueAtTime(freq*2, audioCtx.currentTime+dur);
+            gain.gain.setValueAtTime(vol, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime+dur); osc.connect(gain); gain.connect(dest); osc.start(); osc.stop(audioCtx.currentTime+dur);
         }
-
         function sfx(name) {
             if(!isSfxOn) return; let now = performance.now(); if (lastSoundTime[name] && now - lastSoundTime[name] < 40) return; lastSoundTime[name] = now;
-            if(name==='chop') playTone(200, 'square', 0.1, 0.4, sfxGain, true);
-            if(name==='mine') { playTone(300, 'square', 0.1, 0.3, sfxGain, true); playTone(800, 'triangle', 0.05, 0.2, sfxGain); }
-            if(name==='fall') playTone(100, 'sawtooth', 0.3, 0.5, sfxGain, true);
-            if(name==='shoot') playTone(800, 'triangle', 0.15, 0.3, sfxGain, false, true);
-            if(name==='pickup') playTone(900, 'sine', 0.1, 0.2, sfxGain);
-            if(name==='depositW') playTone(600, 'sine', 0.2, 0.2, sfxGain);
-            if(name==='depositF') playTone(700, 'sine', 0.2, 0.2, sfxGain);
-            if(name==='depositS') playTone(500, 'square', 0.2, 0.2, sfxGain);
-            if(name==='upg') playTone(400, 'square', 0.1, 0.3, sfxGain);
-            if(name==='error') playTone(150, 'sawtooth', 0.2, 0.4, sfxGain, true);
-            if(name==='wolf_die') playTone(120, 'sawtooth', 0.4, 0.4, sfxGain, true);
-            if(name==='bear_roar') playTone(80, 'sawtooth', 0.5, 0.6, sfxGain, true);
-            if(name==='human_die') playTone(100, 'square', 0.5, 0.5, sfxGain, true);
-            if(name==='card') playTone(600, 'sine', 0.5, 0.4, sfxGain);
+            if(name==='chop') playTone(200, 'square', 0.1, 0.4, sfxGain, true); if(name==='mine') { playTone(300, 'square', 0.1, 0.3, sfxGain, true); playTone(800, 'triangle', 0.05, 0.2, sfxGain); }
+            if(name==='fall') playTone(100, 'sawtooth', 0.3, 0.5, sfxGain, true); if(name==='shoot') playTone(800, 'triangle', 0.15, 0.3, sfxGain, false, true); if(name==='pickup') playTone(900, 'sine', 0.1, 0.2, sfxGain);
+            if(name==='depositW') playTone(600, 'sine', 0.2, 0.2, sfxGain); if(name==='depositF') playTone(700, 'sine', 0.2, 0.2, sfxGain); if(name==='depositS') playTone(500, 'square', 0.2, 0.2, sfxGain);
+            if(name==='upg') playTone(400, 'square', 0.1, 0.3, sfxGain); if(name==='error') playTone(150, 'sawtooth', 0.2, 0.4, sfxGain, true);
+            if(name==='wolf_die') playTone(120, 'sawtooth', 0.4, 0.4, sfxGain, true); if(name==='bear_roar') playTone(80, 'sawtooth', 0.5, 0.6, sfxGain, true); if(name==='human_die') playTone(100, 'square', 0.5, 0.5, sfxGain, true); if(name==='card') playTone(600, 'sine', 0.5, 0.4, sfxGain);
+            if(name==='wall_hit') playTone(150, 'square', 0.1, 0.3, sfxGain, true);
         }
-
-        function toggleMusic() { isMusicOn = !isMusicOn; document.getElementById('btn-music').innerText = isMusicOn ? '🎵 ON' : '🎵 OFF'; document.getElementById('btn-music').style.color = isMusicOn ? '#4ade80' : '#6b7280'; if (audioCtx && musicGain) musicGain.gain.value = isMusicOn ? 0.1 : 0; }
-        function toggleSfx() { isSfxOn = !isSfxOn; document.getElementById('btn-sfx').innerText = isSfxOn ? '🔊 ON' : '🔊 OFF'; document.getElementById('btn-sfx').style.color = isSfxOn ? '#4ade80' : '#6b7280'; }
+        function updateAudioUI() { document.getElementById('btn-music').innerText = isMusicOn ? '🎵 ON' : '🎵 OFF'; document.getElementById('btn-music').style.color = isMusicOn ? '#4ade80' : '#6b7280'; document.getElementById('btn-sfx').innerText = isSfxOn ? '🔊 ON' : '🔊 OFF'; document.getElementById('btn-sfx').style.color = isSfxOn ? '#4ade80' : '#6b7280'; }
+        function toggleMusic() { isMusicOn = !isMusicOn; localStorage.setItem('bosqueMusic', isMusicOn); updateAudioUI(); if (audioCtx && musicGain) musicGain.gain.value = isMusicOn ? 0.1 : 0; }
+        function toggleSfx() { isSfxOn = !isSfxOn; localStorage.setItem('bosqueSfx', isSfxOn); updateAudioUI(); }
 
         /* --- DADOS E LÓGICA DO JOGO --- */
-        let globalWood = 0, globalFood = 0, globalStone = 0, lastUI = {w: -1, f: -1, s: -1};
-        let camps = [], arrows = [], trees = [], hares = [], drops = [], wolves = [], bears = [], mountains = [];
+        let globalWood = 0, globalFood = 0, globalStone = 0, globalGold = 0; let lastUI = {w: -1, f: -1, s: -1, g: -1};
+        let camps = [], arrows = [], trees = [], hares = [], drops = [], wolves = [], bears = [], lions = [], mountains = [], goldMountains = [];
+        let enemyWarriors = [];
+        let walls = []; let towersList = []; let isGameOver = false;
         const GRID_SIZE = 120;
-        let isGameOver = false;
+        
+        let totalPlaySeconds = 0; 
+        let raidCooldown = 0;
+        let hasBarracks = false;
 
         function getBaseCost(type) {
             let disc = Math.pow(0.95, getMeta('buy_disc'));
-            if(type==='wood') return { w:0, f: Math.max(1, Math.floor(15*disc)), s:0 };
-            if(type==='food') return { w: Math.max(1, Math.floor(15*disc)), f:0, s:0 };
-            if(type==='tower') return { w:0, f:0, s: Math.max(1, Math.floor(30*disc)) };
-            return { w: Math.max(1, Math.floor(20*disc)), f: Math.max(1, Math.floor(20*disc)), s:0 };
+            if(type==='wood') return { w:0, f: Math.max(1, Math.floor(15*disc)), s:0, g:0 };
+            if(type==='food') return { w: Math.max(1, Math.floor(15*disc)), f:0, s:0, g:0 };
+            if(type==='tower') return { w:0, f:0, s: Math.max(1, Math.floor(30*disc)), g:0 };
+            if(type==='gold') return { w: Math.max(1, Math.floor(30*disc)), f: Math.max(1, Math.floor(30*disc)), s: Math.max(1, Math.floor(10*disc)), g:0 };
+            if(type==='barracks') return { w: Math.max(1, Math.floor(20*disc)), f: Math.max(1, Math.floor(20*disc)), s: Math.max(1, Math.floor(10*disc)), g: Math.max(1, Math.floor(25*Math.pow(0.9, getMeta('war_cst')))) };
+            return { w: Math.max(1, Math.floor(20*disc)), f: Math.max(1, Math.floor(20*disc)), s:0, g:0 };
+        }
+
+        // Criador de Guerreiros Aliados
+        function createWarriorObj(x, y) {
+            let spd = 3.0 * (1 + getMeta('war_spd')*0.1) * (1 + getMeta('glbl_mv')*0.05);
+            return { icon: "🪖", type: 'friendlyWarrior', x: x, y: y, speed: spd, state: 'patrol', targetObj: null, path: [], timer: 0, showAct: false, isDead: false, stuckTimer: 0, lastX: x, lastY: y };
         }
 
         function saveGame() {
             if(isGameOver) return; 
-            localStorage.setItem('bosqueSave', JSON.stringify({ wood: globalWood, food: globalFood, stone: globalStone, camps: camps.map(c => ({ type: c.type, x: c.x, y: c.y, stored: c.stored, capacity: c.capacity, upgCostW: c.upgCostW, level: c.level, workerIsDead: c.worker.isDead })) }));
+            localStorage.setItem('bosqueSave', JSON.stringify({ 
+                wood: globalWood, food: globalFood, stone: globalStone, gold: globalGold, totalPlaySeconds,
+                walls: walls,
+                camps: camps.map(c => ({ type: c.type, x: c.x, y: c.y, hp: c.hp, maxHp: c.maxHp, stored: c.stored, capacity: c.capacity, upgCostW: c.upgCostW, level: c.level, workerIsDead: c.worker ? c.worker.isDead : true, warriors: c.warriors })) 
+            }));
         }
 
         function loadGame() {
             const saved = localStorage.getItem('bosqueSave');
             if (saved) {
                 const data = JSON.parse(saved);
+                totalPlaySeconds = data.totalPlaySeconds || 0;
+                
                 camps = data.camps.map(c => {
-                    let bc = c.type === 'wood' ? 10 : (c.type === 'food' ? 15 : (c.type === 'stone' ? 20 : 0));
+                    let bc = c.type === 'wood' ? 10 : (c.type === 'food' ? 15 : (c.type === 'stone' ? 20 : (c.type==='gold'?30:40)));
                     let spd = c.type === 'wood' ? 2.5 * (1 + getMeta('spd_w')*0.1) : (c.type === 'food' ? 2.8 * (1 + getMeta('spd_f')*0.1) : 2.2 * (1 + getMeta('spd_s')*0.1));
-                    let maxC = (c.type === 'wood' ? 5 : 3) + getMeta(c.type === 'wood' ? 'cry_w' : (c.type === 'food' ? 'cry_f' : 'cry_s'));
+                    let glbSpd = spd * (1 + getMeta('glbl_mv')*0.05);
+                    let maxC = (c.type === 'wood' ? 5 : 3) + getMeta(c.type === 'wood' ? 'cry_w' : (c.type === 'food' ? 'cry_f' : (c.type==='gold'?'cry_g':'cry_s'))) + getMeta('glbl_cr');
+                    let maxHp = c.maxHp || (1000 + (getMeta('cp_hp')*500) + (c.level*200));
+                    let hp = c.hp !== undefined ? c.hp : maxHp;
+
+                    if(c.type === 'tower') { return { ...c, hp, maxHp, upgCostW: 0, upgCostF: 0, upgCostS: 0, icon: "🗼", worker: { icon: "💂", x: c.x, y: c.y, speed: 0, carry: 0, carryFood: 0, maxCarry: 0, state: 'guarding', targetObj: null, path: [], timer: 0, bowAngle: 0, showAct: false, isDead: false, stuckTimer: 0, lastX: c.x, lastY: c.y }, warriors:[] }; }
                     
-                    if(c.type === 'tower') {
-                        return { ...c, upgCostW: 0, upgCostF: 0, upgCostS: 0, icon: "🗼", worker: { icon: "💂", x: c.x, y: c.y - 10, speed: 0, carry: 0, carryFood: 0, maxCarry: 0, state: 'guarding', targetObj: null, timer: 0, bowAngle: 0, showAct: false, isDead: false } };
+                    if(c.type === 'barracks') {
+                        hasBarracks = true; let loadedWarriors = [];
+                        if (!c.warriors && !c.workerIsDead) loadedWarriors.push(createWarriorObj(c.x, c.y));
+                        else if (c.warriors) loadedWarriors = c.warriors.map(w => ({ ...createWarriorObj(c.x, c.y), ...w, type: 'friendlyWarrior' }));
+                        while(loadedWarriors.length < c.level) loadedWarriors.push(createWarriorObj(c.x, c.y));
+                        return { ...c, hp, maxHp, upgCostW: c.upgCostW > 0 ? c.upgCostW : Math.floor(bc * Math.pow(1.5, (c.level || 1) - 1)), upgCostF: 0, upgCostS: 0, icon: "⚔️", worker: { isDead: true }, warriors: loadedWarriors }; 
                     }
 
-                    return {
-                        ...c, upgCostW: c.upgCostW > 0 ? c.upgCostW : Math.floor(bc * Math.pow(1.5, (c.level || 1) - 1)), upgCostF: 0, upgCostS: 0,
-                        icon: c.type === 'wood' ? "🛖" : (c.type === 'food' ? "🏕️" : "⛺"),
-                        worker: { icon: c.type === 'wood' ? "🧔‍♂️" : (c.type === 'food' ? "🧝‍♂️" : "👷‍♂️"), x: c.x + 22, y: c.y + 15, speed: spd, carry: 0, carryFood: 0, maxCarry: maxC, state: 'idle', targetObj: null, timer: 0, bowAngle: 0, showAct: false, isDead: c.workerIsDead || false }
-                    };
+                    let icn = c.type==='wood'?"🛖":(c.type==='food'?"🏕️":(c.type==='stone'?"⛺":"🎪"));
+                    let wIcn = c.type==='wood'?"🧔‍♂️":(c.type==='food'?"🧝‍♂️":(c.type==='stone'?"👷‍♂️":"🤠"));
+
+                    return { ...c, hp, maxHp, upgCostW: c.upgCostW > 0 ? c.upgCostW : Math.floor(bc * Math.pow(1.5, (c.level || 1) - 1)), upgCostF: 0, upgCostS: 0,
+                        icon: icn, worker: { icon: wIcn, x: c.x, y: c.y, speed: glbSpd, carry: 0, carryFood: 0, maxCarry: maxC, state: 'idle', targetObj: null, path: [], timer: 0, bowAngle: 0, showAct: false, isDead: c.workerIsDead || false, stuckTimer: 0, lastX: c.x, lastY: c.y }, warriors: [] };
                 });
-                globalWood = camps.filter(c=>c.type==='wood').reduce((a,b)=>a+b.stored,0);
-                globalFood = camps.filter(c=>c.type==='food').reduce((a,b)=>a+b.stored,0);
-                globalStone = camps.filter(c=>c.type==='stone').reduce((a,b)=>a+b.stored,0);
+                towersList = camps.filter(c => c.type === 'tower');
+                
+                if (data.walls) {
+                    walls = data.walls.map(w => {
+                        let baseSegs = []; let step = 30;
+                        for (let x = w.minX; x <= w.maxX; x += step) { baseSegs.push({x: x, y: w.minY, hp: 300+(getMeta('wl_hp')*200), maxHp: 300+(getMeta('wl_hp')*200)}); baseSegs.push({x: x, y: w.maxY, hp: 300+(getMeta('wl_hp')*200), maxHp: 300+(getMeta('wl_hp')*200)}); }
+                        for (let y = w.minY; y <= w.maxY; y += step) { baseSegs.push({x: w.minX, y: y, hp: 300+(getMeta('wl_hp')*200), maxHp: 300+(getMeta('wl_hp')*200)}); baseSegs.push({x: w.maxX, y: y, hp: 300+(getMeta('wl_hp')*200), maxHp: 300+(getMeta('wl_hp')*200)}); }
+                        let uniqueSegs = []; let seen = new Set(); let savedSegs = w.segments || [];
+                        baseSegs.forEach(s => { let key = `${Math.round(s.x)},${Math.round(s.y)}`; if(!seen.has(key)) { seen.add(key); let sData = savedSegs.find(ss => Math.abs(ss.x - s.x)<5 && Math.abs(ss.y - s.y)<5); if (sData && sData.hp !== undefined) s.hp = sData.hp; uniqueSegs.push(s); } });
+                        w.segments = carveGateInWall(uniqueSegs, w); return w;
+                    });
+                } else walls = [];
+
+                globalWood = camps.filter(c=>c.type==='wood').reduce((a,b)=>a+b.stored,0) + (data.wood || 0); globalFood = camps.filter(c=>c.type==='food').reduce((a,b)=>a+b.stored,0) + (data.food || 0); globalStone = camps.filter(c=>c.type==='stone').reduce((a,b)=>a+b.stored,0) + (data.stone || 0); globalGold = camps.filter(c=>c.type==='gold').reduce((a,b)=>a+b.stored,0) + (data.gold || 0);
+                camps.forEach(c => { if(c.type === 'wood') globalWood -= c.stored; if(c.type === 'food') globalFood -= c.stored; if(c.type === 'stone') globalStone -= c.stored; if(c.type === 'gold') globalGold -= c.stored; });
+                globalWood += data.wood; globalFood += data.food; globalStone += data.stone; globalGold += (data.gold || 0);
+
                 return true;
-            }
-            return false;
-        }
-
-        function hardReset() { localStorage.removeItem('bosqueSave'); localStorage.removeItem('bosqueMeta'); location.reload(); }
-
-        function triggerRoguelikeDeath() {
-            isGameOver = true; document.getElementById('card-selection-overlay').style.display = 'flex'; localStorage.removeItem('bosqueSave'); 
-            let shuffled = META_CARDS.sort(() => 0.5 - Math.random()); let chosen = shuffled.slice(0, 3);
-            let wrapper = document.getElementById('cards-wrapper'); wrapper.innerHTML = "";
-            chosen.forEach(c => {
-                let d = document.createElement('div'); d.className = "rogue-card"; d.innerHTML = `<div class="card-icon">${c.i}</div><div class="card-title">${c.n}</div><div class="card-desc">${c.d}</div>`;
-                d.onclick = () => { sfx('card'); metaStats[c.id] = (metaStats[c.id] || 0) + 1; saveMeta(); setTimeout(() => location.reload(), 500); };
-                wrapper.appendChild(d);
-            });
+            } return false;
         }
 
         function getNextGridPos() {
             let occ = new Set(camps.map(c => `${Math.round(c.x/GRID_SIZE)},${Math.round(c.y/GRID_SIZE)}`));
             let x = 0, y = 0, dx = 0, dy = -1;
             for (let i = 0; i < 10000; i++) {
-                if (!occ.has(`${x},${y}`)) return { x: x * GRID_SIZE, y: y * GRID_SIZE };
-                if (x === y || (x < 0 && x === -y) || (x > 0 && x === 1 - y)) { let t = dx; dx = -dy; dy = t; }
-                x += dx; y += dy;
+                let px = x * GRID_SIZE; let py = y * GRID_SIZE;
+                let hitsWall = false;
+                for(let w of walls) { for (let s of w.segments) { if (Math.hypot(px - s.x, py - s.y) < 80) { hitsWall = true; break; } } if (hitsWall) break; }
+                if (!occ.has(`${x},${y}`) && !hitsWall) { return { x: px, y: py }; }
+                if (x === y || (x < 0 && x === -y) || (x > 0 && x === 1 - y)) { let t = dx; dx = -dy; dy = t; } x += dx; y += dy;
             } return { x: 0, y: 0 };
         }
 
         function createCamp(type) {
             let p = getNextGridPos();
-            
+            let maxHp = 1000 + (getMeta('cp_hp')*500);
+
             if(type === 'tower') {
-                camps.push({ 
-                    type: 'tower', x: p.x, y: p.y, stored: 0, capacity: 0, upgCostW: 0, level: 1, icon: "🗼", 
-                    worker: { icon: "💂", x: p.x, y: p.y - 15, speed: 0, carry: 0, carryFood: 0, maxCarry: 0, state: 'guarding', targetObj: null, timer: 0, bowAngle: 0, showAct: false, isDead: false } 
-                });
+                camps.push({ type: 'tower', x: p.x, y: p.y, hp: maxHp, maxHp: maxHp, stored: 0, capacity: 0, upgCostW: 0, level: 1, icon: "🗼", worker: { icon: "💂", x: p.x, y: p.y, speed: 0, carry: 0, carryFood: 0, maxCarry: 0, state: 'guarding', targetObj: null, path: [], timer: 0, bowAngle: 0, showAct: false, isDead: false, stuckTimer: 0, lastX: p.x, lastY: p.y }, warriors: [] });
+                towersList = camps.filter(c => c.type === 'tower'); return;
+            }
+            if(type === 'barracks') {
+                hasBarracks = true; let uCost = 40;
+                camps.push({ type: 'barracks', x: p.x, y: p.y, hp: maxHp, maxHp: maxHp, stored: 0, capacity: 10, upgCostW: uCost, level: 1, icon: "⚔️", worker: {isDead: true}, warriors: [createWarriorObj(p.x, p.y)] });
                 return;
             }
 
             let baseCap = (type==='wood'?15:10) + (getMeta('cap_all') * 5);
             let spd = type === 'wood' ? 2.5 * (1 + getMeta('spd_w')*0.1) : (type === 'food' ? 2.8 * (1 + getMeta('spd_f')*0.1) : 2.2 * (1 + getMeta('spd_s')*0.1));
-            let maxC = (type === 'wood' ? 5 : 3) + getMeta(type === 'wood' ? 'cry_w' : (type === 'food' ? 'cry_f' : 'cry_s'));
-            let uCost = type === 'wood' ? 10 : (type === 'food' ? 15 : 20);
+            let glbSpd = spd * (1 + getMeta('glbl_mv')*0.05);
+            let maxC = (type === 'wood' ? 5 : 3) + getMeta(type === 'wood' ? 'cry_w' : (type === 'food' ? 'cry_f' : (type==='gold'?'cry_g':'cry_s'))) + getMeta('glbl_cr');
+            let uCost = type === 'wood' ? 10 : (type === 'food' ? 15 : (type === 'stone' ? 20 : 30));
+            let icn = type==='wood'?"🛖":(type==='food'?"🏕️":(type==='stone'?"⛺":"🎪"));
+            let wIcn = type==='wood'?"🧔‍♂️":(type==='food'?"🧝‍♂️":(type==='stone'?"👷‍♂️":"🤠"));
 
-            camps.push({ 
-                type: type, x: p.x, y: p.y, stored: 0, capacity: baseCap, upgCostW: uCost, level: 1, 
-                icon: type==='wood'?"🛖":(type==='food'?"🏕️":"⛺"), 
-                worker: { icon: type==='wood'?"🧔‍♂️":(type==='food'?"🧝‍♂️":"👷‍♂️"), x: p.x+22, y: p.y+15, speed: spd, carry: 0, carryFood: 0, maxCarry: maxC, state: 'idle', targetObj: null, timer: 0, bowAngle: 0, showAct: false, isDead: false } 
-            });
+            camps.push({ type: type, x: p.x, y: p.y, hp: maxHp, maxHp: maxHp, stored: 0, capacity: baseCap, upgCostW: uCost, level: 1, icon: icn, worker: { icon: wIcn, x: p.x, y: p.y, speed: glbSpd, carry: 0, carryFood: 0, maxCarry: maxC, state: 'idle', targetObj: null, path: [], timer: 0, bowAngle: 0, showAct: false, isDead: false, stuckTimer: 0, lastX: p.x, lastY: p.y }, warriors: [] });
         }
 
-        function spend(w, f, s = 0) {
-            if (globalWood < w || globalFood < f || globalStone < s) return false;
-            globalWood -= w; globalFood -= f; globalStone -= s;
-            let wLeft = w, fLeft = f, sLeft = s;
+        function spend(w, f, s = 0, g = 0) {
+            if (globalWood < w || globalFood < f || globalStone < s || globalGold < g) return false;
+            globalWood -= w; globalFood -= f; globalStone -= s; globalGold -= g;
+            let wLeft = w, fLeft = f, sLeft = s, gLeft = g;
             camps.forEach(c => {
                 if(c.type==='wood' && wLeft>0) { let t = Math.min(c.stored, wLeft); c.stored -= t; wLeft -= t; }
                 if(c.type==='food' && fLeft>0) { let t = Math.min(c.stored, fLeft); c.stored -= t; fLeft -= t; }
                 if(c.type==='stone' && sLeft>0) { let t = Math.min(c.stored, sLeft); c.stored -= t; sLeft -= t; }
-            });
-            return true;
+                if(c.type==='gold' && gLeft>0) { let t = Math.min(c.stored, gLeft); c.stored -= t; gLeft -= t; }
+            }); return true;
         }
 
         window.buyCamp = function(type) {
             let cost = getBaseCost(type);
-            if (spend(cost.w, cost.f, cost.s)) { 
-                let eC = camps.find(c => c.type === type && c.worker.isDead);
-                if (eC) { eC.worker.isDead = false; eC.worker.state = 'idle'; eC.worker.carry = 0; eC.worker.carryFood = 0; eC.worker.x = eC.x + 22; eC.worker.y = eC.y + 15; } 
-                else createCamp(type);
+            if (spend(cost.w, cost.f, cost.s, cost.g)) { 
+                let eC = camps.find(c => c.type === type && (c.type==='barracks' ? c.warriors.every(w=>w.isDead) : c.worker.isDead));
+                if (eC) { 
+                    eC.hp = eC.maxHp; 
+                    if(eC.type==='barracks') { eC.warriors.forEach(w => { w.isDead = false; w.state = 'patrol'; w.x = eC.x; w.y = eC.y; w.targetObj = null; w.path = []; w.stuckTimer = 0; }); }
+                    else { eC.worker.isDead = false; eC.worker.state = 'idle'; eC.worker.targetObj = null; eC.worker.path = []; eC.worker.timer = 0; eC.worker.carry = 0; eC.worker.carryFood = 0; eC.worker.x = eC.x; eC.worker.y = eC.y; eC.worker.stuckTimer = 0; }
+                } else createCamp(type);
                 sfx('upg'); updateUI(); saveGame();
             }
+        };
+
+        /* --- CONSTRUÇÃO DO MURO --- */
+        function carveGateInWall(segments, wallObj) {
+            let finalSegs = [...segments];
+            if (towersList.length > 0) {
+                towersList.forEach(tower => {
+                    let closestSeg = null; let minD = Infinity;
+                    finalSegs.forEach(s => { let d = Math.hypot(s.x - tower.x, s.y - tower.y); if (d < minD) { minD = d; closestSeg = s; } });
+                    if (closestSeg) {
+                        wallObj.gateX = closestSeg.x; wallObj.gateY = closestSeg.y;
+                        let dl = Math.abs(closestSeg.x - wallObj.minX), dr = Math.abs(closestSeg.x - wallObj.maxX);
+                        let dt = Math.abs(closestSeg.y - wallObj.minY), db = Math.abs(closestSeg.y - wallObj.maxY);
+                        let m = Math.min(dl, dr, dt, db);
+                        if (m === dl) wallObj.gateSide = 'left'; else if (m === dr) wallObj.gateSide = 'right'; else if (m === dt) wallObj.gateSide = 'top'; else wallObj.gateSide = 'bottom';
+                        finalSegs = finalSegs.filter(s => Math.hypot(s.x - closestSeg.x, s.y - closestSeg.y) >= 120);
+                    }
+                });
+            }
+            finalSegs = finalSegs.filter(s => { for(let c of camps) { if (c.type !== 'tower') { if (Math.hypot(s.x - c.x, s.y - c.y) < 60) return false; } } return true; });
+            return finalSegs;
+        }
+
+        function calculateNextWall() {
+            if (towersList.length === 0) return { possible: false, reason: "Requer Torre" }; if (camps.length === 0) return { possible: false, reason: "Sem casas" };
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            camps.forEach(c => { if (c.x < minX) minX = c.x; if (c.x > maxX) maxX = c.x; if (c.y < minY) minY = c.y; if (c.y > maxY) maxY = c.y; });
+            if (minX === maxX) { minX -= GRID_SIZE; maxX += GRID_SIZE; } if (minY === maxY) { minY -= GRID_SIZE; maxY += GRID_SIZE; } minX -= 60; maxX += 60; minY -= 60; maxY += 60;
+            if (walls.length > 0) { let last = walls[walls.length - 1]; if (minX > last.minX - 70) minX = last.minX - 70; if (maxX < last.maxX + 70) maxX = last.maxX + 70; if (minY > last.minY - 70) minY = last.minY - 70; if (maxY < last.maxY + 70) maxY = last.maxY + 70; }
+            let segments = []; let step = 30; let maxHp = 300 + (getMeta('wl_hp')*200);
+            for (let x = minX; x <= maxX; x += step) { segments.push({x: x, y: minY, hp: maxHp, maxHp}); segments.push({x: x, y: maxY, hp: maxHp, maxHp}); }
+            for (let y = minY; y <= maxY; y += step) { segments.push({x: minX, y: y, hp: maxHp, maxHp}); segments.push({x: maxX, y: y, hp: maxHp, maxHp}); }
+            let uniqueSegs = []; let seen = new Set(); segments.forEach(s => { let key = `${Math.round(s.x)},${Math.round(s.y)}`; if(!seen.has(key)) { seen.add(key); uniqueSegs.push(s); } });
+            let tempWall = { minX, maxX, minY, maxY }; let finalSegs = carveGateInWall(uniqueSegs, tempWall); let cost = Math.floor(finalSegs.length * 1.5);
+            return { possible: true, cost: cost, minX, maxX, minY, maxY, segments: finalSegs, gateX: tempWall.gateX, gateY: tempWall.gateY, gateSide: tempWall.gateSide };
+        }
+
+        window.buyWall = function() {
+            let next = calculateNextWall(); if (!next.possible) { sfx('error'); return; }
+            if (spend(0, 0, next.cost)) { walls.push({ minX: next.minX, maxX: next.maxX, minY: next.minY, maxY: next.maxY, segments: next.segments, gateX: next.gateX, gateY: next.gateY, gateSide: next.gateSide }); sfx('upg'); updateUI(); saveGame(); } else sfx('error');
         };
 
         canvas.addEventListener('click', (e) => {
             if (Math.hypot(e.clientX - dragStartX, e.clientY - dragStartY) > 5) return; 
             let wP = screenToWorld(e.clientX, e.clientY);
             camps.forEach(c => {
-                if(c.type === 'tower') return; // Torres nao tem upgrade por enquanto
+                if(c.type === 'tower') return; 
                 if((c.x - wP.x)*(c.x - wP.x) + (c.y - wP.y)*(c.y - wP.y) < 1600) {
                     let discCost = Math.max(1, Math.floor(c.upgCostW * Math.pow(0.95, getMeta('upg_disc'))));
                     if (spend(discCost, 0, 0)) { 
-                        c.level++; c.capacity += 10; c.upgCostW = Math.floor(c.upgCostW * 1.5); 
+                        c.level++; c.capacity += 10; c.upgCostW = Math.floor(c.upgCostW * 1.5); c.maxHp += 200; c.hp += 200; 
+                        if(c.type === 'barracks') c.warriors.push(createWarriorObj(c.x, c.y));
                         sfx('upg'); updateUI(); saveGame(); 
                     } else sfx('error');
                 }
@@ -383,249 +476,384 @@
             if (globalWood !== lastUI.w) { document.getElementById('global-wood').innerText = globalWood; lastUI.w = globalWood; }
             if (globalFood !== lastUI.f) { document.getElementById('global-food').innerText = globalFood; lastUI.f = globalFood; }
             if (globalStone !== lastUI.s) { document.getElementById('global-stone').innerText = globalStone; lastUI.s = globalStone; }
+            if (globalGold !== lastUI.g) { document.getElementById('global-gold').innerText = globalGold; lastUI.g = globalGold; }
             
-            let cw = getBaseCost('wood'), cf = getBaseCost('food'), cs = getBaseCost('stone'), ct = getBaseCost('tower');
-            document.getElementById('btn-add-lumber').innerText = `➕ Lenhador (${cw.f}🍖)`;
-            document.getElementById('btn-add-hunter').innerText = `➕ Caçador (${cf.w}🪵)`;
-            document.getElementById('btn-add-miner').innerText = `➕ Minerador (${cs.w}🪵 ${cs.f}🍖)`;
-            document.getElementById('btn-add-tower').innerText = `🗼 Torre de Guarda (${ct.s}🪨)`;
+            let cw = getBaseCost('wood'), cf = getBaseCost('food'), cs = getBaseCost('stone'), ct = getBaseCost('tower'), cg = getBaseCost('gold'), cb = getBaseCost('barracks');
+            document.getElementById('btn-add-lumber').innerText = `➕ Lenhador (${cw.f}🍖)`; document.getElementById('btn-add-hunter').innerText = `➕ Caçador (${cf.w}🪵)`; document.getElementById('btn-add-miner').innerText = `➕ Minerador (${cs.w}🪵 ${cs.f}🍖)`; document.getElementById('btn-add-gold').innerText = `➕ Ouro (${cg.w}🪵 ${cg.f}🍖 ${cg.s}🪨)`; document.getElementById('btn-add-warrior').innerText = `⚔️ Quartel (${cb.w}🪵 ${cb.f}🍖 ${cb.s}🪨 ${cb.g}🪙)`; document.getElementById('btn-add-tower').innerText = `🗼 Torre (${ct.s}🪨)`;
+            
+            document.getElementById('btn-add-lumber').disabled = globalFood < cw.f; document.getElementById('btn-add-hunter').disabled = globalWood < cf.w; document.getElementById('btn-add-miner').disabled = globalWood < cs.w || globalFood < cs.f; document.getElementById('btn-add-gold').disabled = globalWood < cg.w || globalFood < cg.f || globalStone < cg.s; document.getElementById('btn-add-warrior').disabled = globalWood < cb.w || globalFood < cb.f || globalStone < cb.s || globalGold < cb.g; document.getElementById('btn-add-tower').disabled = globalStone < ct.s;
 
-            document.getElementById('btn-add-lumber').disabled = globalFood < cw.f;
-            document.getElementById('btn-add-hunter').disabled = globalWood < cf.w;
-            document.getElementById('btn-add-miner').disabled = globalWood < cs.w || globalFood < cs.f;
-            document.getElementById('btn-add-tower').disabled = globalStone < ct.s;
+            let nextWall = calculateNextWall(); let btnWall = document.getElementById('btn-add-wall');
+            if (!nextWall.possible) { btnWall.innerText = `🧱 Muro (${nextWall.reason})`; btnWall.disabled = true; } 
+            else { btnWall.innerText = `🧱 Muro (${nextWall.cost}🪨)`; btnWall.disabled = globalStone < nextWall.cost; }
         }
 
-        /* --- FÍSICA DE SEPARAÇÃO (Soft Repulsion - Sem grudar) --- */
+        /* --- SISTEMA DE PATHFINDING E COLISÕES --- */
+        function isPointInWall(x, y) { if (walls.length === 0) return false; let pad = 35; for (let w of walls) { for (let s of w.segments) { let dx = x - s.x, dy = y - s.y; if (dx*dx + dy*dy < pad*pad) return true; } } return false; }
+        function getValidSpawnPoint(baseX, baseY, range) { let tx, ty, attempts = 0; do { tx = baseX + (Math.random() - 0.5) * range; ty = baseY + (Math.random() - 0.5) * range; attempts++; } while (isPointInWall(tx, ty) && attempts < 25); return { x: tx, y: ty, valid: !isPointInWall(tx, ty) }; }
+        function getValidRadialSpawn(baseX, baseY, radius) { let tx, ty, attempts = 0; do { let a = Math.random() * Math.PI * 2; tx = baseX + Math.cos(a) * radius; ty = baseY + Math.sin(a) * radius; attempts++; } while (isPointInWall(tx, ty) && attempts < 25); return { x: tx, y: ty, valid: !isPointInWall(tx, ty) }; }
+        function lineIntersectsWall(x1, y1, x2, y2, w) { let pad = 20; let iL = w.minX - pad, iR = w.maxX + pad, iT = w.minY - pad, iB = w.maxY + pad; if (Math.max(x1, x2) < iL || Math.min(x1, x2) > iR || Math.max(y1, y2) < iT || Math.min(y1, y2) > iB) return false; let steps = 15; for(let i=1; i<=steps; i++) { let px = x1 + (x2-x1)*(i/steps); let py = y1 + (y2-y1)*(i/steps); if (px > iL && px < iR && py > iT && py < iB) return true; } return false; }
+        function getPathAroundRect(x1, y1, x2, y2, w) {
+            if (!lineIntersectsWall(x1, y1, x2, y2, w)) return [{x: x2, y: y2}];
+            let pad = 40; let L = w.minX - pad, R = w.maxX + pad, T = w.minY - pad, B = w.maxY + pad;
+            let nodes = [ {x: x1, y: y1}, {x: x2, y: y2}, {x: L, y: T}, {x: R, y: T}, {x: R, y: B}, {x: L, y: B} ]; let graph = Array(6).fill(0).map(()=>[]);
+            for(let i=0; i<6; i++) { for(let j=i+1; j<6; j++) { if (!lineIntersectsWall(nodes[i].x, nodes[i].y, nodes[j].x, nodes[j].y, w)) { let d = Math.hypot(nodes[i].x - nodes[j].x, nodes[i].y - nodes[j].y); graph[i].push({n: j, w: d}); graph[j].push({n: i, w: d}); } } }
+            let dist = Array(6).fill(Infinity); let prev = Array(6).fill(-1); dist[0] = 0; let q = [0,1,2,3,4,5];
+            while(q.length > 0) { q.sort((a,b) => dist[a] - dist[b]); let u = q.shift(); if (u === 1 || dist[u] === Infinity) break; for(let edge of graph[u]) { let alt = dist[u] + edge.w; if (alt < dist[edge.n]) { dist[edge.n] = alt; prev[edge.n] = u; } } }
+            let path = []; let curr = 1; while(curr !== -1 && curr !== 0) { path.unshift(nodes[curr]); curr = prev[curr]; } return path;
+        }
+
+        function isInsideWallBox(x, y, w) { let m = 15; return (x > w.minX-m && x < w.maxX+m && y > w.minY-m && y < w.maxY+m); }
+        function getWallsEnclosing(x, y) { return walls.filter(w => isInsideWallBox(x, y, w)); }
+
+        function calculatePath(startX, startY, destX, destY) {
+            if (walls.length === 0) return [{x: destX, y: destY}];
+            let sWalls = getWallsEnclosing(startX, startY); let dWalls = getWallsEnclosing(destX, destY);
+            let exitWalls = sWalls.filter(w => !dWalls.includes(w)); let enterWalls = dWalls.filter(w => !sWalls.includes(w)).reverse(); 
+            let path = []; let cx = startX, cy = startY;
+            for (let w of exitWalls) {
+                if (w.gateX === undefined) continue; let pull = 110; let inNode = {x: w.gateX, y: w.gateY}; let outNode = {x: w.gateX, y: w.gateY};
+                if (w.gateSide === 'left') { outNode.x -= pull; inNode.x += pull; } else if (w.gateSide === 'right') { outNode.x += pull; inNode.x -= pull; } else if (w.gateSide === 'top') { outNode.y -= pull; inNode.y += pull; } else { outNode.y += pull; inNode.y -= pull; }
+                path.push(inNode, outNode); cx = outNode.x; cy = outNode.y;
+            }
+            for (let w of enterWalls) {
+                if (w.gateX === undefined) continue; let pull = 110; let inNode = {x: w.gateX, y: w.gateY}; let outNode = {x: w.gateX, y: w.gateY};
+                if (w.gateSide === 'left') { outNode.x -= pull; inNode.x += pull; } else if (w.gateSide === 'right') { outNode.x += pull; inNode.x -= pull; } else if (w.gateSide === 'top') { outNode.y -= pull; inNode.y += pull; } else { outNode.y += pull; inNode.y -= pull; }
+                let aroundPath = getPathAroundRect(cx, cy, outNode.x, outNode.y, w); path = path.concat(aroundPath); path.push(inNode); cx = inNode.x; cy = inNode.y;
+            }
+            let highestBlockingWall = [...walls].reverse().find(w => !isInsideWallBox(cx, cy, w) && !isInsideWallBox(destX, destY, w));
+            if (highestBlockingWall) { path = path.concat(getPathAroundRect(cx, cy, destX, destY, highestBlockingWall)); } else { path.push({x: destX, y: destY}); }
+            return path;
+        }
+
+        function walkPath(ent) {
+            if (!ent.path || ent.path.length === 0) return true; 
+            let tgt = ent.path[0]; let dx = tgt.x - ent.x, dy = tgt.y - ent.y; let d = Math.hypot(dx, dy);
+            if (d < 15) { ent.path.shift(); return ent.path.length === 0; }
+            let spd = Math.min(d, ent.speed || 2); ent.x += (dx/d)*spd; ent.y += (dy/d)*spd; return false;
+        }
+
+        function collideBox(ent, left, right, top, bottom) {
+            if (ent.x > left && ent.x < right && ent.y > top && ent.y < bottom) {
+                let dl = ent.x - left; let dr = right - ent.x; let dt = ent.y - top;  let db = bottom - ent.y;
+                let m = Math.min(dl, dr, dt, db);
+                if (m === dl) ent.x = left; else if (m === dr) ent.x = right; else if (m === dt) ent.y = top; else ent.y = bottom;
+                return true;
+            } return false;
+        }
+        function resolveWallAABB(ent, radius, isEnemyWarrior = false) {
+            if (!ent || ent.isDead || walls.length === 0) return;
+            for (let w of walls) {
+                if (w.gateX !== undefined && Math.hypot(ent.x - w.gateX, ent.y - w.gateY) < 140) continue;
+                let pad = 12 + radius; 
+                let hit1 = collideBox(ent, w.minX - pad, w.minX + pad, w.minY - pad, w.maxY + pad); 
+                let hit2 = collideBox(ent, w.maxX - pad, w.maxX + pad, w.minY - pad, w.maxY + pad); 
+                let hit3 = collideBox(ent, w.minX - pad, w.maxX + pad, w.minY - pad, w.minY + pad); 
+                let hit4 = collideBox(ent, w.minX - pad, w.maxX + pad, w.maxY - pad, w.maxY + pad); 
+                
+                // INIMIGOS QUEBRAM MUROS
+                if (isEnemyWarrior && (hit1 || hit2 || hit3 || hit4)) {
+                    let closestSeg = null; let minD = Infinity;
+                    w.segments.forEach(s => { let d = Math.hypot(ent.x - s.x, ent.y - s.y); if(d < minD){ minD = d; closestSeg = s; } });
+                    if(closestSeg && minD < 40) { ent.state = 'hitting_wall'; ent.targetObj = closestSeg; ent.path = []; return; }
+                }
+            }
+        }
         function applyRepulsion(a, b, radius, force) {
             let dx = a.x - b.x, dy = a.y - b.y, distSq = dx*dx + dy*dy;
             if(distSq === 0) { dx = Math.random()-0.5; dy = Math.random()-0.5; distSq = dx*dx + dy*dy; }
-            if(distSq < radius * radius) {
-                let dist = Math.sqrt(distSq), overlap = radius - dist;
-                let pushX = (dx / dist) * (overlap * force), pushY = (dy / dist) * (overlap * force);
-                a.x += pushX * 0.5; a.y += pushY * 0.5; b.x -= pushX * 0.5; b.y -= pushY * 0.5;
-            }
+            if(distSq < radius * radius) { let dist = Math.sqrt(distSq), overlap = radius - dist; let pushX = (dx / dist) * (overlap * force), pushY = (dy / dist) * (overlap * force); a.x += pushX * 0.5; a.y += pushY * 0.5; b.x -= pushX * 0.5; b.y -= pushY * 0.5; }
         }
         function resolveCollisions() {
             const FORCE = 0.15;
-            for(let i=0; i<camps.length; i++) {
-                if(camps[i].type === 'tower') continue;
-                let w1 = camps[i].worker; if(w1.isDead) continue;
-                for(let j=i+1; j<camps.length; j++) {
-                    if(camps[j].type === 'tower') continue;
-                    let w2 = camps[j].worker; if(w2.isDead) continue; applyRepulsion(w1, w2, 22, FORCE);
+            let allWorkers = [];
+            camps.forEach(c => { if (c.type === 'barracks') c.warriors.forEach(w => { if(!w.isDead) allWorkers.push(w); }); else if (c.type !== 'tower' && !c.worker.isDead) allWorkers.push(c.worker); });
+            
+            for(let i=0; i<allWorkers.length; i++) {
+                resolveWallAABB(allWorkers[i], 10); 
+                for(let j=i+1; j<allWorkers.length; j++) { applyRepulsion(allWorkers[i], allWorkers[j], 22, FORCE); }
+            }
+            [wolves, bears, lions, hares, enemyWarriors].forEach(arr => {
+                let rad = arr===bears ? 18 : (arr===lions ? 15 : (arr===wolves ? 10 : 8)); let rep = arr===bears ? 35 : (arr===lions ? 30 : (arr===wolves ? 22 : 15));
+                if(arr===enemyWarriors) { rad = 10; rep = 22; }
+                for(let i=0; i<arr.length; i++) { 
+                    let a = arr[i]; if(!a.active) continue; resolveWallAABB(a, rad, arr===enemyWarriors); 
+                    for(let j=i+1; j<arr.length; j++) { let b = arr[j]; if(!b.active) continue; applyRepulsion(a, b, rep, FORCE); } 
+                }
+            });
+        }
+
+        /* --- LÓGICA DE PREDADORES E INIMIGOS --- */
+        function getClosestActive(x, y, arr) { let closest = null, minD = Infinity; for(let i=0; i<arr.length; i++) { if(!arr[i].active) continue; let dSq = (arr[i].x - x)*(arr[i].x - x) + (arr[i].y - y)*(arr[i].y - y); if(dSq < minD) { minD = dSq; closest = arr[i]; } } return closest; }
+        
+        function getClosestEnemy(x, y) { 
+            let closest = null, minD = Infinity; 
+            [wolves, bears, lions, enemyWarriors].forEach(arr => { for(let i=0; i<arr.length; i++) { if(!arr[i].active) continue; let dSq = (arr[i].x - x)*(arr[i].x - x) + (arr[i].y - y)*(arr[i].y - y); if(dSq < minD) { minD = dSq; closest = arr[i]; } } }); 
+            return closest; 
+        }
+        
+        function getPredatorTarget(predator) {
+            let targets = [];
+            if (predator.type === 'enemyWarrior') {
+                camps.forEach(c => {
+                    if(c.hp > 0) targets.push({obj: c, type: 'building', campRef: c});
+                    if(c.type === 'barracks') c.warriors.forEach(w => { if(!w.isDead) targets.push({obj: w, type: 'friendlyWarrior', campRef: c}); });
+                    else if(c.type !== 'tower' && !c.worker.isDead) targets.push({obj: c.worker, type: 'worker', campRef: c});
+                });
+                wolves.forEach(w => { if(w.active) targets.push({obj: w, type: 'wolf'}); });
+                bears.forEach(b => { if(b.active) targets.push({obj: b, type: 'bear'}); });
+                lions.forEach(l => { if(l.active) targets.push({obj: l, type: 'lion'}); });
+            } else {
+                camps.forEach(c => {
+                    if(c.type === 'barracks') c.warriors.forEach(w => { if(!w.isDead) targets.push({obj: w, type: 'worker', campRef: c}); });
+                    else if(c.type !== 'tower' && !c.worker.isDead) targets.push({obj: c.worker, type: 'worker', campRef: c});
+                });
+                hares.forEach(h => { if(h.active) targets.push({obj: h, type: 'hare'}); });
+                wolves.forEach(w => { if(w.active && predator.type !== 'wolf') targets.push({obj: w, type: 'wolf'}); });
+                bears.forEach(b => { if(b.active && predator.type !== 'bear') targets.push({obj: b, type: 'bear'}); });
+                lions.forEach(l => { if(l.active && predator.type !== 'lion') targets.push({obj: l, type: 'lion'}); });
+                enemyWarriors.forEach(ew => { if(ew.active) targets.push({obj: ew, type: 'enemyWarrior'}); });
+            }
+
+            let closest = null; let minD = Infinity;
+            targets.forEach(t => { let d = (t.obj.x - predator.x)*(t.obj.x - predator.x) + (t.obj.y - predator.y)*(t.obj.y - predator.y); if(d < minD) { minD = d; closest = t; } });
+            if (minD < 90000) return closest; return null;
+        }
+
+        function processPredatorCombat(attacker, targetWrap) {
+            let def = targetWrap.obj; let defType = targetWrap.type;
+            
+            if(attacker.type === 'enemyWarrior') {
+                if (defType === 'building') {
+                    let c = targetWrap.campRef; c.hp -= 2; 
+                    if (c.hp <= 0) { c.workerIsDead = true; if(c.warriors) c.warriors.forEach(w=>w.isDead=true); sfx('human_die'); attacker.state='moving'; attacker.targetObj=null; attacker.path=[]; }
+                } 
+                else if (defType === 'worker' || defType === 'friendlyWarrior') {
+                    let killChance = 0.02 - (getMeta('emy_atd')*0.002); // Dano massivo na casa faz eles focarem lá, se pegar num alvo ele morre em 1.5s
+                    if (Math.random() <= Math.max(0.005, killChance)) { def.isDead = true; sfx('human_die'); attacker.state='moving'; attacker.targetObj=null; attacker.path=[]; }
+                } 
+                else if (defType === 'wolf' || defType === 'bear' || defType === 'lion') { if (Math.random() <= 0.3) { def.active = false; sfx('bear_roar'); } }
+            }
+            else { // Animais
+                if(defType === 'worker' || defType === 'tower' || defType === 'friendlyWarrior') {
+                    let c = targetWrap.campRef; if(c.type==='tower') return; 
+                    let baseChance = attacker.type === 'wolf' ? (c.type==='wood'?0.65:(c.type==='food'?0.75:0.60)) : (c.type==='stone'||c.type==='gold'?0.03:0.05);
+                    let wDef = attacker.type === 'wolf' ? getMeta('def_wlf') * 0.05 : getMeta('def_br') * 0.02; 
+                    if (c.type==='barracks') { baseChance = 0.1; wDef += getMeta('war_def')*0.05; }
+                    
+                    if(Math.random() <= baseChance + wDef) { def.isDead = true; sfx('human_die'); } 
+                    else { 
+                        attacker.active = false; 
+                        if (attacker.type === 'wolf') { sfx('wolf_die'); if(Math.random() <= 0.8 + (getMeta('drp_wlf') * 0.1)) drops.push({x:attacker.x, y:attacker.y, active:true, isDrop:true}); }
+                        else if (attacker.type === 'bear') { sfx('bear_roar'); drops.push({x:attacker.x,y:attacker.y,active:true,isDrop:true}); if(Math.random() <= 0.35 + (getMeta('drp_br') * 0.15)) drops.push({x:attacker.x+10,y:attacker.y,active:true,isDrop:true}); }
+                        else if (attacker.type === 'lion') { sfx('bear_roar'); drops.push({x:attacker.x,y:attacker.y,active:true,isDrop:true}); if(Math.random()<=0.1+getMeta('drp_lio')*0.1) drops.push({x:attacker.x-10,y:attacker.y,active:true,isGoldDrop:true}); }
+                    }
+                } 
+                else if (defType === 'enemyWarrior') { if(Math.random() <= 0.5) def.active = false; else attacker.active = false; }
+                else if (defType === 'hare') { def.active = false; def.timer = 150; sfx('pickup'); }
+                else { 
+                    let attWinChance = 0.5; if(attacker.type === 'wolf') attWinChance = 0.1; else if (attacker.type === 'bear') attWinChance = defType === 'wolf' ? 0.9 : 0.5; else if (attacker.type === 'lion') attWinChance = defType === 'wolf' ? 0.9 : 0.5;
+                    if (Math.random() <= attWinChance) { def.active = false; if(defType==='wolf') sfx('wolf_die'); else sfx('bear_roar'); } else { attacker.active = false; if(attacker.type==='wolf') sfx('wolf_die'); else sfx('bear_roar'); }
                 }
             }
-            for(let i=0; i<wolves.length; i++) { let a = wolves[i]; if(!a.active) continue; for(let j=i+1; j<wolves.length; j++) { let b = wolves[j]; if(!b.active) continue; applyRepulsion(a, b, 22, FORCE); } }
-            for(let i=0; i<bears.length; i++) { let a = bears[i]; if(!a.active) continue; for(let j=i+1; j<bears.length; j++) { let b = bears[j]; if(!b.active) continue; applyRepulsion(a, b, 35, FORCE); } }
-            for(let i=0; i<hares.length; i++) { let a = hares[i]; if(!a.active) continue; for(let j=i+1; j<hares.length; j++) { let b = hares[j]; if(!b.active) continue; applyRepulsion(a, b, 15, FORCE); } }
         }
 
-        /* --- OTIMIZAÇÃO DE BUSCA SEM ARRAYS LIXO (Zero GC) --- */
-        function getClosestActive(x, y, arr) {
-            let closest = null, minD = Infinity;
-            for(let i=0; i<arr.length; i++) {
-                if(!arr[i].active) continue; let dSq = (arr[i].x - x)*(arr[i].x - x) + (arr[i].y - y)*(arr[i].y - y);
-                if(dSq < minD) { minD = dSq; closest = arr[i]; }
-            } return closest;
-        }
-
-        function getClosestEnemy(x, y) {
-            let closest = null, minD = Infinity;
-            for(let i=0; i<wolves.length; i++) {
-                if(!wolves[i].active) continue; let dSq = (wolves[i].x - x)*(wolves[i].x - x) + (wolves[i].y - y)*(wolves[i].y - y);
-                if(dSq < minD) { minD = dSq; closest = wolves[i]; }
-            }
-            for(let i=0; i<bears.length; i++) {
-                if(!bears[i].active) continue; let dSq = (bears[i].x - x)*(bears[i].x - x) + (bears[i].y - y)*(bears[i].y - y);
-                if(dSq < minD) { minD = dSq; closest = bears[i]; }
-            } return closest;
-        }
-
-        function getClosestWorker(x, y) {
-            let closest = null, minD = Infinity;
-            for(let i=0; i<camps.length; i++) {
-                if(camps[i].type === 'tower') continue; // Inimigos ignoram a torre
-                let w = camps[i].worker; if(w.isDead) continue;
-                let dSq = (w.x - x)*(w.x - x) + (w.y - y)*(w.y - y);
-                if(dSq < minD) { minD = dSq; closest = w; }
-            } return closest;
-        }
-
-        /* --- LOGICA DE JOGO OTIMIZADA --- */
         function maintainWorld(aliveCount) {
-            let maxT = Math.min(aliveCount * 5, 200), maxH = Math.min(aliveCount * 3, 100);
-            let treeHits = Math.max(1, 3 - getMeta('yld_w'));
-
+            let maxT = Math.min(aliveCount * 5, 200), maxH = Math.min(aliveCount * 3, 100); let treeHits = Math.max(1, 3 - getMeta('yld_w'));
             if (aliveCount > 0) {
-                if (trees.length < maxT) { let c=camps[Math.floor(Math.random()*camps.length)]; trees.push({ x: c.x+(Math.random()-0.5)*500, y: c.y+(Math.random()-0.5)*500, active: true, timer: 0, hits: treeHits, maxH: treeHits }); }
-                if (hares.length < maxH) { let c=camps[Math.floor(Math.random()*camps.length)]; hares.push({ x: c.x+(Math.random()-0.5)*600, y: c.y+(Math.random()-0.5)*600, active: true, timer: 0 }); }
-                if (mountains.length < 1) { let c=camps[Math.floor(Math.random()*camps.length)]; let mx = c.x+(Math.random()>0.5?1:-1)*(600+Math.random()*400), my = c.y+(Math.random()>0.5?1:-1)*(600+Math.random()*400); mountains.push({ x: mx, y: my, active: true, timer: 0, hits: 50 }); bears.push({ x: mx+50, y: my+50, active: true, speed: 1.5 * Math.pow(0.95, getMeta('spd_br')), isBear: true, spawnX: mx, spawnY: my }); }
+                if (trees.length < maxT) { let c = camps[Math.floor(Math.random()*camps.length)]; let pt = getValidSpawnPoint(c.x, c.y, 1500); if (pt.valid) trees.push({ x: pt.x, y: pt.y, active: true, timer: 0, hits: treeHits, maxH: treeHits }); }
+                if (hares.length < maxH) { let c = camps[Math.floor(Math.random()*camps.length)]; let pt = getValidSpawnPoint(c.x, c.y, 1500); if (pt.valid) hares.push({ x: pt.x, y: pt.y, active: true, timer: 0 }); }
+                if (mountains.length < 1) { let c = camps[Math.floor(Math.random()*camps.length)]; let mx = c.x+(Math.random()>0.5?1:-1)*(800+Math.random()*600); let my = c.y+(Math.random()>0.5?1:-1)*(800+Math.random()*600); if (!isPointInWall(mx, my)) { mountains.push({ x: mx, y: my, active: true, timer: 0, hits: 50 }); bears.push({ x: mx+50, y: my+50, active: true, speed: 1.5 * Math.pow(0.95, getMeta('spd_br')), type: 'bear', spawnX: mx, spawnY: my, path: [] }); } }
+                if (goldMountains.length < 1) { if(Math.random() < 0.05) { let c = camps[Math.floor(Math.random()*camps.length)]; let mx = c.x+(Math.random()>0.5?1:-1)*(1000+Math.random()*800); let my = c.y+(Math.random()>0.5?1:-1)*(1000+Math.random()*800); if (!isPointInWall(mx, my)) { goldMountains.push({ x: mx, y: my, active: true, timer: 0, hits: 50 }); lions.push({ x: mx+50, y: my+50, active: true, speed: 2.0, type: 'lion', spawnX: mx, spawnY: my, path: [] }); } } }
             }
         }
 
         function processEnemies(hunterCount) {
             let actW = 0; for(let i=0; i<wolves.length; i++) if(wolves[i].active) actW++;
-            let bearAlive = false; for(let i=0; i<bears.length; i++) if(bears[i].active){ bearAlive=true; break;}
+            let bearAlive = bears.some(b => b.active); let lionAlive = lions.some(l => l.active);
+            let wolfSpwnRate = (!bearAlive && !lionAlive) ? 0.01 * Math.pow(0.9, getMeta('spn_wlf')) : 0;
+            if (hunterCount > 0 && actW < hunterCount && Math.random() < wolfSpwnRate) { let hC = camps.filter(c=>(c.type==='food' && !c.worker.isDead)); if(hC.length > 0) { let rH = hC[Math.floor(Math.random()*hC.length)]; let pt = getValidRadialSpawn(rH.x, rH.y, 900); if (pt.valid) wolves.push({ x: pt.x, y: pt.y, active: true, speed: 2.2, type: 'wolf', path: [] }); } }
 
-            let wolfSpwnRate = 0.01 * Math.pow(0.9, getMeta('spn_wlf'));
-
-            // O limite e chance de spawn de lobos são baseados unicamente na quantidade de caçadores
-            if (!bearAlive && hunterCount > 0 && actW < hunterCount && Math.random() < wolfSpwnRate) {
-                let hC = camps.filter(c=>(c.type==='food' && !c.worker.isDead));
-                if(hC.length > 0) {
-                    let rH = hC[Math.floor(Math.random()*hC.length)]; let a = Math.random()*Math.PI*2;
-                    wolves.push({ x: rH.x + Math.cos(a)*800, y: rH.y + Math.sin(a)*800, active: true, speed: 2, isWolf: true });
-                }
-            }
-
-            for(let i=0; i<wolves.length; i++) {
-                let w = wolves[i]; if(!w.active) continue;
-                let tgt = getClosestWorker(w.x, w.y);
-                if (tgt) {
-                    let dx = tgt.x - w.x, dy = tgt.y - w.y, d = Math.sqrt(dx*dx + dy*dy);
-                    if (d > 15) { w.x += (dx/d)*w.speed; w.y += (dy/d)*w.speed; } 
-                    else {
-                        let c = camps.find(cp=>cp.worker===tgt);
-                        let wc = (c.type==='wood'?0.65:(c.type==='food'?0.75:0.60)) + (getMeta('def_wlf') * 0.05);
-                        if(Math.random()<=wc) { tgt.isDead=true; sfx('human_die'); } else { 
-                            w.active=false; sfx('wolf_die'); 
-                            if(Math.random() <= 0.8 + (getMeta('drp_wlf') * 0.1)) drops.push({ x: w.x, y: w.y, active: true, isDrop: true }); 
-                        }
+            // INVASÕES
+            if (hasBarracks && camps.length > 0) {
+                raidCooldown--;
+                if (raidCooldown <= 0) {
+                    let delayMult = 1 + (getMeta('raid_dl')*0.1);
+                    raidCooldown = (300 * 60) * delayMult; 
+                    let numEnemies = 1 + Math.floor(totalPlaySeconds / 3600);
+                    let rC = camps[Math.floor(Math.random()*camps.length)];
+                    for(let i=0; i<numEnemies; i++) {
+                        let pt = getValidRadialSpawn(rC.x, rC.y, 2500); 
+                        if (pt.valid) enemyWarriors.push({ x: pt.x, y: pt.y, active: true, speed: 1.8 * Math.pow(0.95, getMeta('emy_slw')), type: 'enemyWarrior', path: [], state: 'moving', timer: 0 });
                     }
                 }
             }
 
-            for(let i=0; i<bears.length; i++) {
-                let b = bears[i]; if(!b.active) continue;
-                let tgt = getClosestWorker(b.x, b.y);
-                if (tgt && (tgt.x-b.x)*(tgt.x-b.x) + (tgt.y-b.y)*(tgt.y-b.y) < 62500) { 
-                    let dx = tgt.x - b.x, dy = tgt.y - b.y, d = Math.sqrt(dx*dx + dy*dy);
-                    if (d > 15) { b.x += (dx/d)*b.speed; b.y += (dy/d)*b.speed; } 
-                    else {
-                        let c = camps.find(cp=>cp.worker===tgt);
-                        let wc = (c.type==='stone'?0.03:0.05) + (getMeta('def_br') * 0.02);
-                        if(Math.random()<=wc) { 
-                            b.active=false; sfx('bear_roar'); 
-                            drops.push({x:b.x,y:b.y,active:true,isDrop:true});
-                            if(Math.random() <= 0.35 + (getMeta('drp_br') * 0.15)) drops.push({x:b.x+10,y:b.y,active:true,isDrop:true}); 
-                        } else { tgt.isDead=true; sfx('human_die'); }
+            [wolves, bears, lions, enemyWarriors].forEach(arr => {
+                for(let i=0; i<arr.length; i++) {
+                    let p = arr[i]; if(!p.active) continue; 
+                    
+                    if(p.type === 'enemyWarrior' && p.state === 'hitting_wall' && p.targetObj) {
+                        p.timer++;
+                        if(p.timer > 30) {
+                            p.timer = 0; p.targetObj.hp -= 30; sfx('wall_hit');
+                            if(p.targetObj.hp <= 0) { walls.forEach(w => { w.segments = w.segments.filter(s => s !== p.targetObj); }); p.state = 'moving'; p.targetObj = null; p.path = []; }
+                        } continue; 
                     }
-                } else {
-                    let dx = b.spawnX - b.x, dy = b.spawnY - b.y, d = Math.sqrt(dx*dx + dy*dy);
-                    if (d > 10) { b.x += (dx/d)*(b.speed*0.5); b.y += (dy/d)*(b.speed*0.5); }
+
+                    let targetWrap = getPredatorTarget(p);
+                    if (targetWrap) {
+                        if (p.path.length === 0 || Math.random() < 0.05) p.path = calculatePath(p.x, p.y, targetWrap.obj.x, targetWrap.obj.y); walkPath(p);
+                        if (Math.hypot(targetWrap.obj.x - p.x, targetWrap.obj.y - p.y) < 20 && p.path.length <= 1) { processPredatorCombat(p, targetWrap); }
+                    } else {
+                        if (p.type === 'bear' || p.type === 'lion') { if (p.path.length === 0 || Math.random() < 0.05) p.path = calculatePath(p.x, p.y, p.spawnX, p.spawnY); walkPath(p); }
+                        else if (p.type === 'enemyWarrior') { if (camps.length > 0) { let rc = camps[0]; if (p.path.length === 0 || Math.random() < 0.05) p.path = calculatePath(p.x, p.y, rc.x, rc.y); walkPath(p); } }
+                    }
+                }
+            });
+        }
+
+        // Lógica Exclusiva do Guerreiro Aliado
+        function processWarrior(w, camp) {
+            if (w.isDead) return;
+
+            if (!w.lastX) { w.lastX = w.x; w.lastY = w.y; w.stuckTimer = 0; }
+            if (w.state === 'moving' || w.state === 'hunting' || w.state === 'patrol') {
+                if (Math.hypot(w.x - w.lastX, w.y - w.lastY) < 0.5) w.stuckTimer++; else w.stuckTimer = 0;
+                w.lastX = w.x; w.lastY = w.y;
+                if (w.stuckTimer > 90) { w.stuckTimer = 0; w.path = []; w.state = 'patrol'; w.x += (Math.random()-0.5)*20; w.y += (Math.random()-0.5)*20; }
+            } else { w.stuckTimer = 0; }
+
+            // DETECÇÃO GLOBAL DE INVASORES
+            let closestEw = null, minDEw = Infinity;
+            enemyWarriors.forEach(ew => { if(ew.active) { let d = Math.hypot(w.x-ew.x, w.y-ew.y); if(d < minDEw){ minDEw = d; closestEw = ew; } } });
+
+            let tgt = null;
+            if (closestEw) { tgt = closestEw; } // Vai pro inimigo humano
+            else { 
+                // Se não tem humano, procura bicho num raio de 500
+                let tEnemy = getClosestEnemy(w.x, w.y);
+                if (tEnemy && Math.hypot(w.x-tEnemy.x, w.y-tEnemy.y) < 500) tgt = tEnemy; 
+            }
+
+            if (tgt) { w.state = 'hunting'; w.targetObj = tgt; } 
+            else if (w.state === 'hunting' || w.state === 'melee_attack') { w.state = 'patrol'; w.path = []; w.targetObj = null; }
+
+            if (w.state === 'patrol' || w.state === 'idle') {
+                w.state = 'patrol';
+                if (w.path.length === 0) {
+                    if (Math.random() < 0.02) {
+                        let rx = camp.x + (Math.random() - 0.5) * 200; let ry = camp.y + (Math.random() - 0.5) * 200;
+                        if (!isPointInWall(rx, ry)) w.path = calculatePath(w.x, w.y, rx, ry);
+                    }
+                } else walkPath(w);
+            }
+            else if (w.state === 'hunting') {
+                if (!w.targetObj || !w.targetObj.active) { w.state = 'patrol'; w.path=[]; return; }
+                if (w.path.length === 0 || (w.path.length === 1 && Math.hypot(w.path[0].x - w.targetObj.x, w.path[0].y - w.targetObj.y) > 50)) { w.path = calculatePath(w.x, w.y, w.targetObj.x, w.targetObj.y); }
+                if (w.path.length > 1) { walkPath(w); } else if (Math.hypot(w.targetObj.x - w.x, w.targetObj.y - w.y) > 25) { walkPath(w); } 
+                else { w.state = 'melee_attack'; w.timer = 0; w.path = []; }
+            }
+            else if (w.state === 'melee_attack') {
+                if (!w.targetObj || !w.targetObj.active) { w.state = 'patrol'; return; }
+                if (Math.hypot(w.targetObj.x - w.x, w.targetObj.y - w.y) > 30) { w.state = 'hunting'; return; } 
+                
+                w.timer++; if(w.timer > 15) w.showAct = true; else w.showAct = false;
+                if (w.timer >= 30) {
+                    w.timer = 0; sfx('chop'); w.showAct = false;
+                    let killChance = 0.5 + (getMeta('war_atk')*0.05);
+                    if (w.targetObj.type === 'wolf' && getMeta('war_v_w') > 0) killChance = 1.0;
+                    if (Math.random() <= killChance) { 
+                        w.targetObj.active = false; 
+                        if (w.targetObj.type === 'enemyWarrior') { sfx('human_die'); if (Math.random() <= getMeta('emy_drp')*0.15) drops.push({x:w.targetObj.x, y:w.targetObj.y, active:true, isGoldDrop:true}); }
+                        else if (w.targetObj.type === 'bear' || w.targetObj.type === 'lion') sfx('bear_roar');
+                        else sfx('wolf_die');
+                        w.state = 'patrol'; w.targetObj = null;
+                    }
                 }
             }
         }
 
+        // Trabalhadores de Recurso
         function processWorker(camp) {
             let w = camp.worker; if (w.isDead) return;
             
-            // LÓGICA EXCLUSIVA DA TORRE DE GUARDA
-            if (camp.type === 'tower') {
-                let tEnemy = getClosestEnemy(w.x, w.y);
-                if (tEnemy) {
-                    let dx = tEnemy.x - w.x, dy = tEnemy.y - w.y, d = Math.sqrt(dx*dx + dy*dy);
-                    let atkRange = 300 * (1 + getMeta('atk_w')*0.1); // Alcance super longo da torre
-                    if (d <= atkRange) {
-                        w.bowAngle = Math.atan2(dy, dx); w.timer++; w.state = 'aiming';
-                        let aimMax = 25 * Math.pow(0.85, getMeta('act_f')); // Atira um pouco mais rápido que caçador
-                        if (w.timer >= aimMax) {
-                            sfx('shoot');
-                            let aSpd = 15 * (1 + getMeta('arr_spd') * 0.2);
-                            arrows.push({ active:true, x:w.x, y:w.y, angle:w.bowAngle, speed:aSpd, target:tEnemy, owner: w });
-                            w.timer = 0; w.state = 'guarding';
-                        }
-                    } else { w.state = 'guarding'; w.timer = 0; }
-                } else { w.state = 'guarding'; w.timer = 0; }
-                return; // Ignora o resto da logica de movimento para torres
-            }
+            if (!w.lastX) { w.lastX = w.x; w.lastY = w.y; w.stuckTimer = 0; }
+            if (w.state === 'moving' || w.state === 'returning' || w.state === 'hunting') {
+                if (Math.hypot(w.x - w.lastX, w.y - w.lastY) < 0.5) w.stuckTimer++; else w.stuckTimer = 0;
+                w.lastX = w.x; w.lastY = w.y;
+                if (w.stuckTimer > 90) { w.stuckTimer = 0; w.path = []; if (w.state === 'returning') { w.x = camp.x; w.y = camp.y; } else if (w.targetObj) { w.x = w.targetObj.x; w.y = w.targetObj.y; } }
+            } else { w.stuckTimer = 0; }
 
-            // Trabalhadores normais
-            let totC = w.carry + w.carryFood;
-            let tEnemy = getClosestEnemy(w.x, w.y);
-            let hasHunt = camp.type === 'food' && tEnemy;
+            let totC = w.carry + w.carryFood; let tEnemy = getClosestEnemy(w.x, w.y); let hasHunt = camp.type === 'food' && tEnemy;
 
             if (w.state === 'idle_full' && hasHunt) w.state = 'idle';
             if (!hasHunt && camp.stored >= camp.capacity && totC > 0 && w.state !== 'returning') { w.state = 'idle_full'; return; }
             if (w.state === 'idle_full' && camp.stored < camp.capacity) w.state = 'returning';
 
             if (w.state === 'idle') {
-                if (totC >= w.maxCarry && !hasHunt) { w.state = 'returning'; } 
+                if (totC >= w.maxCarry && !hasHunt) { w.state = 'returning'; w.path = calculatePath(w.x, w.y, camp.x, camp.y); } 
                 else {
                     let tgt = null;
-                    if (camp.type === 'wood' || camp.type === 'stone') {
-                        let cM = getClosestActive(w.x, w.y, camp.type==='wood'?trees:mountains);
-                        let cD = getClosestActive(w.x, w.y, drops);
-                        if (cD && cM) {
-                            let dM = (cM.x-w.x)*(cM.x-w.x) + (cM.y-w.y)*(cM.y-w.y);
-                            let dD = (cD.x-w.x)*(cD.x-w.x) + (cD.y-w.y)*(cD.y-w.y);
-                            tgt = dD < dM ? cD : cM;
-                        } else tgt = cD || cM;
-                    } else {
-                        tgt = tEnemy;
-                        if (!tgt && totC < w.maxCarry) { tgt = getClosestActive(w.x, w.y, drops); if(!tgt) tgt = getClosestActive(w.x, w.y, hares); }
-                    }
-                    if (tgt) { if (tgt.isDrop || camp.type==='wood' || camp.type==='stone') w.state = 'moving'; else w.state = 'hunting'; w.targetObj = tgt; } 
-                    else if (totC > 0) w.state = 'returning';
+                    if (camp.type === 'wood') { let cM = getClosestActive(w.x, w.y, trees); let cD = getClosestActive(w.x, w.y, drops); if (cD && cM) { tgt = Math.hypot(cD.x-w.x,cD.y-w.y) < Math.hypot(cM.x-w.x,cM.y-w.y) ? cD : cM; } else tgt = cD || cM; } 
+                    else if (camp.type === 'stone') { let cM = getClosestActive(w.x, w.y, mountains); let cD = getClosestActive(w.x, w.y, drops); if (cD && cM) { tgt = Math.hypot(cD.x-w.x,cD.y-w.y) < Math.hypot(cM.x-w.x,cM.y-w.y) ? cD : cM; } else tgt = cD || cM; } 
+                    else if (camp.type === 'gold') { let cM = getClosestActive(w.x, w.y, goldMountains); let cD = getClosestActive(w.x, w.y, drops); if (cD && cM) { tgt = Math.hypot(cD.x-w.x,cD.y-w.y) < Math.hypot(cM.x-w.x,cM.y-w.y) ? cD : cM; } else tgt = cD || cM; }
+                    else { tgt = tEnemy; if (!tgt && totC < w.maxCarry) { tgt = getClosestActive(w.x, w.y, drops); if(!tgt) tgt = getClosestActive(w.x, w.y, hares); } }
+                    
+                    if (tgt) { if (tgt.isDrop || camp.type!=='food') w.state = 'moving'; else w.state = 'hunting'; w.targetObj = tgt; w.path = calculatePath(w.x, w.y, tgt.x, tgt.y); } 
+                    else if (totC > 0) { w.state = 'returning'; w.path = calculatePath(w.x, w.y, camp.x, camp.y); }
+                    else { if (Math.random() < 0.02) { w.x += (Math.random() - 0.5) * 15; w.y += (Math.random() - 0.5) * 15; if (Math.hypot(w.x - camp.x, w.y - camp.y) > 40) { w.x = camp.x; w.y = camp.y; } } }
                 }
             }
             
             else if (w.state === 'moving' && w.targetObj) {
                 if(!w.targetObj.active) { w.state='idle'; return; }
-                let dx = w.targetObj.x - w.x, dy = w.targetObj.y - w.y, d = Math.sqrt(dx*dx + dy*dy);
-                if (d > (w.targetObj.isDrop?5:25)) { w.x += (dx/d)*w.speed; w.y += (dy/d)*w.speed; } 
-                else { w.state = w.targetObj.isDrop ? 'looting' : 'chopping'; w.timer = 0; }
+                if (w.path.length === 0 || (w.path.length === 1 && Math.hypot(w.path[0].x - w.targetObj.x, w.path[0].y - w.targetObj.y) > 50)) { w.path = calculatePath(w.x, w.y, w.targetObj.x, w.targetObj.y); }
+                walkPath(w);
+                if (w.path.length === 0 || (w.path.length === 1 && Math.hypot(w.targetObj.x - w.x, w.targetObj.y - w.y) <= (w.targetObj.isDrop?10:25))) {
+                    w.state = w.targetObj.isDrop ? 'looting' : 'chopping'; w.timer = 0; w.path = [];
+                }
             }
 
             else if (w.state === 'chopping') {
-                if (!w.targetObj.active) { w.state = 'idle'; return; }
-                w.timer++;
-                let tMax = camp.type==='stone' ? Math.max(10, 40 * Math.pow(0.85, getMeta('act_s'))) : Math.max(10, 30 * Math.pow(0.85, getMeta('act_w')));
+                if (!w.targetObj.active) { w.state = 'idle'; return; } w.timer++;
+                let tMax = (camp.type==='stone'||camp.type==='gold') ? Math.max(10, 40 * Math.pow(0.85, getMeta('act_s'))) : Math.max(10, 30 * Math.pow(0.85, getMeta('act_w')));
+                if (camp.type==='gold') tMax *= Math.pow(0.85, getMeta('act_g'));
                 if (w.timer >= tMax) {
-                    w.timer = 0; w.targetObj.hits--; w.showAct = true; setTimeout(() => w.showAct = false, 150); 
-                    sfx(camp.type==='stone' ? 'mine' : 'chop');
-                    if (camp.type==='stone') {
-                        let stoneReq = Math.max(1, 5 - getMeta('yld_s'));
-                        if (w.targetObj.hits % stoneReq === 0) { w.carry++; sfx('pickup'); }
-                        if (w.carry + w.carryFood >= w.maxCarry) w.state = 'returning';
-                        if (w.targetObj.hits <= 0) { w.targetObj.active = false; w.targetObj.timer = 600; w.state = 'idle'; }
-                    } else {
-                        if (w.targetObj.hits <= 0) { w.targetObj.active = false; w.targetObj.timer = 300; w.carry++; sfx('fall'); w.state = 'idle'; }
-                    }
+                    w.timer = 0; w.targetObj.hits--; w.showAct = true; setTimeout(() => w.showAct = false, 150); sfx((camp.type==='stone'||camp.type==='gold') ? 'mine' : 'chop');
+                    if (camp.type==='stone' || camp.type==='gold') {
+                        let req = Math.max(1, (camp.type==='gold'?5-getMeta('yld_g'):5-getMeta('yld_s')));
+                        if (w.targetObj.hits % req === 0) { w.carry++; sfx('pickup'); }
+                        if (w.carry + w.carryFood >= w.maxCarry) { w.state = 'returning'; w.path = calculatePath(w.x, w.y, camp.x, camp.y); }
+                        if (w.targetObj.hits <= 0) { w.targetObj.active = false; w.targetObj.timer = camp.type==='gold'?1200:600; w.state = 'idle'; }
+                    } else { if (w.targetObj.hits <= 0) { w.targetObj.active = false; w.targetObj.timer = 300; w.carry++; sfx('fall'); w.state = 'idle'; } }
                 }
             }
 
             else if (w.state === 'hunting') {
                 if (!w.targetObj.active) { w.state = 'idle'; return; }
-                let dx = w.targetObj.x - w.x, dy = w.targetObj.y - w.y, d = Math.sqrt(dx*dx + dy*dy);
-                let atkRange = ((w.targetObj.isWolf||w.targetObj.isBear)?150:80) * (1 + getMeta('atk_w')*0.1);
-                if (d > atkRange) { w.x += (dx/d)*w.speed; w.y += (dy/d)*w.speed; } 
-                else { w.state = 'aiming'; w.timer = 0; }
+                if (w.path.length === 0 || (w.path.length === 1 && Math.hypot(w.path[0].x - w.targetObj.x, w.path[0].y - w.targetObj.y) > 50)) { w.path = calculatePath(w.x, w.y, w.targetObj.x, w.targetObj.y); }
+                let isPred = w.targetObj.type === 'wolf' || w.targetObj.type === 'bear' || w.targetObj.type === 'lion' || w.targetObj.type === 'enemyWarrior';
+                let atkRange = (isPred?150:80) * (1 + getMeta('atk_w')*0.1);
+                if (w.path.length > 1) { walkPath(w); } else if (Math.hypot(w.targetObj.x - w.x, w.targetObj.y - w.y) > atkRange) { walkPath(w); } else { w.state = 'aiming'; w.timer = 0; w.path = []; }
             }
 
             else if (w.state === 'aiming') {
                 if (!w.targetObj.active) { w.state = 'idle'; return; }
                 w.bowAngle = Math.atan2(w.targetObj.y - w.y, w.targetObj.x - w.x); w.timer++;
-                let aimMax = ((w.targetObj.isWolf||w.targetObj.isBear)?20:40) * Math.pow(0.85, getMeta('act_f'));
-                if (w.timer >= aimMax) { 
-                    sfx('shoot'); 
-                    let aSpd = 12 * (1 + getMeta('arr_spd') * 0.2);
-                    arrows.push({ active:true, x:w.x, y:w.y, angle:w.bowAngle, speed:aSpd, target:w.targetObj, owner: w }); 
-                    w.state = 'waiting_arrow'; 
-                }
+                let isPred = w.targetObj.type === 'wolf' || w.targetObj.type === 'bear' || w.targetObj.type === 'lion' || w.targetObj.type === 'enemyWarrior';
+                let aimMax = (isPred?20:40) * Math.pow(0.85, getMeta('act_f'));
+                if (w.timer >= aimMax) { sfx('shoot'); let aSpd = 12 * (1 + getMeta('arr_spd') * 0.2); arrows.push({ active:true, x:w.x, y:w.y, angle:w.bowAngle, speed:aSpd, target:w.targetObj, owner: w, isHunter: true }); w.state = 'waiting_arrow'; w.timer = 0; }
             }
-
-            else if (w.state === 'looting') { w.targetObj.active = false; w.carryFood++; sfx('pickup'); w.state = 'idle'; }
-
+            else if (w.state === 'waiting_arrow') { w.timer++; if (!w.targetObj || !w.targetObj.active || w.timer > 60) { w.state = 'idle'; w.timer = 0; } }
+            else if (w.state === 'looting') { w.targetObj.active = false; if(w.targetObj.isGoldDrop) globalGold++; else w.carryFood++; sfx('pickup'); w.state = 'idle'; }
+            
             else if (w.state === 'returning') {
-                let dx = (camp.x + 22) - w.x, dy = (camp.y + 15) - w.y, d = Math.sqrt(dx*dx + dy*dy);
-                if (d > w.speed) { w.x += (dx/d)*w.speed; w.y += (dy/d)*w.speed; } 
-                else {
-                    if ((camp.type==='wood'||camp.type==='stone') && w.carryFood > 0) { globalFood += w.carryFood; w.carryFood = 0; sfx('depositF'); }
-                    let pC = (camp.type==='wood'||camp.type==='stone') ? w.carry : w.carryFood;
-                    
-                    let dblChance = camp.type==='wood' ? getMeta('dbl_w')*0.05 : (camp.type==='food' ? getMeta('dbl_f')*0.05 : getMeta('dbl_s')*0.05);
+                if (w.path.length === 0) w.path = calculatePath(w.x, w.y, camp.x, camp.y); walkPath(w);
+                if (w.path.length === 0) {
+                    if (camp.type!=='food' && w.carryFood > 0) { globalFood += w.carryFood; w.carryFood = 0; sfx('depositF'); }
+                    let pC = camp.type!=='food' ? w.carry : w.carryFood;
+                    let dblChance = camp.type==='wood' ? getMeta('dbl_w')*0.05 : (camp.type==='food' ? getMeta('dbl_f')*0.05 : (camp.type==='gold'?getMeta('dbl_g')*0.05 : getMeta('dbl_s')*0.05));
                     if (Math.random() < dblChance) pC *= 2;
 
                     let dep = Math.min(pC, camp.capacity - camp.stored);
@@ -633,30 +861,43 @@
                         camp.stored += dep; 
                         if (camp.type==='wood') { globalWood += dep; w.carry = 0; sfx('depositW'); }
                         else if (camp.type==='stone') { globalStone += dep; w.carry = 0; sfx('depositS'); }
+                        else if (camp.type==='gold') { globalGold += dep; w.carry = 0; sfx('depositS'); }
                         else { globalFood += dep; w.carryFood = 0; sfx('depositF'); }
-                    }
-                    updateUI(); w.state = camp.stored >= camp.capacity ? 'idle_full' : 'idle';
+                    } updateUI(); w.state = camp.stored >= camp.capacity ? 'idle_full' : 'idle';
                 }
             }
         }
 
-        function startGame() {
-            document.getElementById('start-overlay').style.display = 'none';
-            initAudio(); loadMeta();
-            
-            if (!loadGame()) { 
-                createCamp('wood'); 
-                globalWood = getMeta('str_w') * 50;
-                globalFood = getMeta('str_f') * 50;
-                globalStone = getMeta('str_s') * 25;
-                if(getMeta('free_c') > 0) { for(let i=0; i<getMeta('free_c'); i++) createCamp('food'); }
-            }
-            setInterval(saveGame, 5000); updateUI(); gameLoop();
+        // Lógica Exclusiva da Torre
+        function processTower(c) {
+            let w = c.worker;
+            let tEnemy = getClosestEnemy(w.x, w.y);
+            if (tEnemy) {
+                let dx = tEnemy.x - w.x, dy = tEnemy.y - w.y, d = Math.sqrt(dx*dx + dy*dy); let atkRange = 300 * (1 + getMeta('atk_w')*0.1);
+                if (d <= atkRange) {
+                    w.bowAngle = Math.atan2(dy, dx); w.timer++; w.state = 'aiming'; let aimMax = 25 * Math.pow(0.85, getMeta('act_f')) * Math.pow(0.85, getMeta('tw_spd'));
+                    if (w.timer >= aimMax) {
+                        sfx('shoot'); let aSpd = 15 * (1 + getMeta('arr_spd') * 0.2);
+                        arrows.push({ active:true, x:w.x, y:w.y, angle:w.bowAngle, speed:aSpd, target:tEnemy, owner: w, isTower: true });
+                        w.timer = 0; w.state = 'guarding';
+                    }
+                } else { w.state = 'guarding'; w.timer = 0; }
+            } else { w.state = 'guarding'; w.timer = 0; }
         }
 
+        function startGame() {
+            document.getElementById('start-overlay').style.display = 'none'; initAudio(); loadMeta();
+            if (!loadGame()) { 
+                createCamp('wood'); globalWood = getMeta('str_w') * 50; globalFood = getMeta('str_f') * 50; globalStone = getMeta('str_s') * 25; globalGold = getMeta('str_g') * 10;
+                if(getMeta('free_c') > 0) { for(let i=0; i<getMeta('free_c'); i++) createCamp('food'); }
+                if(getMeta('free_w') > 0) { for(let i=0; i<getMeta('free_w'); i++) createCamp('barracks'); }
+            } setInterval(saveGame, 5000); updateUI(); gameLoop();
+        }
+
+        let tickCounter = 0;
         function gameLoop() {
-            if (isGameOver) return;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (isGameOver) return; ctx.clearRect(0, 0, canvas.width, canvas.height);
+            tickCounter++; if(tickCounter >= 60) { totalPlaySeconds++; tickCounter = 0; }
             
             const vP = 200, zl = camera.zoom;
             const vL = camera.x - (canvas.width/2)/zl - vP, vR = camera.x + (canvas.width/2)/zl + vP;
@@ -665,101 +906,136 @@
 
             let aliveCamps = 0, aliveHunters = 0;
             for(let i=0; i<camps.length; i++) { 
-                if(camps[i].type === 'tower') continue;
-                if(!camps[i].worker.isDead) { aliveCamps++; if(camps[i].type==='food') aliveHunters++; } 
+                if (camps[i].type === 'barracks') { if (camps[i].warriors.some(w => !w.isDead)) aliveCamps++; }
+                else if (camps[i].type !== 'tower' && !camps[i].worker.isDead) { aliveCamps++; if(camps[i].type==='food') aliveHunters++; } 
             }
 
-            maintainWorld(aliveCamps); processEnemies(aliveHunters);
-            for(let i=0; i<camps.length; i++) processWorker(camps[i]);
+            if (tickCounter === 0 && getMeta('cp_rep') > 0) { camps.forEach(c => { if(c.hp < c.maxHp) c.hp = Math.min(c.maxHp, c.hp + 2); }); walls.forEach(w => w.segments.forEach(s => { if(s.hp < s.maxHp) s.hp = Math.min(s.maxHp, s.hp + 2); })); }
+            if (tickCounter === 0) { if(totalPlaySeconds % 10 === 0) { globalWood += getMeta('pas_w'); globalFood += getMeta('pas_f'); } if(totalPlaySeconds % 20 === 0) globalStone += getMeta('pas_s'); if(totalPlaySeconds % 30 === 0) globalGold += getMeta('pas_g'); updateUI(); }
 
+            maintainWorld(aliveCamps); processEnemies(aliveHunters);
+            
+            for(let i=0; i<camps.length; i++) {
+                if (camps[i].type === 'tower') processTower(camps[i]);
+                else if (camps[i].type === 'barracks') { camps[i].warriors.forEach(w => processWarrior(w, camps[i])); }
+                else processWorker(camps[i]);
+            }
+            
             resolveCollisions(); 
 
+            for(let i=0; i<hares.length; i++) { let h=hares[i]; if(h.active){ if(Math.random()<0.02 + (getMeta('spn_hr') * 0.005)){ h.x+=(Math.random()-0.5)*15; h.y+=(Math.random()-0.5)*15;} } else { h.timer--; if(h.timer<=0){ let pt = getValidSpawnPoint(camera.x, camera.y, 1500); if (pt.valid) { h.active=true; h.x=pt.x; h.y=pt.y; } else { h.timer = 10; } } } }
+            for(let i=0; i<trees.length; i++) { let t=trees[i]; if(!t.active){ t.timer--; if(t.timer<=0){ let pt = getValidSpawnPoint(camera.x, camera.y, 1500); if (pt.valid) { t.active=true; t.hits=Math.max(1, 3 - getMeta('yld_w')); t.maxH=t.hits; t.x=pt.x; t.y=pt.y; } else { t.timer = 10; } } } }
+            for(let i=0; i<mountains.length; i++) { let m=mountains[i]; if(!m.active){ m.timer--; if(m.timer<=0){ let mx = camera.x+(Math.random()>0.5?1:-1)*(800+Math.random()*600); let my = camera.y+(Math.random()>0.5?1:-1)*(800+Math.random()*600); if (!isPointInWall(mx, my)) { m.active=true; m.hits=50; m.x=mx; m.y=my; bears.length=0; bears.push({ x:m.x+50, y:m.y+50, active:true, speed:1.5 * Math.pow(0.95, getMeta('spd_br')), type: 'bear', spawnX:m.x, spawnY:m.y, path: [] }); } else { m.timer = 10; } } } }
+            for(let i=0; i<goldMountains.length; i++) { let m=goldMountains[i]; if(!m.active){ m.timer--; if(m.timer<=0){ let mx = camera.x+(Math.random()>0.5?1:-1)*(1000+Math.random()*800); let my = camera.y+(Math.random()>0.5?1:-1)*(1000+Math.random()*800); if (!isPointInWall(mx, my)) { m.active=true; m.hits=50; m.x=mx; m.y=my; lions.length=0; lions.push({ x:m.x+50, y:m.y+50, active:true, speed:2.0, type: 'lion', spawnX:m.x, spawnY:m.y, path: [] }); } else { m.timer = 10; } } } }
+
             if (camps.length > 0 && aliveCamps === 0) { triggerRoguelikeDeath(); return; }
+            camps = camps.filter(c => { if(c.hp <= 0) { if(c.worker) c.worker.isDead = true; if(c.warriors) c.warriors.forEach(w=>w.isDead=true); return false; } return true; });
 
             for(let i=arrows.length-1; i>=0; i--) {
                 let a = arrows[i];
                 if(a.active) {
                     if (a.target && a.target.active) a.angle = Math.atan2(a.target.y - a.y, a.target.x - a.x);
                     a.x += Math.cos(a.angle) * a.speed; a.y += Math.sin(a.angle) * a.speed;
-                    if(a.target && a.target.active && (a.x-a.target.x)*(a.x-a.target.x) + (a.y-a.target.y)*(a.y-a.target.y) < ((a.target.isWolf||a.target.isBear)?625:225)) {
+                    let isPred = a.target && (a.target.type==='wolf'||a.target.type==='bear'||a.target.type==='lion'||a.target.type==='enemyWarrior');
+                    if(a.target && a.target.active && (a.x-a.target.x)*(a.x-a.target.x) + (a.y-a.target.y)*(a.y-a.target.y) < (isPred?625:225)) {
                         a.active = false;
-                        if (a.target.isWolf) { if (Math.random() <= 0.8) { a.target.active = false; sfx('wolf_die'); drops.push({ x: a.target.x, y: a.target.y, active: true, isDrop: true }); } } 
-                        else if (a.target.isBear) { if (Math.random() <= 0.35) { a.target.active = false; sfx('bear_roar'); drops.push({ x: a.target.x, y: a.target.y, active: true, isDrop: true }, { x: a.target.x+10, y: a.target.y+10, active: true, isDrop: true }); } } 
-                        else { a.target.active = false; a.target.timer = 150; drops.push({ x: a.target.x, y: a.target.y, active: true, isDrop: true }); }
-                        for(let c=0; c<camps.length; c++) { if(camps[c].worker.targetObj === a.target && (camps[c].worker.state === 'waiting_arrow' || camps[c].type === 'tower')) camps[c].worker.state = camps[c].type === 'tower' ? 'guarding' : 'idle'; }
+                        let extraLethal = a.isTower ? (getMeta('tw_dmg')*0.05) : (getMeta('hnt_war')*0.05);
+                        
+                        if (a.target.type==='wolf') { if (Math.random() <= 0.8) { a.target.active = false; sfx('wolf_die'); drops.push({ x: a.target.x, y: a.target.y, active: true, isDrop: true }); } } 
+                        else if (a.target.type==='bear') { if (Math.random() <= 0.35) { a.target.active = false; sfx('bear_roar'); drops.push({ x: a.target.x, y: a.target.y, active: true, isDrop: true }, { x: a.target.x+10, y: a.target.y+10, active: true, isDrop: true }); } } 
+                        else if (a.target.type==='lion') { if (Math.random() <= 0.25) { a.target.active = false; sfx('bear_roar'); drops.push({ x: a.target.x, y: a.target.y, active: true, isDrop: true }); if(Math.random()<=0.1+getMeta('drp_lio')*0.1) drops.push({x:a.target.x-10,y:a.target.y,active:true,isGoldDrop:true}); } } 
+                        else if (a.target.type==='enemyWarrior') { if (Math.random() <= 0.5 + extraLethal) { a.target.active = false; sfx('human_die'); if(Math.random() <= getMeta('emy_drp')*0.15) drops.push({x:a.target.x,y:a.target.y,active:true,isGoldDrop:true}); } }
+                        else { a.target.active = false; a.target.timer = 150; let hF = getMeta('hare_f')>0 ? 2:1; for(let h=0; h<hF; h++) drops.push({ x: a.target.x+(h*5), y: a.target.y, active: true, isDrop: true }); }
+                        for(let c=0; c<camps.length; c++) { if(camps[c].worker && camps[c].worker.targetObj === a.target && (camps[c].worker.state === 'waiting_arrow' || camps[c].type === 'tower')) camps[c].worker.state = camps[c].type === 'tower' ? 'guarding' : 'idle'; }
                     }
                     if((a.x-camera.x)*(a.x-camera.x) + (a.y-camera.y)*(a.y-camera.y) > 4000000) a.active = false;
                 } else arrows.splice(i, 1);
             }
 
-            let hareSpawnBoost = 0.02 + (getMeta('spn_hr') * 0.005);
-            let treeMaxHits = Math.max(1, 3 - getMeta('yld_w'));
-
-            for(let i=0; i<hares.length; i++) { let h=hares[i]; if(h.active){ if(Math.random()<hareSpawnBoost){ h.x+=(Math.random()-0.5)*15; h.y+=(Math.random()-0.5)*15;} } else { h.timer--; if(h.timer<=0){ h.active=true; h.x=camera.x+(Math.random()-0.5)*800; h.y=camera.y+(Math.random()-0.5)*800; } } }
-            for(let i=0; i<trees.length; i++) { let t=trees[i]; if(!t.active){ t.timer--; if(t.timer<=0){ t.active=true; t.hits=treeMaxHits; t.maxH=treeMaxHits; t.x=camera.x+(Math.random()-0.5)*800; t.y=camera.y+(Math.random()-0.5)*800; } } }
-            for(let i=0; i<mountains.length; i++) { let m=mountains[i]; if(!m.active){ m.timer--; if(m.timer<=0){ m.active=true; m.hits=50; m.x=camera.x+(Math.random()>0.5?1:-1)*(600+Math.random()*400); m.y=camera.y+(Math.random()>0.5?1:-1)*(600+Math.random()*400); bears.length=0; bears.push({ x:m.x+50, y:m.y+50, active:true, speed:1.5 * Math.pow(0.95, getMeta('spd_br')), isBear:true, spawnX:m.x, spawnY:m.y }); } } }
-
             for(let i=wolves.length-1; i>=0; i--) if(!wolves[i].active) wolves.splice(i, 1);
+            for(let i=bears.length-1; i>=0; i--) if(!bears[i].active) bears.splice(i, 1);
+            for(let i=lions.length-1; i>=0; i--) if(!lions[i].active) lions.splice(i, 1);
+            for(let i=enemyWarriors.length-1; i>=0; i--) if(!enemyWarriors[i].active) enemyWarriors.splice(i, 1);
             for(let i=drops.length-1; i>=0; i--) if(!drops[i].active) drops.splice(i, 1);
 
             ctx.save(); ctx.translate(canvas.width/2, canvas.height/2); ctx.scale(zl, zl); ctx.translate(-camera.x, -camera.y);
 
-            for(let i=0; i<drops.length; i++) if (isVis(drops[i].x, drops[i].y)) drawEmoji("🍖", 20, drops[i].x, drops[i].y);
+            for(let i=0; i<walls.length; i++) {
+                let w = walls[i];
+                for(let j=0; j<w.segments.length; j++) {
+                    let s = w.segments[j];
+                    if (isVis(s.x, s.y)) { 
+                        ctx.fillStyle = "#374151"; ctx.fillRect(s.x - 12, s.y - 12, 24, 24); ctx.fillStyle = "#9ca3af"; ctx.fillRect(s.x - 6, s.y - 6, 12, 12); ctx.fillStyle = "#1f2937"; ctx.fillRect(s.x - 12, s.y + 8, 24, 4); 
+                        if(s.hp < s.maxHp) { ctx.fillStyle = "red"; ctx.fillRect(s.x-10, s.y+15, 20, 3); ctx.fillStyle = "#4ade80"; ctx.fillRect(s.x-10, s.y+15, 20*(s.hp/s.maxHp), 3); }
+                    }
+                }
+            }
+
+            for(let i=0; i<drops.length; i++) if (isVis(drops[i].x, drops[i].y)) drawEmoji(drops[i].isGoldDrop?"🪙":"🍖", 20, drops[i].x, drops[i].y);
             for(let i=0; i<hares.length; i++) if (hares[i].active && isVis(hares[i].x, hares[i].y)) drawEmoji("🐇", 20, hares[i].x, hares[i].y);
 
-            for(let i=0; i<trees.length; i++) { 
-                let t=trees[i]; if (isVis(t.x, t.y)) { 
-                    if(t.active) { drawEmoji("🌲", 35, t.x, t.y); if(t.hits<t.maxH){ ctx.fillStyle="#1a3b22"; ctx.fillRect(t.x-15,t.y-25,30,4); ctx.fillStyle="#fbbf24"; ctx.fillRect(t.x-15,t.y-25,30*(t.hits/t.maxH),4); } } 
-                    else drawEmoji("🪵", 25, t.x, t.y+10); 
-                } 
-            }
-            for(let i=0; i<mountains.length; i++) { 
-                let m=mountains[i]; if (isVis(m.x, m.y)) { 
-                    if(m.active) { drawEmoji("⛰️", 50, m.x, m.y); if(m.hits<50){ ctx.fillStyle="#1a3b22"; ctx.fillRect(m.x-20,m.y-35,40,5); ctx.fillStyle="#9ca3af"; ctx.fillRect(m.x-20,m.y-35,40*(m.hits/50),5); } } 
-                    else drawEmoji("🪨", 30, m.x, m.y+10); 
-                } 
-            }
-
-            for(let i=0; i<camps.length; i++) if (isVis(camps[i].x, camps[i].y)) drawEmoji(camps[i].icon, camps[i].type==='tower'?50:40, camps[i].x, camps[i].y);
-            for(let i=0; i<bears.length; i++) if(bears[i].active && isVis(bears[i].x, bears[i].y)) drawEmoji("🐻", 40, bears[i].x, bears[i].y);
-            for(let i=0; i<wolves.length; i++) if(wolves[i].active && isVis(wolves[i].x, wolves[i].y)) drawEmoji("🐺", 25, wolves[i].x, wolves[i].y);
-
-            ctx.strokeStyle = "white"; ctx.lineWidth = 2;
-            for(let i=0; i<arrows.length; i++) { 
-                let a = arrows[i];
-                if(a.active && isVis(a.x, a.y)) { ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(a.x - Math.cos(a.angle)*15, a.y - Math.sin(a.angle)*15); ctx.stroke(); } 
-            }
+            for(let i=0; i<trees.length; i++) { let t=trees[i]; if (isVis(t.x, t.y)) { if(t.active) { drawEmoji("🌲", 35, t.x, t.y); if(t.hits<t.maxH){ ctx.fillStyle="#1a3b22"; ctx.fillRect(t.x-15,t.y-25,30,4); ctx.fillStyle="#fbbf24"; ctx.fillRect(t.x-15,t.y-25,30*(t.hits/t.maxH),4); } } else drawEmoji("🪵", 25, t.x, t.y+10); } }
+            for(let i=0; i<mountains.length; i++) { let m=mountains[i]; if (isVis(m.x, m.y)) { if(m.active) { drawEmoji("⛰️", 50, m.x, m.y); if(m.hits<50){ ctx.fillStyle="#1a3b22"; ctx.fillRect(m.x-20,m.y-35,40,5); ctx.fillStyle="#9ca3af"; ctx.fillRect(m.x-20,m.y-35,40*(m.hits/50),5); } } else drawEmoji("🪨", 30, m.x, m.y+10); } }
+            for(let i=0; i<goldMountains.length; i++) { let m=goldMountains[i]; if (isVis(m.x, m.y)) { if(m.active) { drawEmoji("🗻", 50, m.x, m.y); if(m.hits<50){ ctx.fillStyle="#b45309"; ctx.fillRect(m.x-20,m.y-35,40,5); ctx.fillStyle="#fde047"; ctx.fillRect(m.x-20,m.y-35,40*(m.hits/50),5); } } else drawEmoji("🪙", 30, m.x, m.y+10); } }
 
             for(let i=0; i<camps.length; i++) {
-                let w = camps[i].worker;
-                if (isVis(w.x, w.y)) {
-                    if (w.isDead) { drawEmoji("💀", 25, w.x, w.y); } 
-                    else {
+                let c = camps[i];
+                if (isVis(c.x, c.y)) {
+                    drawEmoji(c.icon, c.type==='tower'?50:40, c.x, c.y);
+                    if (c.hp < c.maxHp) { ctx.fillStyle = "red"; ctx.fillRect(c.x-20, c.y-30, 40, 5); ctx.fillStyle = "#4ade80"; ctx.fillRect(c.x-20, c.y-30, 40*(c.hp/c.maxHp), 5); }
+                }
+            }
+            
+            for(let i=0; i<bears.length; i++) if(bears[i].active && isVis(bears[i].x, bears[i].y)) drawEmoji("🐻", 40, bears[i].x, bears[i].y);
+            for(let i=0; i<lions.length; i++) if(lions[i].active && isVis(lions[i].x, lions[i].y)) drawEmoji("🦁", 40, lions[i].x, lions[i].y);
+            for(let i=0; i<wolves.length; i++) if(wolves[i].active && isVis(wolves[i].x, wolves[i].y)) drawEmoji("🐺", 25, wolves[i].x, wolves[i].y);
+            
+            for(let i=0; i<enemyWarriors.length; i++) if(enemyWarriors[i].active && isVis(enemyWarriors[i].x, enemyWarriors[i].y)) { 
+                ctx.fillStyle = "#dc2626"; ctx.beginPath(); ctx.arc(enemyWarriors[i].x, enemyWarriors[i].y, 14, 0, Math.PI*2); ctx.fill(); drawEmoji("🪖", 28, enemyWarriors[i].x, enemyWarriors[i].y); 
+                let clubAngle = enemyWarriors[i].state==='hitting_wall' ? (enemyWarriors[i].timer%20>10?-Math.PI/4:0) : 0;
+                drawEmojiRotated("🏏", 18, enemyWarriors[i].x+12, enemyWarriors[i].y-2, clubAngle); 
+            }
+
+            ctx.strokeStyle = "white"; ctx.lineWidth = 2;
+            for(let i=0; i<arrows.length; i++) { let a = arrows[i]; if(a.active && isVis(a.x, a.y)) { ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(a.x - Math.cos(a.angle)*15, a.y - Math.sin(a.angle)*15); ctx.stroke(); } }
+
+            for(let i=0; i<camps.length; i++) {
+                if (camps[i].type === 'barracks') {
+                    camps[i].warriors.forEach(w => {
+                        if (w.isDead || !isVis(w.x, w.y)) return;
+                        ctx.fillStyle = "#2563eb"; ctx.beginPath(); ctx.arc(w.x, w.y, 12, 0, Math.PI*2); ctx.fill();
                         drawEmoji(w.icon, 25, w.x, w.y);
-                        if(w.state === 'idle_full') drawEmoji("💤", 15, w.x + 12, w.y - 12);
-                        else if(w.carry + w.carryFood >= w.maxCarry && camps[i].type !== 'tower') drawEmoji("📦", 15, w.x + 12, w.y - 12);
-                        if(w.showAct) drawEmoji(camps[i].type==='stone' ? "⛏️" : "🪓", 20, w.x+15, w.y-10);
-                        if(w.state==='aiming' || w.state==='hunting') drawEmojiRotated("🏹", 18, w.x+15, w.y, w.bowAngle + Math.PI/4);
-                    }
+                        let clubAngle = w.showAct ? -Math.PI/4 : 0;
+                        drawEmojiRotated("🏏", 18, w.x+10, w.y+2, clubAngle); 
+                    });
+                } 
+                else if (camps[i].type !== 'tower') {
+                    let w = camps[i].worker;
+                    if (w.isDead || !isVis(w.x, w.y)) continue;
+                    drawEmoji(w.icon, 25, w.x, w.y);
+                    if(w.state === 'idle_full') drawEmoji("💤", 15, w.x + 12, w.y - 12);
+                    else if(w.carry + w.carryFood >= w.maxCarry) drawEmoji("📦", 15, w.x + 12, w.y - 12);
+                    if(w.showAct) drawEmoji((camps[i].type==='stone'||camps[i].type==='gold') ? "⛏️" : "🪓", 20, w.x+15, w.y-10);
+                    if(w.state==='aiming' || w.state==='hunting') drawEmojiRotated("🏹", 18, w.x+15, w.y, w.bowAngle + Math.PI/4);
                 }
             }
 
             ctx.font = "bold 15px Arial"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
             for(let i=0; i<camps.length; i++) {
                 let c = camps[i];
-                if (c.type === 'tower') continue; // Torres nao tem label de upgrade
+                if (c.type === 'tower') continue; 
                 if (isVis(c.x, c.y)) {
                     let discCost = Math.max(1, Math.floor(c.upgCostW * Math.pow(0.95, getMeta('upg_disc'))));
-                    let tC = `${c.stored}/${c.capacity}`; let cW = tC.length * 8.5 + 8;
-                    ctx.fillStyle = "rgba(0, 0, 0, 0.65)"; ctx.fillRect(c.x - cW/2, c.y + 24, cW, 20);
-                    ctx.fillStyle = c.stored >= c.capacity ? "#ef4444" : "#ffffff"; ctx.fillText(tC, c.x, c.y + 34);
-
+                    if(c.type !== 'barracks') {
+                        let tC = `${c.stored}/${c.capacity}`; let cW = tC.length * 8.5 + 8;
+                        ctx.fillStyle = "rgba(0, 0, 0, 0.65)"; ctx.fillRect(c.x - cW/2, c.y + 24, cW, 20);
+                        ctx.fillStyle = c.stored >= c.capacity ? "#ef4444" : "#ffffff"; ctx.fillText(tC, c.x, c.y + 34);
+                    }
                     let cT = `${discCost}🪵`; let uW = cT.length * 9.5 + 8;
                     ctx.fillStyle = "rgba(0, 0, 0, 0.65)"; ctx.fillRect(c.x - uW/2, c.y - 44, uW, 20);
                     ctx.fillStyle = globalWood >= discCost ? "#4ade80" : "#6b7280"; ctx.fillText(cT, c.x, c.y - 34);
                 }
-            }
-            ctx.restore(); requestAnimationFrame(gameLoop);
+            } ctx.restore(); requestAnimationFrame(gameLoop);
         }
     </script>
 </body>
